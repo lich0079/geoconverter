@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RootVC.h"
 
-@interface geoconverterAppDelegate : NSObject <UIApplicationDelegate, UITabBarControllerDelegate> {
+
+@interface geoconverterAppDelegate : NSObject <UIApplicationDelegate> {
 
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
 
-@property (nonatomic, retain) IBOutlet UITabBarController *tabBarController;
+@property (nonatomic, retain) IBOutlet RootVC *rootVC;
 
 @end
