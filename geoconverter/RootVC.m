@@ -41,7 +41,7 @@
 {
     [super viewDidLoad];
 
-    NSLog(@"%s ",__FUNCTION__);
+    NSLog(@"%s %@",__FUNCTION__, [[NSLocale autoupdatingCurrentLocale] localeIdentifier]);
     self.latitude.delegate = self;
     self.longitude.delegate = self;
     self.searchBar.delegate = self;
@@ -121,9 +121,9 @@
     
     
     if(latiInput >90 || latiInput < -90){
-        [self errorAlert:@"latitude must between [-90,90]"];
+        [self errorAlert:NSLocalizedString(@"latitudelimit",@"latitude must between [-90,90]")];
     }else if(longiInput >180 || longiInput < -180){
-        [self errorAlert:@"longitude must between [-180,180]"];
+        [self errorAlert:NSLocalizedString(@"longitudelimit",@"longitude must between [-180,180]")];
     }else{
         [self releaseRoomForKeyboard];
         [textField resignFirstResponder];
@@ -162,14 +162,14 @@
 - (void)errorAlert:(NSString *) message {
     
     UIAlertView *alertView = [[UIAlertView alloc]
-                              initWithTitle:@"Error" message:message delegate:nil
-                              cancelButtonTitle:@"OK" otherButtonTitles:nil];
+                              initWithTitle:NSLocalizedString(@"error",@"Error") message:message delegate:nil
+                              cancelButtonTitle:NSLocalizedString(@"ok",@"OK") otherButtonTitles:nil];
     [alertView show];
     [alertView release];
     [self dismissModalViewControllerAnimated:YES];
 }
 
--(NSString *) generateSubtitleForLocation:(NSString *)state :(NSString *)city :(NSString *)street{
+-(NSString *) generateSubtitleForLocation:(NSString *)state city:(NSString *)city street:(NSString *)street{
     NSMutableString *placeDesc = [NSMutableString stringWithString:@""];
     if(state ){
         [placeDesc appendFormat:@"%@",state];    
@@ -211,6 +211,7 @@
         theGeocoder.delegate = self;
         [theGeocoder start];
         [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;  
+
     }
  
         
@@ -226,22 +227,24 @@
 {
 //    NSLog(@"-----%@   %@",geocoder,place);
 
-    NSString *subtitle = [self generateSubtitleForLocation:place.administrativeArea :place.locality :place.thoroughfare];
+    NSString *subtitle = [self generateSubtitleForLocation:place.administrativeArea city:place.locality street:place.thoroughfare];
     
     [self addAnnotation:geocoder.coordinate title:place.country subtitle:subtitle];
     
     //[self modifyText:geocoder.coordinate];
     [geocoder release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;  
+ 
 
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFailWithError:(NSError*)error
 {
-    [self addAnnotation:geocoder.coordinate title:@"Could not retrieve the specified place information." subtitle:nil];
+    [self addAnnotation:geocoder.coordinate title:NSLocalizedString(@"reverseGeocodererror", @"Could not retrieve the specified place information.") subtitle:nil];
     [self modifyText:geocoder.coordinate];
     [geocoder release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;  
+ 
 }
 
 
@@ -367,18 +370,17 @@
             for (int i = 0; i < count; i++) {
                 NSDictionary *location = [resultsArray objectAtIndex:i];
                 if(i == count - 1 ){
-                    [self handleSearchResult:location:YES];
+                    [self handleSearchResult:location isLast:YES];
                 }else{
-                    [self handleSearchResult:location:NO];
+                    [self handleSearchResult:location isLast:NO];
                 }
                 
             }
         }else{
-            [self errorAlert:@"no result"];
+            [self errorAlert:NSLocalizedString(@"noresult",@"no result")];
         }    
 
-
-            
+           
         
         [aStr release];
 
@@ -386,7 +388,7 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
 }
 
--(void) handleSearchResult:(NSDictionary *)result :(BOOL)isLast{
+-(void) handleSearchResult:(NSDictionary *)result isLast:(BOOL)isLast{
     NSString *la = [result valueForKey:@"latitude"];
     NSString *lo = [result valueForKey:@"longitude"];
     NSString *country = [result valueForKey:@"country"];
@@ -396,7 +398,7 @@
     if([street length] == 0){
         street = [result valueForKey:@"line2"];
     }
-    NSString *subtitle = [self generateSubtitleForLocation:state :city :street];
+    NSString *subtitle = [self generateSubtitleForLocation:state city:city street:street];
     
     
     CLLocationCoordinate2D coordinate = {[la floatValue],[lo floatValue]};

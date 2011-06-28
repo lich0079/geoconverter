@@ -43,7 +43,7 @@
 -(void) modifyText:(CLLocationCoordinate2D )coordinate;
 
 - (void)fetchDone:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)retrievedData error:(NSError *)error;
--(void) handleSearchResult:(NSDictionary *)result :(BOOL)isLast;
+-(void) handleSearchResult:(NSDictionary *)result isLast:(BOOL)isLast;
 
--(NSString *) generateSubtitleForLocation:(NSString *)state :(NSString *)city :(NSString *)street;
+-(NSString *) generateSubtitleForLocation:(NSString *)state city:(NSString *)city street:(NSString *)street;
 @end
