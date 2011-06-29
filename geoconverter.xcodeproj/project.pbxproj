@@ -10,6 +10,8 @@
 		E3425B8313BAC4FA00E6954E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E3425B8113BAC4FA00E6954E /* InfoPlist.strings */; };
 		E3425B8613BAC59A00E6954E /* Root.strings in Resources */ = {isa = PBXBuildFile; fileRef = E3425B8413BAC59A00E6954E /* Root.strings */; };
 		E34CD2FC13BA31D7008B84B6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E34CD2FA13BA31D7008B84B6 /* Localizable.strings */; };
+		E3706AE513BB53DB0078D50D /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = E3706AE313BB53DB0078D50D /* help.html */; };
+		E3706AE713BB53E50078D50D /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = E3706AE313BB53DB0078D50D /* help.html */; };
 		E372181E13B72C78000684BB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372181D13B72C78000684BB /* UIKit.framework */; };
 		E372182013B72C78000684BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372181F13B72C78000684BB /* Foundation.framework */; };
 		E372182213B72C78000684BB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372182113B72C78000684BB /* CoreGraphics.framework */; };
@@ -33,6 +35,8 @@
 		E396846613B9D45500BC5D5E /* SBJsonTokeniser.m in Sources */ = {isa = PBXBuildFile; fileRef = E396845813B9D45500BC5D5E /* SBJsonTokeniser.m */; };
 		E396846713B9D45500BC5D5E /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = E396845A13B9D45500BC5D5E /* SBJsonUTF8Stream.m */; };
 		E396846813B9D45500BC5D5E /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = E396845C13B9D45500BC5D5E /* SBJsonWriter.m */; };
+		E3994E1A13BB41FA00BFC67A /* HelpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E3994E1813BB41FA00BFC67A /* HelpVC.m */; };
+		E3994E1B13BB41FA00BFC67A /* HelpVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3994E1913BB41FA00BFC67A /* HelpVC.xib */; };
 		E3B3432C13B835B300364A56 /* RootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E3B3432A13B835B200364A56 /* RootVC.m */; };
 		E3FB5E5113BA3E970009BE8A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E3FB5E5013BA3E970009BE8A /* Settings.bundle */; };
 /* End PBXBuildFile section */
@@ -41,6 +45,8 @@
 		E3425B8213BAC4FA00E6954E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "geoconverter/zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		E34CD2FB13BA31D7008B84B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = geoconverter/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E34CD2FD13BA3251008B84B6 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "geoconverter/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E3706AE413BB53DB0078D50D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/help.html; sourceTree = "<group>"; };
+		E3706AE613BB53E50078D50D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = "zh-Hans.lproj/help.html"; sourceTree = "<group>"; };
 		E372181913B72C78000684BB /* geoconverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = geoconverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E372181D13B72C78000684BB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E372181F13B72C78000684BB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -84,6 +90,9 @@
 		E396845A13B9D45500BC5D5E /* SBJsonUTF8Stream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonUTF8Stream.m; sourceTree = "<group>"; };
 		E396845B13B9D45500BC5D5E /* SBJsonWriter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJsonWriter.h; sourceTree = "<group>"; };
 		E396845C13B9D45500BC5D5E /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
+		E3994E1713BB41FA00BFC67A /* HelpVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpVC.h; sourceTree = "<group>"; };
+		E3994E1813BB41FA00BFC67A /* HelpVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpVC.m; sourceTree = "<group>"; };
+		E3994E1913BB41FA00BFC67A /* HelpVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpVC.xib; sourceTree = "<group>"; };
 		E3B3432913B835B200364A56 /* RootVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootVC.h; sourceTree = "<group>"; };
 		E3B3432A13B835B200364A56 /* RootVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootVC.m; sourceTree = "<group>"; };
 		E3FB5E5013BA3E970009BE8A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Settings.bundle; sourceTree = "<group>"; };
@@ -142,6 +151,8 @@
 				E372182D13B72C78000684BB /* geoconverterAppDelegate.m */,
 				E3B3432913B835B200364A56 /* RootVC.h */,
 				E3B3432A13B835B200364A56 /* RootVC.m */,
+				E3994E1713BB41FA00BFC67A /* HelpVC.h */,
+				E3994E1813BB41FA00BFC67A /* HelpVC.m */,
 				E372182413B72C78000684BB /* Supporting Files */,
 			);
 			path = geoconverter;
@@ -150,6 +161,8 @@
 		E372182413B72C78000684BB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E3706AE313BB53DB0078D50D /* help.html */,
+				E3994E1913BB41FA00BFC67A /* HelpVC.xib */,
 				E3757FAD13B9CD8C0095BB33 /* RootVC.xib */,
 				E372182F13B72C78000684BB /* MainWindow.xib */,
 				E3FB5E5013BA3E970009BE8A /* Settings.bundle */,
@@ -257,6 +270,9 @@
 				E3757FAB13B9CD8C0095BB33 /* RootVC.xib in Resources */,
 				E3FB5E5113BA3E970009BE8A /* Settings.bundle in Resources */,
 				E3425B8613BAC59A00E6954E /* Root.strings in Resources */,
+				E3994E1B13BB41FA00BFC67A /* HelpVC.xib in Resources */,
+				E3706AE513BB53DB0078D50D /* help.html in Resources */,
+				E3706AE713BB53E50078D50D /* help.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -283,6 +299,7 @@
 				E396846613B9D45500BC5D5E /* SBJsonTokeniser.m in Sources */,
 				E396846713B9D45500BC5D5E /* SBJsonUTF8Stream.m in Sources */,
 				E396846813B9D45500BC5D5E /* SBJsonWriter.m in Sources */,
+				E3994E1A13BB41FA00BFC67A /* HelpVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,6 +331,15 @@
 			);
 			name = Localizable.strings;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		E3706AE313BB53DB0078D50D /* help.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E3706AE413BB53DB0078D50D /* en */,
+				E3706AE613BB53E50078D50D /* zh-Hans */,
+			);
+			name = help.html;
 			sourceTree = "<group>";
 		};
 		E372182613B72C78000684BB /* InfoPlist.strings */ = {

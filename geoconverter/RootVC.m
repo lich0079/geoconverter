@@ -480,4 +480,15 @@
 
     
 }
+
+- (IBAction) helpButtonClick:(id)sender{
+    HelpVC *help= [[[HelpVC alloc]init] autorelease];
+    help.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    help.delegate = self;
+    [self presentModalViewController:help animated:YES];
+}
+
+- (void)dismissModal:(HelpVC *)helpVC{
+    [self dismissModalViewControllerAnimated:YES];
+}
 @end

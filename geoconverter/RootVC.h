@@ -11,8 +11,10 @@
 #import <MapKit/MapKit.h> 
 #import "GTMHTTPFetcher.h"
 #import "SBJsonParser.h"
+#import "HelpVC.h"
 
-@interface RootVC : UIViewController  <UITextFieldDelegate,MKReverseGeocoderDelegate,MKMapViewDelegate,UISearchBarDelegate> {
+
+@interface RootVC : UIViewController  <UITextFieldDelegate,MKReverseGeocoderDelegate,MKMapViewDelegate,UISearchBarDelegate,HelpVCDelegate> {
     
 }
 
@@ -55,4 +57,6 @@
 - (void) addButtonClick:(id)sender;
 
 - (IBAction) segmentedButtonClick:(id)sender;
+
+- (IBAction) helpButtonClick:(id)sender;
 @end
