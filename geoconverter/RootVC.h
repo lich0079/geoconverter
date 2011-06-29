@@ -26,6 +26,8 @@
 
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 
+
+
 - (IBAction)geoButtonClick;
 
 - (void) makeRoomForKeyboard;
@@ -46,4 +48,11 @@
 -(void) handleSearchResult:(NSDictionary *)result isLast:(BOOL)isLast;
 
 -(NSString *) generateSubtitleForLocation:(NSString *)state city:(NSString *)city street:(NSString *)street;
+
+-(BOOL)isLatitudeLongitudeInputValid;
+
+
+- (void) addButtonClick:(id)sender;
+
+- (IBAction) segmentedButtonClick:(id)sender;
 @end

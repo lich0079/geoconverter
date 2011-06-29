@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E3425B8313BAC4FA00E6954E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E3425B8113BAC4FA00E6954E /* InfoPlist.strings */; };
+		E3425B8613BAC59A00E6954E /* Root.strings in Resources */ = {isa = PBXBuildFile; fileRef = E3425B8413BAC59A00E6954E /* Root.strings */; };
+		E34CD2FC13BA31D7008B84B6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E34CD2FA13BA31D7008B84B6 /* Localizable.strings */; };
 		E372181E13B72C78000684BB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372181D13B72C78000684BB /* UIKit.framework */; };
 		E372182013B72C78000684BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372181F13B72C78000684BB /* Foundation.framework */; };
 		E372182213B72C78000684BB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372182113B72C78000684BB /* CoreGraphics.framework */; };
@@ -31,9 +34,13 @@
 		E396846713B9D45500BC5D5E /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = E396845A13B9D45500BC5D5E /* SBJsonUTF8Stream.m */; };
 		E396846813B9D45500BC5D5E /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = E396845C13B9D45500BC5D5E /* SBJsonWriter.m */; };
 		E3B3432C13B835B300364A56 /* RootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E3B3432A13B835B200364A56 /* RootVC.m */; };
+		E3FB5E5113BA3E970009BE8A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E3FB5E5013BA3E970009BE8A /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E3425B8213BAC4FA00E6954E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "geoconverter/zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		E34CD2FB13BA31D7008B84B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = geoconverter/en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E34CD2FD13BA3251008B84B6 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "geoconverter/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		E372181913B72C78000684BB /* geoconverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = geoconverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E372181D13B72C78000684BB /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E372181F13B72C78000684BB /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -79,6 +86,7 @@
 		E396845C13B9D45500BC5D5E /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		E3B3432913B835B200364A56 /* RootVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootVC.h; sourceTree = "<group>"; };
 		E3B3432A13B835B200364A56 /* RootVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootVC.m; sourceTree = "<group>"; };
+		E3FB5E5013BA3E970009BE8A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,8 +142,6 @@
 				E372182D13B72C78000684BB /* geoconverterAppDelegate.m */,
 				E3B3432913B835B200364A56 /* RootVC.h */,
 				E3B3432A13B835B200364A56 /* RootVC.m */,
-				E3757FAD13B9CD8C0095BB33 /* RootVC.xib */,
-				E372182F13B72C78000684BB /* MainWindow.xib */,
 				E372182413B72C78000684BB /* Supporting Files */,
 			);
 			path = geoconverter;
@@ -144,8 +150,13 @@
 		E372182413B72C78000684BB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E3757FAD13B9CD8C0095BB33 /* RootVC.xib */,
+				E372182F13B72C78000684BB /* MainWindow.xib */,
+				E3FB5E5013BA3E970009BE8A /* Settings.bundle */,
+				E34CD2FA13BA31D7008B84B6 /* Localizable.strings */,
 				E372182513B72C78000684BB /* geoconverter-Info.plist */,
 				E372182613B72C78000684BB /* InfoPlist.strings */,
+				E3425B8113BAC4FA00E6954E /* InfoPlist.strings */,
 				E372182913B72C78000684BB /* geoconverter-Prefix.pch */,
 				E372182A13B72C78000684BB /* main.m */,
 			);
@@ -222,6 +233,7 @@
 			knownRegions = (
 				en,
 				"zh-Hans",
+				zh_Hans,
 			);
 			mainGroup = E372180E13B72C78000684BB;
 			productRefGroup = E372181A13B72C78000684BB /* Products */;
@@ -238,9 +250,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3425B8313BAC4FA00E6954E /* InfoPlist.strings in Resources */,
+				E34CD2FC13BA31D7008B84B6 /* Localizable.strings in Resources */,
 				E372182813B72C78000684BB /* InfoPlist.strings in Resources */,
 				E372183113B72C78000684BB /* MainWindow.xib in Resources */,
 				E3757FAB13B9CD8C0095BB33 /* RootVC.xib in Resources */,
+				E3FB5E5113BA3E970009BE8A /* Settings.bundle in Resources */,
+				E3425B8613BAC59A00E6954E /* Root.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +289,33 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		E3425B8113BAC4FA00E6954E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E3425B8213BAC4FA00E6954E /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		E3425B8413BAC59A00E6954E /* Root.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+			);
+			name = Root.strings;
+			path = /Users/lich0079/Documents/XcodeProject/geoconverter;
+			sourceTree = "<absolute>";
+		};
+		E34CD2FA13BA31D7008B84B6 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E34CD2FB13BA31D7008B84B6 /* en */,
+				E34CD2FD13BA3251008B84B6 /* zh-Hans */,
+			);
+			name = Localizable.strings;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		E372182613B72C78000684BB /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

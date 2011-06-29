@@ -1,0 +1,4 @@
+/* Localized versions of Info.plist keys */
+
+CFBundleName="经纬定位";   
+CFBundleDisplayName="经纬定位器";

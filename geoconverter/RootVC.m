@@ -45,6 +45,15 @@
     self.latitude.delegate = self;
     self.longitude.delegate = self;
     self.searchBar.delegate = self;
+
+    //remove searchbar background
+    for (UIView *subview in self.searchBar.subviews){  
+        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")]){  
+            [subview removeFromSuperview];  
+            break;  
+        } 
+    }
+
     map.showsUserLocation = YES;
     map.mapType = MKMapTypeStandard;
     map.delegate = self;
@@ -59,6 +68,7 @@
         longitude.text = longitudeText;
     }
 
+    
     UILongPressGestureRecognizer *lpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     lpress.minimumPressDuration = 0.5;//按0.5秒响应longPress方法
     lpress.allowableMovement = 10.0;
@@ -116,14 +126,11 @@
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    float latiInput=  [latitude.text floatValue];
-    float longiInput=  [longitude.text floatValue];
+
     
     
-    if(latiInput >90 || latiInput < -90){
-        [self errorAlert:NSLocalizedString(@"latitudelimit",@"latitude must between [-90,90]")];
-    }else if(longiInput >180 || longiInput < -180){
-        [self errorAlert:NSLocalizedString(@"longitudelimit",@"longitude must between [-180,180]")];
+    if(! [self isLatitudeLongitudeInputValid]){
+    
     }else{
         [self releaseRoomForKeyboard];
         [textField resignFirstResponder];
@@ -131,17 +138,34 @@
     return YES;
 }
 
-
+-(BOOL)isLatitudeLongitudeInputValid{
+    float latiInput=  [latitude.text floatValue];
+    float longiInput=  [longitude.text floatValue];
+    
+    if(latiInput >90 || latiInput < -90){
+        [self errorAlert:NSLocalizedString(@"latitudelimit",@"latitude must between [-90,90]")];
+        return NO;
+    }else if(longiInput >180 || longiInput < -180){
+        [self errorAlert:NSLocalizedString(@"longitudelimit",@"longitude must between [-180,180]")];
+        return NO;
+    }
+    
+    return YES;
+}
 
 
 #pragma mark - util 
 -(void) modifyText:(CLLocationCoordinate2D )coordinate{
     latitude.text = [NSString stringWithFormat:@"%f",coordinate.latitude];
     longitude.text = [NSString stringWithFormat:@"%f",coordinate.longitude];
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+	[userDefault setObject:latitude.text forKey:@"latitude"];
+   	[userDefault setObject:longitude.text forKey:@"longitude"];
+    [userDefault synchronize];
 }
 
 - (void) setMapRegion:(CLLocationCoordinate2D )coordinate{
-    
+
     MKCoordinateRegion theRegion = map.region;
     theRegion.center.latitude = coordinate.latitude;
     theRegion.center.longitude = coordinate.longitude;
@@ -160,9 +184,9 @@
 }
 
 - (void)errorAlert:(NSString *) message {
-    
+    //NSLocalizedString(@"error",@"Error") 
     UIAlertView *alertView = [[UIAlertView alloc]
-                              initWithTitle:NSLocalizedString(@"error",@"Error") message:message delegate:nil
+                              initWithTitle:nil message:message delegate:nil
                               cancelButtonTitle:NSLocalizedString(@"ok",@"OK") otherButtonTitles:nil];
     [alertView show];
     [alertView release];
@@ -186,14 +210,13 @@
 }
 - (IBAction)geoButtonClick {
     
-    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-	[userDefault setObject:latitude.text forKey:@"latitude"];
-   	[userDefault setObject:longitude.text forKey:@"longitude"];
-    [userDefault synchronize];
+    if(![self isLatitudeLongitudeInputValid]){
+        return;
+    }
     
-
     float latiInput=  [latitude.text floatValue];
     float longiInput=  [longitude.text floatValue];
+
 
     //if = 90 there will be a calayer bond error
     if(latiInput > 89){
@@ -231,7 +254,7 @@
     
     [self addAnnotation:geocoder.coordinate title:place.country subtitle:subtitle];
     
-    //[self modifyText:geocoder.coordinate];
+    [self modifyText:geocoder.coordinate];
     [geocoder release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;  
  
@@ -255,22 +278,26 @@
 -(BOOL)isAnnotationExist:(CLLocationCoordinate2D )coordinate{
     NSArray *anns = map.annotations;
     for (MKPointAnnotation *ann in anns) {
-        if(ann.coordinate.latitude == coordinate.latitude && ann.coordinate.longitude == coordinate.longitude){
+// during string to float, there will be a little miss
+        if((ann.coordinate.latitude + 0.00001 >= coordinate.latitude && ann.coordinate.latitude - 0.00001 <= coordinate.latitude)
+           && (ann.coordinate.longitude + 0.00001 >= coordinate.longitude && ann.coordinate.longitude - 0.00001 <= coordinate.longitude)){
+//            NSLog(@"isAnnotationExist");
             return YES;
         }
     }
+//    NSLog(@"isNotAnnotationExist");
     return NO;
 }
 
 -(void) addAnnotation:(CLLocationCoordinate2D )coordinate title:(NSString *)title subtitle:(NSString *)subtitle {
-    //if(![self isAnnotationExist:coordinate]){
+    if(![self isAnnotationExist:coordinate]){
         MKPointAnnotation *ann = [[[MKPointAnnotation alloc] init] autorelease];
         ann.title = title;
         ann.subtitle = subtitle;
         ann.coordinate = coordinate;
 
         [map addAnnotation:ann];
-    //}
+    }
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation{
@@ -294,7 +321,8 @@
 
         //pin.draggable = YES;
         UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
-//        [rightButton addTarget:self action:@selector(showDetails:) forControlEvents:UIControlEventTouchUpInside];
+
+        [rightButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         pin.rightCalloutAccessoryView = rightButton;
     }else{
         pin.annotation = annotation;
@@ -302,6 +330,8 @@
    // [annotation autorelease];
     return pin;
 }
+
+
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
         
@@ -311,16 +341,20 @@
 
 - (void)longPress:(UIGestureRecognizer*)gestureRecognizer
 {
-    NSLog(@"%s",__FUNCTION__);
+   // NSLog(@"%s",__FUNCTION__);
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded){
+//        NSLog(@"UIGestureRecognizerStateEnded");
         return;
     }
     
     //transfer coordinate
     CGPoint touchPoint = [gestureRecognizer locationInView:map];
     CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
-    [self modifyText:touchMapCoordinate];
+    
+  //  NSLog(@"%f %f",touchMapCoordinate.latitude,touchMapCoordinate.longitude);
+    
     if(![self isAnnotationExist:touchMapCoordinate]){
+        [self setMapRegion:touchMapCoordinate];
         MKReverseGeocoder* theGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:touchMapCoordinate];
         
         theGeocoder.delegate = self;
@@ -328,12 +362,23 @@
     }
 
 }
+
+- (void)mapViewWillStartLoadingMap:(MKMapView *)mapView{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
+}
+- (void)mapViewDidFinishLoadingMap:(MKMapView *)mapView{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
+}
+- (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
+    [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
+    [self errorAlert:[error localizedDescription]];
+}
 #pragma mark -  UISearchBarDelegate  
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     
 //        NSLog(@"%s  %@",__FUNCTION__, self.searchBar.text);
     [self.searchBar resignFirstResponder];
-    NSString *locale = [NSString stringWithFormat:@"&locale=%@",CFLocaleGetIdentifier(CFLocaleCopyCurrent())];
+    NSString *locale = [NSString stringWithFormat:@"&locale=%@",[[NSLocale autoupdatingCurrentLocale] localeIdentifier]];
     NSString *urlString=[NSString stringWithFormat:@"%@%@%@",@"http://where.yahooapis.com/geocode?appid=V1YpaJ7k&flags=j&q=",[self.searchBar.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],locale];
 
 
@@ -408,6 +453,31 @@
         [self setMapRegion:coordinate];
         [self modifyText:coordinate];
     }
+    
+}
+#pragma mark -  UIControl
+
+- (void) addButtonClick:(id)sender{
+    UIButton *button = sender;
+    MKPinAnnotationView *pin = (MKPinAnnotationView *)button.superview.superview;
+    CLLocationCoordinate2D coordinate = [pin.annotation coordinate];
+    UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+    pasteboard.string = [NSString stringWithFormat:@"%f, %f",coordinate.latitude,coordinate.longitude];
+    [self errorAlert:NSLocalizedString(@"addtopasteboard", @"add to pasteboard")];
+    //    NSLog(@"%f %f",coordinate.latitude,coordinate.longitude);
+    
+}
+
+- (IBAction) segmentedButtonClick:(id)sender{
+    UISegmentedControl *scbutton = sender;
+    int index = scbutton.selectedSegmentIndex;
+
+    if(index == 0){
+        map.mapType = MKMapTypeStandard;
+    }else{
+        map.mapType = MKMapTypeHybrid;
+    }
+
     
 }
 @end
