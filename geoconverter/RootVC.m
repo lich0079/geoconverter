@@ -11,7 +11,9 @@
 
 @implementation RootVC
 
-@synthesize geo,map,latitude,longitude,searchBar;
+@synthesize geo,map,latitude,longitude,searchBar;//retain
+
+@synthesize enableZoom,enableTap,onetapGR;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,6 +48,9 @@
     self.longitude.delegate = self;
     self.searchBar.delegate = self;
 
+    self.enableTap = NO;
+    self.enableZoom =YES;
+
     //remove searchbar background
     for (UIView *subview in self.searchBar.subviews){  
         if ([subview isKindOfClass:NSClassFromString(@"UISearchBarBackground")]){  
@@ -57,10 +62,12 @@
     map.showsUserLocation = YES;
     map.mapType = MKMapTypeStandard;
     map.delegate = self;
+    
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    [userDefault synchronize];
     NSString *latitudeText =[userDefault valueForKey:@"latitude"];
    	NSString *longitudeText =[userDefault valueForKey:@"longitude"];
-//    NSLog(@"read: %@ %@",latitudeText,longitudeText);
+
     if(latitudeText){
         latitude.text = latitudeText;
     }
@@ -74,7 +81,6 @@
     lpress.allowableMovement = 10.0;
     [map addGestureRecognizer:lpress];//m_mapView是MKMapView的实例
     [lpress release];
-    
 
 }
 
@@ -82,11 +88,11 @@
 {
 
     [super viewDidUnload];
-    [geo release];
-    [map release];
-    [latitude release];
-    [longitude release];
-    [searchBar release];
+    [self.geo release];
+    [self.map release];
+    [self.latitude release];
+    [self.longitude release];
+    [self.searchBar release];
 
 }
 
@@ -169,8 +175,10 @@
     MKCoordinateRegion theRegion = map.region;
     theRegion.center.latitude = coordinate.latitude;
     theRegion.center.longitude = coordinate.longitude;
-    theRegion.span.longitudeDelta = 1;
-    theRegion.span.latitudeDelta = 1;
+    if(self.enableZoom){
+        theRegion.span.longitudeDelta = 1;
+        theRegion.span.latitudeDelta = 1;
+    }
     @try {
         [map setRegion:theRegion animated:YES];
     }
@@ -263,11 +271,12 @@
 
 - (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFailWithError:(NSError*)error
 {
+//    NSLog(@"%s",__FUNCTION__);
     [self addAnnotation:geocoder.coordinate title:NSLocalizedString(@"reverseGeocodererror", @"Could not retrieve the specified place information.") subtitle:nil];
     [self modifyText:geocoder.coordinate];
     [geocoder release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;  
- 
+
 }
 
 
@@ -290,6 +299,7 @@
 }
 
 -(void) addAnnotation:(CLLocationCoordinate2D )coordinate title:(NSString *)title subtitle:(NSString *)subtitle {
+//    NSLog(@"%@ %@",title,subtitle);
     if(![self isAnnotationExist:coordinate]){
         MKPointAnnotation *ann = [[[MKPointAnnotation alloc] init] autorelease];
         ann.title = title;
@@ -341,27 +351,40 @@
 
 - (void)longPress:(UIGestureRecognizer*)gestureRecognizer
 {
-   // NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%s %d",__FUNCTION__,gestureRecognizer.state);
+
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded){
-//        NSLog(@"UIGestureRecognizerStateEnded");
-        return;
+        //            //transfer coordinate
+        CGPoint touchPoint = [gestureRecognizer locationInView:map];
+        CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
+        
+        //  NSLog(@"%f %f",touchMapCoordinate.latitude,touchMapCoordinate.longitude);
+        
+        if(![self isAnnotationExist:touchMapCoordinate]){
+            [self setMapRegion:touchMapCoordinate];
+            MKReverseGeocoder* theGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:touchMapCoordinate];
+            
+            theGeocoder.delegate = self;
+            [theGeocoder start];
+        }
     }
+
+}
+
+- (void)tap:(UIGestureRecognizer*)gestureRecognizer
+{
+    // NSLog(@"%s",__FUNCTION__);
+//    NSLog(@"%d", gestureRecognizer.state);
+    
     
     //transfer coordinate
     CGPoint touchPoint = [gestureRecognizer locationInView:map];
     CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
     
-  //  NSLog(@"%f %f",touchMapCoordinate.latitude,touchMapCoordinate.longitude);
+    [self modifyText:touchMapCoordinate];
     
-    if(![self isAnnotationExist:touchMapCoordinate]){
-        [self setMapRegion:touchMapCoordinate];
-        MKReverseGeocoder* theGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:touchMapCoordinate];
-        
-        theGeocoder.delegate = self;
-        [theGeocoder start];
-    }
-
 }
+
 
 - (void)mapViewWillStartLoadingMap:(MKMapView *)mapView{
     [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;

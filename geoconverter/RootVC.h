@@ -29,6 +29,11 @@
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 
 
+@property BOOL enableZoom;
+
+@property BOOL enableTap;
+
+@property (nonatomic, assign) UITapGestureRecognizer *onetapGR;
 
 - (IBAction)geoButtonClick;
 
@@ -59,4 +64,6 @@
 - (IBAction) segmentedButtonClick:(id)sender;
 
 - (IBAction) helpButtonClick:(id)sender;
+
+
 @end

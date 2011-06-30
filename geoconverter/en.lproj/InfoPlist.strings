@@ -1,6 +1,5 @@
 /* Localized versions of Info.plist keys */
 
-
 CFBundleName="Geoconverter";   
 CFBundleDisplayName="Geo converter";
 

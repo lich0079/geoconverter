@@ -11,7 +11,6 @@
 		E3425B8613BAC59A00E6954E /* Root.strings in Resources */ = {isa = PBXBuildFile; fileRef = E3425B8413BAC59A00E6954E /* Root.strings */; };
 		E34CD2FC13BA31D7008B84B6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E34CD2FA13BA31D7008B84B6 /* Localizable.strings */; };
 		E3706AE513BB53DB0078D50D /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = E3706AE313BB53DB0078D50D /* help.html */; };
-		E3706AE713BB53E50078D50D /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = E3706AE313BB53DB0078D50D /* help.html */; };
 		E372181E13B72C78000684BB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372181D13B72C78000684BB /* UIKit.framework */; };
 		E372182013B72C78000684BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372181F13B72C78000684BB /* Foundation.framework */; };
 		E372182213B72C78000684BB /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372182113B72C78000684BB /* CoreGraphics.framework */; };
@@ -272,7 +271,6 @@
 				E3425B8613BAC59A00E6954E /* Root.strings in Resources */,
 				E3994E1B13BB41FA00BFC67A /* HelpVC.xib in Resources */,
 				E3706AE513BB53DB0078D50D /* help.html in Resources */,
-				E3706AE713BB53E50078D50D /* help.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -6,9 +6,9 @@
 	<array>
 		<dict>
 			<key>DefaultValue</key>
-			<string>3333</string>
+			<string>1.0</string>
 			<key>Key</key>
-			<string>xxxxxx</string>
+			<string>version</string>
 			<key>Title</key>
 			<string>version</string>
 			<key>Type</key>
@@ -16,37 +16,29 @@
 		</dict>
 		<dict>
 			<key>Title</key>
-			<string>Group</string>
+			<string>settings</string>
 			<key>Type</key>
 			<string>PSGroupSpecifier</string>
-		</dict>
-		<dict>
-			<key>AutocapitalizationType</key>
-			<string>None</string>
-			<key>AutocorrectionType</key>
-			<string>No</string>
-			<key>DefaultValue</key>
-			<string>1.0</string>
-			<key>IsSecure</key>
-			<false/>
-			<key>Key</key>
-			<string>name_preference</string>
-			<key>KeyboardType</key>
-			<string>Alphabet</string>
-			<key>Title</key>
-			<string>Version</string>
-			<key>Type</key>
-			<string>PSTextFieldSpecifier</string>
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
 			<true/>
 			<key>Key</key>
-			<string>enabled_preference</string>
+			<string>mapautozoom</string>
 			<key>Title</key>
-			<string>Enabled</string>
+			<string>mapautozoom</string>
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>onetap</string>
+			<key>Key</key>
+			<string>onetap</string>
+			<key>DefaultValue</key>
+			<false/>
 		</dict>
 	</array>
 	<key>StringsTable</key>
