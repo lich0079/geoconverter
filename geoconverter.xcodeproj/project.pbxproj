@@ -35,8 +35,8 @@
 		E396846713B9D45500BC5D5E /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = E396845A13B9D45500BC5D5E /* SBJsonUTF8Stream.m */; };
 		E396846813B9D45500BC5D5E /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = E396845C13B9D45500BC5D5E /* SBJsonWriter.m */; };
 		E3994E1A13BB41FA00BFC67A /* HelpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E3994E1813BB41FA00BFC67A /* HelpVC.m */; };
-		E3994E1B13BB41FA00BFC67A /* HelpVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3994E1913BB41FA00BFC67A /* HelpVC.xib */; };
 		E3B3432C13B835B300364A56 /* RootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E3B3432A13B835B200364A56 /* RootVC.m */; };
+		E3CE67C513BC81E100435A44 /* HelpVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3CE67C713BC81E100435A44 /* HelpVC.xib */; };
 		E3FB5E5113BA3E970009BE8A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E3FB5E5013BA3E970009BE8A /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
@@ -91,9 +91,10 @@
 		E396845C13B9D45500BC5D5E /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		E3994E1713BB41FA00BFC67A /* HelpVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpVC.h; sourceTree = "<group>"; };
 		E3994E1813BB41FA00BFC67A /* HelpVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpVC.m; sourceTree = "<group>"; };
-		E3994E1913BB41FA00BFC67A /* HelpVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HelpVC.xib; sourceTree = "<group>"; };
 		E3B3432913B835B200364A56 /* RootVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootVC.h; sourceTree = "<group>"; };
 		E3B3432A13B835B200364A56 /* RootVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootVC.m; sourceTree = "<group>"; };
+		E3CE67C613BC81E100435A44 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/HelpVC.xib; sourceTree = "<group>"; };
+		E3CE67CA13BC822800435A44 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/HelpVC.xib"; sourceTree = "<group>"; };
 		E3FB5E5013BA3E970009BE8A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -161,7 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				E3706AE313BB53DB0078D50D /* help.html */,
-				E3994E1913BB41FA00BFC67A /* HelpVC.xib */,
+				E3CE67C713BC81E100435A44 /* HelpVC.xib */,
 				E3757FAD13B9CD8C0095BB33 /* RootVC.xib */,
 				E372182F13B72C78000684BB /* MainWindow.xib */,
 				E3FB5E5013BA3E970009BE8A /* Settings.bundle */,
@@ -246,6 +247,7 @@
 				en,
 				"zh-Hans",
 				zh_Hans,
+				"zh-Hans-CN",
 			);
 			mainGroup = E372180E13B72C78000684BB;
 			productRefGroup = E372181A13B72C78000684BB /* Products */;
@@ -269,7 +271,7 @@
 				E3757FAB13B9CD8C0095BB33 /* RootVC.xib in Resources */,
 				E3FB5E5113BA3E970009BE8A /* Settings.bundle in Resources */,
 				E3425B8613BAC59A00E6954E /* Root.strings in Resources */,
-				E3994E1B13BB41FA00BFC67A /* HelpVC.xib in Resources */,
+				E3CE67C513BC81E100435A44 /* HelpVC.xib in Resources */,
 				E3706AE513BB53DB0078D50D /* help.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,6 +365,15 @@
 				E3757FAE13B9CDFE0095BB33 /* zh-Hans */,
 			);
 			name = RootVC.xib;
+			sourceTree = "<group>";
+		};
+		E3CE67C713BC81E100435A44 /* HelpVC.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E3CE67C613BC81E100435A44 /* en */,
+				E3CE67CA13BC822800435A44 /* zh-Hans */,
+			);
+			name = HelpVC.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

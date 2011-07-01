@@ -61,6 +61,7 @@
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault synchronize];
     
+    //avoid user never enter pref
     if([userDefault objectForKey:@"mapautozoom"]){
         rootVC.enableZoom = [userDefault boolForKey:@"mapautozoom"];
         rootVC.enableTap = [userDefault boolForKey:@"onetap"];
@@ -77,6 +78,10 @@
         [rootVC.map addGestureRecognizer:tap];
         rootVC.onetapGR = tap;
         [tap release];
+    }
+    
+    if(![userDefault valueForKey:@"version1.0helpchecked"]){
+        [rootVC helpButtonClick:nil];
     }
 }
 
