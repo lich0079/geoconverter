@@ -65,5 +65,6 @@
 
 - (IBAction) helpButtonClick:(id)sender;
 
+- (void) removeMapAnnotation:(CLLocationCoordinate2D )user tobeAdd:(CLLocationCoordinate2D )tobeAdd;
 
 @end

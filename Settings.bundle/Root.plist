@@ -22,7 +22,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<true/>
+			<false/>
 			<key>Key</key>
 			<string>mapautozoom</string>
 			<key>Title</key>
@@ -31,14 +31,14 @@
 			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 		<dict>
-			<key>Type</key>
-			<string>PSToggleSwitchSpecifier</string>
-			<key>Title</key>
-			<string>onetap</string>
-			<key>Key</key>
-			<string>onetap</string>
 			<key>DefaultValue</key>
 			<false/>
+			<key>Key</key>
+			<string>onetap</string>
+			<key>Title</key>
+			<string>onetap</string>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>

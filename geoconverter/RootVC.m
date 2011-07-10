@@ -43,13 +43,13 @@
 {
     [super viewDidLoad];
 
-    NSLog(@"%s %@",__FUNCTION__, [[NSLocale autoupdatingCurrentLocale] localeIdentifier]);
+// NSLog(@"%s %@",__FUNCTION__, [[NSLocale autoupdatingCurrentLocale] localeIdentifier]);
     self.latitude.delegate = self;
     self.longitude.delegate = self;
     self.searchBar.delegate = self;
 
     self.enableTap = NO;
-    self.enableZoom =YES;
+    self.enableZoom =NO;
 
     //remove searchbar background
     for (UIView *subview in self.searchBar.subviews){  
@@ -70,6 +70,7 @@
 
     if(latitudeText){
         latitude.text = latitudeText;
+//        NSLog(@"kvc %@",[latitude valueForKey:@"text"]);
     }
     if(longitudeText){
         longitude.text = longitudeText;
@@ -81,7 +82,17 @@
     lpress.allowableMovement = 10.0;
     [map addGestureRecognizer:lpress];//m_mapView是MKMapView的实例
     [lpress release];
+    
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resignFirstResp:)];
+    tap.numberOfTapsRequired=1;
+    [self.map addGestureRecognizer:tap];
+    [tap release];
 
+}
+
+-(void) resignFirstResp:(UIGestureRecognizer*)gestureRecognizer{
+    [searchBar resignFirstResponder];
 }
 
 - (void)viewDidUnload
@@ -310,17 +321,41 @@
     }
 }
 
+- (void) removeMapAnnotation:(CLLocationCoordinate2D )user tobeAdd:(CLLocationCoordinate2D )tobeAdd{
+    NSArray *anns = map.annotations;
+ 
+    for (int j=0; j<[anns count]; j++) {
+        
+        id <MKAnnotation> an = [anns objectAtIndex:j];
+        CLLocationCoordinate2D i = [an coordinate];
+        
+        if(user.latitude == i.latitude && user.longitude == i.longitude){
+            
+        }else if (tobeAdd.latitude == i.latitude && tobeAdd.longitude == i.longitude){
+            
+        }else{
+             [map removeAnnotation:an];
+        }
+        
+    }
+    
+    [map setNeedsDisplay];
+}
+
 - (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation{
     MKPinAnnotationView* pin = (MKPinAnnotationView *)[theMapView dequeueReusableAnnotationViewWithIdentifier:@"pin"];
+
     
     //don't let user location pin setup by this method 
-    CLLocationCoordinate2D c = map.userLocation.coordinate;
-    CLLocationCoordinate2D b = [annotation coordinate];
-    if(c.latitude == b.latitude && c.longitude == b.longitude){
+    CLLocationCoordinate2D user = map.userLocation.coordinate;
+    CLLocationCoordinate2D tobeAdd = [annotation coordinate];
+    if(user.latitude == tobeAdd.latitude && user.longitude == tobeAdd.longitude){
         return nil;
     }
     //////////////////////////////////////////
     
+
+    [self removeMapAnnotation:user tobeAdd:tobeAdd];
     
     if(!pin){
 
@@ -376,7 +411,7 @@
     // NSLog(@"%s",__FUNCTION__);
 //    NSLog(@"%d", gestureRecognizer.state);
     
-    
+    [searchBar resignFirstResponder];
     //transfer coordinate
     CGPoint touchPoint = [gestureRecognizer locationInView:map];
     CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
