@@ -12,9 +12,10 @@
 #import "GTMHTTPFetcher.h"
 #import "SBJsonParser.h"
 #import "HelpVC.h"
+#import <iAd/iAd.h>
 
 
-@interface RootVC : UIViewController  <UITextFieldDelegate,MKReverseGeocoderDelegate,MKMapViewDelegate,UISearchBarDelegate,HelpVCDelegate> {
+@interface RootVC : UIViewController  <UITextFieldDelegate,MKReverseGeocoderDelegate,MKMapViewDelegate,UISearchBarDelegate,HelpVCDelegate,ADBannerViewDelegate> {
     
 }
 
@@ -28,6 +29,7 @@
 
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 
+@property(nonatomic, retain) IBOutlet ADBannerView *banner;
 
 @property BOOL enableZoom;
 
@@ -67,4 +69,8 @@
 
 - (void) removeMapAnnotation:(CLLocationCoordinate2D )user tobeAdd:(CLLocationCoordinate2D )tobeAdd;
 
+-(void)layoutForCurrentOrientation:(BOOL)animated;
+
+
+-(void)createADBannerView;
 @end

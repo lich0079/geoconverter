@@ -11,7 +11,7 @@
 
 @implementation RootVC
 
-@synthesize geo,map,latitude,longitude,searchBar;//retain
+@synthesize geo,map,latitude,longitude,searchBar,banner;//retain
 
 @synthesize enableZoom,enableTap,onetapGR;
 
@@ -88,6 +88,12 @@
     tap.numberOfTapsRequired=1;
     [self.map addGestureRecognizer:tap];
     [tap release];
+    
+    if(banner == nil)
+    {
+        [self createADBannerView];
+    }
+    [self layoutForCurrentOrientation:NO];
 
 }
 
@@ -104,6 +110,7 @@
     [self.latitude release];
     [self.longitude release];
     [self.searchBar release];
+    [self.banner release];
 
 }
 
@@ -126,20 +133,18 @@
 
 -(void) makeRoomForKeyboard{
     NSTimeInterval animationDuration = 0.30f;
-    [UIView beginAnimations:@"ResizeForKeyBoard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    self.view.center = CGPointMake(320/2,480/2-200);
-    [UIView commitAnimations];
+    [UIView animateWithDuration:animationDuration
+                     animations:^{
+                         self.view.center = CGPointMake(320/2,480/2-200);
+                     }];
 }
 
 -(void)releaseRoomForKeyboard{
     NSTimeInterval animationDuration = 0.30f;
-    [UIView beginAnimations:@"ResizeForKeyboard" context:nil];
-    [UIView setAnimationDuration:animationDuration];
-    
-    self.view.center = CGPointMake(160,250);
-    
-    [UIView commitAnimations];
+    [UIView animateWithDuration:animationDuration
+                     animations:^{
+                         self.view.center = CGPointMake(160,250);
+                     }];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -549,4 +554,95 @@
 - (void)dismissModal:(HelpVC *)helpVC{
     [self dismissModalViewControllerAnimated:YES];
 }
+
+#pragma mark ADBannerViewDelegate methods
+-(void)layoutForCurrentOrientation:(BOOL)animated
+{
+    CGFloat animationDuration = animated ? 0.2f : 0.0f;
+
+    CGRect contentFrame = map.frame;
+	
+    CGFloat bannerHeight = 0.0f;
+    
+        // First, setup the banner's content size and adjustment based on the current orientation
+    if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
+		self.banner.currentContentSizeIdentifier = (&ADBannerContentSizeIdentifierLandscape != nil) ? ADBannerContentSizeIdentifierLandscape : ADBannerContentSizeIdentifier480x32;
+    else
+        self.banner.currentContentSizeIdentifier = (&ADBannerContentSizeIdentifierPortrait != nil) ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50; 
+    bannerHeight = self.banner.bounds.size.height;
+	
+    CGPoint bannerOrigin ;
+    if(self.banner.bannerLoaded){
+        contentFrame.size.height = 322;
+        bannerOrigin = CGPointMake(CGRectGetMinX(contentFrame), CGRectGetMaxY(contentFrame));
+//		bannerOrigin.y -= bannerHeight;
+        }
+    else
+        {
+        contentFrame.size.height = 372;
+        bannerOrigin = CGPointMake(CGRectGetMinX(self.view.bounds), CGRectGetMaxY(self.view.bounds));
+//		bannerOrigin.y += bannerHeight;
+        }
+    
+    [UIView animateWithDuration:animationDuration
+                     animations:^{
+                         map.frame = contentFrame;
+                         [map layoutIfNeeded];
+                         self.banner.frame = CGRectMake(bannerOrigin.x, bannerOrigin.y, self.banner.frame.size.width, self.banner.frame.size.height);
+                     }];
+    
+    
+    
+}
+
+-(void)createADBannerView
+{
+    
+	NSString *contentSize = (&ADBannerContentSizeIdentifierPortrait != nil) ?ADBannerContentSizeIdentifierPortrait:ADBannerContentSizeIdentifier320x50;
+
+
+    CGRect frame;
+    frame.size = [ADBannerView sizeFromBannerContentSizeIdentifier:contentSize];
+    frame.origin = CGPointMake(0.0f, CGRectGetMaxY(self.view.bounds));
+    
+        // Now to create and configure the banner view
+    ADBannerView *bannerView = [[ADBannerView alloc] initWithFrame:frame];
+        // Set the delegate to self, so that we are notified of ad responses.
+    bannerView.delegate = self;
+        // Set the autoresizing mask so that the banner is pinned to the bottom
+    bannerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
+        // Since we support all orientations in this view controller, support portrait and landscape content sizes.
+        // If you only supported landscape or portrait, you could remove the other from this set.
+    
+	bannerView.requiredContentSizeIdentifiers = (&ADBannerContentSizeIdentifierPortrait != nil) ?
+    [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil] : 
+    [NSSet setWithObjects:ADBannerContentSizeIdentifier320x50, ADBannerContentSizeIdentifier480x32, nil];
+    
+        // At this point the ad banner is now be visible and looking for an ad.
+    [self.view addSubview:bannerView];
+    self.banner = bannerView;
+    [bannerView release];
+}
+
+-(void)bannerViewDidLoadAd:(ADBannerView *)banner
+{
+    NSLog(@"%s",__FUNCTION__);
+    [self layoutForCurrentOrientation:YES];
+}
+
+-(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
+{
+    NSLog(@"%s",__FUNCTION__);
+    [self layoutForCurrentOrientation:YES];
+}
+
+-(BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave
+{
+    return YES;
+}
+
+-(void)bannerViewActionDidFinish:(ADBannerView *)banner
+{
+}
+
 @end

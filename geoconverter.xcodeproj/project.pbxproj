@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E33567E013C9247F007F9D7C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E33567DF13C9247F007F9D7C /* iAd.framework */; };
 		E3425B8313BAC4FA00E6954E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E3425B8113BAC4FA00E6954E /* InfoPlist.strings */; };
 		E34CD2FC13BA31D7008B84B6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E34CD2FA13BA31D7008B84B6 /* Localizable.strings */; };
 		E3706AE513BB53DB0078D50D /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = E3706AE313BB53DB0078D50D /* help.html */; };
@@ -52,6 +53,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E33567DF13C9247F007F9D7C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		E3425B8213BAC4FA00E6954E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "geoconverter/zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		E34CD2FB13BA31D7008B84B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = geoconverter/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E34CD2FD13BA3251008B84B6 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "geoconverter/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E33567E013C9247F007F9D7C /* iAd.framework in Frameworks */,
 				E372184613B75223000684BB /* MapKit.framework in Frameworks */,
 				E372184413B74CA0000684BB /* CoreLocation.framework in Frameworks */,
 				E372181E13B72C78000684BB /* UIKit.framework in Frameworks */,
@@ -142,6 +145,7 @@
 			children = (
 				E395995513C5BC3300D891B8 /* Default@2x.png */,
 				E395995313C5BBBF00D891B8 /* Default.png */,
+				E33567DF13C9247F007F9D7C /* iAd.framework */,
 				E395994713C5B17900D891B8 /* Icon-72.png */,
 				E372182313B72C78000684BB /* geoconverter */,
 				E372181C13B72C78000684BB /* Frameworks */,
@@ -276,6 +280,7 @@
 			};
 			buildConfigurationList = E372181313B72C78000684BB /* Build configuration list for PBXProject "geoconverter" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
@@ -457,7 +462,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "geoconverter/geoconverter-Prefix.pch";
 				INFOPLIST_FILE = "geoconverter/geoconverter-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -473,7 +478,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "geoconverter/geoconverter-Prefix.pch";
 				INFOPLIST_FILE = "geoconverter/geoconverter-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -507,7 +512,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "geoconverter/geoconverter-Prefix.pch";
 				INFOPLIST_FILE = "geoconverter/geoconverter-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "38B57233-06EA-457C-82AC-17606959FDD5";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "38B57233-06EA-457C-82AC-17606959FDD5";

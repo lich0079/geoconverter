@@ -329,14 +329,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {821, 383}}</string>
+								<string>{{0, 0}, {821, 376}}</string>
 								<key>RubberWindowFrame</key>
 								<string>137 121 1029 617 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>383pt</string>
+							<string>376pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -349,14 +349,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 388}, {821, 188}}</string>
+								<string>{{0, 381}, {821, 195}}</string>
 								<key>RubberWindowFrame</key>
 								<string>137 121 1029 617 0 0 1280 778 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>188pt</string>
+							<string>195pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -375,9 +375,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E371A2F913C9228800D6CA60</string>
+				<string>E3DF01DD13C923AD00215D22</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>E371A2FA13C9228800D6CA60</string>
+				<string>E3DF01DE13C923AD00215D22</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -516,7 +516,7 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>E32B951913C9227F00C02EE7</string>
-		<string>/Users/lich0079/Downloads/geoconverter/geoconverter.xcodeproj</string>
+		<string>/Users/lich0079/Documents/XcodeProject/geoconverter/geoconverter.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>137 121 1029 617 0 0 1280 778 </string>
@@ -596,7 +596,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>E32B951913C9227F00C02EE7</string>
-				<string>E371A2FB13C9228800D6CA60</string>
+				<string>E3DF01DF13C923AD00215D22</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
