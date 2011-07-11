@@ -66,12 +66,14 @@
 
 - (IBAction) helpButtonClick:(id)sender;
 
-- (void) removeMapAnnotation:(CLLocationCoordinate2D )user tobeAdd:(CLLocationCoordinate2D )tobeAdd;
+- (void) removeMapAnnotation:(CLLocationCoordinate2D )tobeAdd;
 
--(void)layoutForCurrentOrientation:(BOOL)animated;
+-(void)layoutForCurrentOrientation:(BOOL)animated isLoadSuccess:(BOOL)isLoadSuccess;
 
 
 -(void)createADBannerView;
 
 -(void)createAdmobGADBannerView;
+
+- (void) createAd;
 @end

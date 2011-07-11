@@ -15,35 +15,24 @@
 
 @synthesize enableZoom,enableTap,onetapGR;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
 
-- (void)dealloc
-{
+- (void)dealloc{
     [super dealloc];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    // Releases the view if it doesn't have a superview.
+- (void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
-    
-    // Release any cached data, images, etc that aren't in use.
 }
 
 #pragma mark - View lifecycle
-
-- (void)viewDidLoad
-{
+- (void)viewDidLoad{
     [super viewDidLoad];
-
-// CLog(@"%s %@",__FUNCTION__, [[NSLocale autoupdatingCurrentLocale] localeIdentifier]);
     self.latitude.delegate = self;
     self.longitude.delegate = self;
     self.searchBar.delegate = self;
@@ -90,14 +79,7 @@
     [self.map addGestureRecognizer:tap];
     [tap release];
     
-    if(banner == nil)
-    {
-        [self createADBannerView];
-    }
-    [self layoutForCurrentOrientation:NO];
-    
-    [self createAdmobGADBannerView];
-
+//    [self createAd];
 }
 
 -(void) resignFirstResp:(UIGestureRecognizer*)gestureRecognizer{
@@ -291,7 +273,7 @@
 //    CLog(@"-----%@   %@",geocoder,place);
 
     NSString *subtitle = [self generateSubtitleForLocation:place.administrativeArea city:place.locality street:place.thoroughfare];
-    
+    [self removeMapAnnotation:geocoder.coordinate];
     [self addAnnotation:geocoder.coordinate title:place.country subtitle:subtitle];
     
     [self modifyText:geocoder.coordinate];
@@ -304,6 +286,7 @@
 - (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFailWithError:(NSError*)error
 {
 //    CLog(@"%s",__FUNCTION__);
+    [self removeMapAnnotation:geocoder.coordinate];
     [self addAnnotation:geocoder.coordinate title:NSLocalizedString(@"reverseGeocodererror", @"Could not retrieve the specified place information.") subtitle:nil];
     [self modifyText:geocoder.coordinate];
     [geocoder release];
@@ -322,11 +305,9 @@
 // during string to float, there will be a little miss
         if((ann.coordinate.latitude + 0.00001 >= coordinate.latitude && ann.coordinate.latitude - 0.00001 <= coordinate.latitude)
            && (ann.coordinate.longitude + 0.00001 >= coordinate.longitude && ann.coordinate.longitude - 0.00001 <= coordinate.longitude)){
-//            CLog(@"isAnnotationExist");
             return YES;
         }
     }
-//    CLog(@"isNotAnnotationExist");
     return NO;
 }
 
@@ -342,12 +323,15 @@
     }
 }
 
-- (void) removeMapAnnotation:(CLLocationCoordinate2D )user tobeAdd:(CLLocationCoordinate2D )tobeAdd{
+- (void) removeMapAnnotation:(CLLocationCoordinate2D )tobeAdd{
+    
+    CLLocationCoordinate2D user = map.userLocation.coordinate;
     NSArray *anns = map.annotations;
  
     for (int j=0; j<[anns count]; j++) {
         
         id <MKAnnotation> an = [anns objectAtIndex:j];
+        
         CLLocationCoordinate2D i = [an coordinate];
         
         if(user.latitude == i.latitude && user.longitude == i.longitude){
@@ -355,7 +339,11 @@
         }else if (tobeAdd.latitude == i.latitude && tobeAdd.longitude == i.longitude){
             
         }else{
-             [map removeAnnotation:an];
+            MKPointAnnotation *ann = (MKPointAnnotation *)an;
+            ann.title = nil;
+            ann.subtitle = nil;
+            [map removeAnnotation:an];
+
         }
         
     }
@@ -375,9 +363,6 @@
     }
     //////////////////////////////////////////
     
-
-    [self removeMapAnnotation:user tobeAdd:tobeAdd];
-    
     if(!pin){
 
         pin = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"pin"] autorelease];
@@ -385,7 +370,6 @@
         pin.animatesDrop = YES;
         pin.canShowCallout = YES;
 
-        //pin.draggable = YES;
         UIButton *rightButton = [UIButton buttonWithType:UIButtonTypeContactAdd];
 
         [rightButton addTarget:self action:@selector(addButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -393,7 +377,7 @@
     }else{
         pin.annotation = annotation;
     }
-   // [annotation autorelease];
+//    [annotation autorelease];
     return pin;
 }
 
@@ -433,7 +417,7 @@
 //    CLog(@"%d", gestureRecognizer.state);
     
     [searchBar resignFirstResponder];
-    //transfer coordinate
+
     CGPoint touchPoint = [gestureRecognizer locationInView:map];
     CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
     
@@ -482,31 +466,38 @@
     if(error){  
         [self errorAlert:[error localizedDescription]];
     }else{  
-        NSString* aStr = [[NSString alloc] initWithData:retrievedData encoding:NSUTF8StringEncoding];  
-//                CLog(@"%@  %d",aStr, [resultsArray count]);
-        SBJsonParser *parse = [[[SBJsonParser alloc] init] autorelease];
-        NSDictionary *result = [parse objectWithString:aStr];
-        NSDictionary *resultSet   = [result valueForKey:@"ResultSet"];
-        NSArray *resultsArray = [resultSet valueForKey:@"Results"];
-        
-        int count = [resultsArray count];
-        if(count > 0 ){
-            for (int i = 0; i < count; i++) {
-                NSDictionary *location = [resultsArray objectAtIndex:i];
-                if(i == count - 1 ){
-                    [self handleSearchResult:location isLast:YES];
+        dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+        dispatch_async(aQueue, ^{
+            NSString* aStr = [[NSString alloc] initWithData:retrievedData encoding:NSUTF8StringEncoding] ;  
+            //                CLog(@"%@  %d",aStr, [resultsArray count]);
+            SBJsonParser *parse = [[SBJsonParser alloc] init];
+            NSDictionary *result = [parse objectWithString:aStr];
+            [parse release];
+            [aStr release];
+            NSDictionary *resultSet   = [result valueForKey:@"ResultSet"];
+            NSArray *resultsArray = [resultSet valueForKey:@"Results"];
+            dispatch_async(dispatch_get_main_queue(),^{
+                int count = [resultsArray count];
+                if(count > 0 ){
+                    CLLocationCoordinate2D coordinate = {0,0};
+                    
+                    [self removeMapAnnotation:coordinate];
+                    for (int i = 0; i < count; i++) {
+                        NSDictionary *location = [resultsArray objectAtIndex:i];
+                        if(i == count - 1 ){
+                            [self handleSearchResult:location isLast:YES];
+                        }else{
+                            [self handleSearchResult:location isLast:NO];
+                        }
+                        
+                    }
                 }else{
-                    [self handleSearchResult:location isLast:NO];
-                }
-                
-            }
-        }else{
-            [self errorAlert:NSLocalizedString(@"noresult",@"no result")];
-        }    
+                    [self errorAlert:NSLocalizedString(@"noresult",@"no result")];
+                } 
 
-           
-        
-        [aStr release];
+            });
+        });
+
 
     }
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
@@ -572,39 +563,32 @@
 }
 
 #pragma mark ADBannerViewDelegate methods
--(void)layoutForCurrentOrientation:(BOOL)animated
+-(void)layoutForCurrentOrientation:(BOOL)animated isLoadSuccess:(BOOL)isLoadSuccess
 {
     CGFloat animationDuration = animated ? 0.2f : 0.0f;
 
     CGRect contentFrame = map.frame;
 	
-    CGFloat bannerHeight = 0.0f;
-    
-        // First, setup the banner's content size and adjustment based on the current orientation
-    if(UIInterfaceOrientationIsLandscape(self.interfaceOrientation))
-		self.banner.currentContentSizeIdentifier = (&ADBannerContentSizeIdentifierLandscape != nil) ? ADBannerContentSizeIdentifierLandscape : ADBannerContentSizeIdentifier480x32;
-    else
-        self.banner.currentContentSizeIdentifier = (&ADBannerContentSizeIdentifierPortrait != nil) ? ADBannerContentSizeIdentifierPortrait : ADBannerContentSizeIdentifier320x50; 
-    bannerHeight = self.banner.bounds.size.height;
-	
     CGPoint bannerOrigin ;
-    if(self.banner.bannerLoaded){
+    if((self.banner && self.banner.bannerLoaded)  ||  (self.admobView && isLoadSuccess)){
         contentFrame.size.height = 322;
         bannerOrigin = CGPointMake(CGRectGetMinX(contentFrame), CGRectGetMaxY(contentFrame));
-//		bannerOrigin.y -= bannerHeight;
-        }
-    else
-        {
+    }else{
         contentFrame.size.height = 372;
         bannerOrigin = CGPointMake(CGRectGetMinX(self.view.bounds), CGRectGetMaxY(self.view.bounds));
-//		bannerOrigin.y += bannerHeight;
-        }
+    }
     
+    __block RootVC *tmp = self;
     [UIView animateWithDuration:animationDuration
                      animations:^{
                          map.frame = contentFrame;
                          [map layoutIfNeeded];
-                         self.banner.frame = CGRectMake(bannerOrigin.x, bannerOrigin.y, self.banner.frame.size.width, self.banner.frame.size.height);
+                         if(tmp.banner){
+                             tmp.banner.frame = CGRectMake(bannerOrigin.x, bannerOrigin.y, tmp.banner.frame.size.width, tmp.banner.frame.size.height);
+                         }else{
+                             tmp.admobView.frame = CGRectMake(bannerOrigin.x, bannerOrigin.y, tmp.admobView.frame.size.width, tmp.admobView.frame.size.height);
+                         }
+                         
                      }];
 }
 
@@ -618,14 +602,10 @@
     frame.size = [ADBannerView sizeFromBannerContentSizeIdentifier:contentSize];
     frame.origin = CGPointMake(0.0f, CGRectGetMaxY(self.view.bounds));
     
-        // Now to create and configure the banner view
     banner = [[[ADBannerView alloc] initWithFrame:frame] autorelease];
-        // Set the delegate to self, so that we are notified of ad responses.
     banner.delegate = self;
-        // Set the autoresizing mask so that the banner is pinned to the bottom
     banner.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
-        // Since we support all orientations in this view controller, support portrait and landscape content sizes.
-        // If you only supported landscape or portrait, you could remove the other from this set.
+
     
 	banner.requiredContentSizeIdentifiers = (&ADBannerContentSizeIdentifierPortrait != nil) ?
     [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil] : 
@@ -638,13 +618,13 @@
 -(void)bannerViewDidLoadAd:(ADBannerView *)banner
 {
     CLog(@"%s",__FUNCTION__);
-    [self layoutForCurrentOrientation:YES];
+    [self layoutForCurrentOrientation:YES isLoadSuccess:YES];
 }
 
 -(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
 {
     CLog(@"%s",__FUNCTION__);
-    [self layoutForCurrentOrientation:YES];
+    [self layoutForCurrentOrientation:YES isLoadSuccess:NO];
 }
 
 -(BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave
@@ -658,18 +638,17 @@
 
 #pragma mark admob methods   
 -(void)createAdmobGADBannerView{
-        CLog(@"%s %@",__FUNCTION__,[[UIDevice currentDevice] model]);
+        CLog(@"%s",__FUNCTION__);
     
     self.admobView = [[GADBannerView alloc]
                                   initWithFrame:CGRectMake(0.0,
-                                                           self.view.frame.size.height -
-                                                           GAD_SIZE_320x50.height,
+                                                           self.view.frame.size.height,
                                                            GAD_SIZE_320x50.width,
                                                            GAD_SIZE_320x50.height)];
     admobView.adUnitID = @"a14e1a8af59a910";
     admobView.rootViewController = self;
     admobView.delegate = self;
-    admobView.center = CGPointMake(160, 50);
+    admobView.center = CGPointMake(160, 250);
     [self.view addSubview:admobView];
     GADRequest *request = [GADRequest request];
     
@@ -685,18 +664,48 @@
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView{
     CLog(@"%s",__FUNCTION__);
+    [self layoutForCurrentOrientation:YES isLoadSuccess:YES];
 }
 - (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error{
         CLog(@"%s %@",__FUNCTION__, [error localizedDescription]);
+    [self layoutForCurrentOrientation:YES isLoadSuccess:NO];
 }
 
 - (void)adViewWillPresentScreen:(GADBannerView *)bannerView{
-
 }
 - (void)adViewDidDismissScreen:(GADBannerView *)bannerView{
-
 }
 - (void)adViewWillLeaveApplication:(GADBannerView *)bannerView{
-
 }
+
+
+#pragma mark decide which ad to use
+
+- (void) createAd{
+    NSString *timezone = [[NSTimeZone localTimeZone]name];
+    
+//    timezone = @"America/xxx";
+    if([timezone rangeOfString:@"America/"].location== 0
+       || [timezone rangeOfString:@"Europe/Rome"].location== 0
+       || [timezone rangeOfString:@"Europe/San_Marino"].location== 0
+       || [timezone rangeOfString:@"Europe/Berlin"].location== 0
+       || [timezone rangeOfString:@"Europe/London"].location== 0
+       || [timezone rangeOfString:@"Europe/Madrid"].location== 0
+       || [timezone rangeOfString:@"Europe/Paris"].location== 0
+       || [timezone rangeOfString:@"Asia/Tokyo"].location== 0){
+        if (banner == nil) {
+            [self createADBannerView];
+        }
+    }else{
+        if(admobView == nil) {
+            [self createAdmobGADBannerView];
+        }
+
+    }
+}
+    
 @end
+
+
+
+
