@@ -11,7 +11,7 @@
 
 @implementation RootVC
 
-@synthesize geo,map,latitude,longitude,searchBar,banner;//retain
+@synthesize geo,map,latitude,longitude,searchBar,banner,admobView;//retain
 
 @synthesize enableZoom,enableTap,onetapGR;
 
@@ -43,10 +43,11 @@
 {
     [super viewDidLoad];
 
-// NSLog(@"%s %@",__FUNCTION__, [[NSLocale autoupdatingCurrentLocale] localeIdentifier]);
+// CLog(@"%s %@",__FUNCTION__, [[NSLocale autoupdatingCurrentLocale] localeIdentifier]);
     self.latitude.delegate = self;
     self.longitude.delegate = self;
     self.searchBar.delegate = self;
+    self.map.delegate = self;
 
     self.enableTap = NO;
     self.enableZoom =NO;
@@ -61,7 +62,7 @@
 
     map.showsUserLocation = YES;
     map.mapType = MKMapTypeStandard;
-    map.delegate = self;
+
     
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault synchronize];
@@ -70,7 +71,7 @@
 
     if(latitudeText){
         latitude.text = latitudeText;
-//        NSLog(@"kvc %@",[latitude valueForKey:@"text"]);
+//        CLog(@"kvc %@",[latitude valueForKey:@"text"]);
     }
     if(longitudeText){
         longitude.text = longitudeText;
@@ -94,6 +95,8 @@
         [self createADBannerView];
     }
     [self layoutForCurrentOrientation:NO];
+    
+    [self createAdmobGADBannerView];
 
 }
 
@@ -105,12 +108,25 @@
 {
 
     [super viewDidUnload];
+    self.latitude.delegate = nil;
+    self.longitude.delegate = nil;
+    self.searchBar.delegate = nil;
+    self.map.delegate = nil;
+    if(self.banner){
+        self.banner.delegate=nil;
+        [self.banner release];
+    }
+    if(self.admobView){
+        self.admobView.delegate=nil;
+        [self.admobView release];
+    }
     [self.geo release];
     [self.map release];
     [self.latitude release];
     [self.longitude release];
     [self.searchBar release];
-    [self.banner release];
+
+    
 
 }
 
@@ -272,7 +288,7 @@
 
 - (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFindPlacemark:(MKPlacemark*)place
 {
-//    NSLog(@"-----%@   %@",geocoder,place);
+//    CLog(@"-----%@   %@",geocoder,place);
 
     NSString *subtitle = [self generateSubtitleForLocation:place.administrativeArea city:place.locality street:place.thoroughfare];
     
@@ -287,7 +303,7 @@
 
 - (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFailWithError:(NSError*)error
 {
-//    NSLog(@"%s",__FUNCTION__);
+//    CLog(@"%s",__FUNCTION__);
     [self addAnnotation:geocoder.coordinate title:NSLocalizedString(@"reverseGeocodererror", @"Could not retrieve the specified place information.") subtitle:nil];
     [self modifyText:geocoder.coordinate];
     [geocoder release];
@@ -306,16 +322,16 @@
 // during string to float, there will be a little miss
         if((ann.coordinate.latitude + 0.00001 >= coordinate.latitude && ann.coordinate.latitude - 0.00001 <= coordinate.latitude)
            && (ann.coordinate.longitude + 0.00001 >= coordinate.longitude && ann.coordinate.longitude - 0.00001 <= coordinate.longitude)){
-//            NSLog(@"isAnnotationExist");
+//            CLog(@"isAnnotationExist");
             return YES;
         }
     }
-//    NSLog(@"isNotAnnotationExist");
+//    CLog(@"isNotAnnotationExist");
     return NO;
 }
 
 -(void) addAnnotation:(CLLocationCoordinate2D )coordinate title:(NSString *)title subtitle:(NSString *)subtitle {
-//    NSLog(@"%@ %@",title,subtitle);
+//    CLog(@"%@ %@",title,subtitle);
     if(![self isAnnotationExist:coordinate]){
         MKPointAnnotation *ann = [[[MKPointAnnotation alloc] init] autorelease];
         ann.title = title;
@@ -391,14 +407,14 @@
 
 - (void)longPress:(UIGestureRecognizer*)gestureRecognizer
 {
-//    NSLog(@"%s %d",__FUNCTION__,gestureRecognizer.state);
+//    CLog(@"%s %d",__FUNCTION__,gestureRecognizer.state);
 
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded){
         //            //transfer coordinate
         CGPoint touchPoint = [gestureRecognizer locationInView:map];
         CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
         
-        //  NSLog(@"%f %f",touchMapCoordinate.latitude,touchMapCoordinate.longitude);
+        //  CLog(@"%f %f",touchMapCoordinate.latitude,touchMapCoordinate.longitude);
         
         if(![self isAnnotationExist:touchMapCoordinate]){
             [self setMapRegion:touchMapCoordinate];
@@ -413,8 +429,8 @@
 
 - (void)tap:(UIGestureRecognizer*)gestureRecognizer
 {
-    // NSLog(@"%s",__FUNCTION__);
-//    NSLog(@"%d", gestureRecognizer.state);
+    // CLog(@"%s",__FUNCTION__);
+//    CLog(@"%d", gestureRecognizer.state);
     
     [searchBar resignFirstResponder];
     //transfer coordinate
@@ -439,7 +455,7 @@
 #pragma mark -  UISearchBarDelegate  
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     
-//        NSLog(@"%s  %@",__FUNCTION__, self.searchBar.text);
+//        CLog(@"%s  %@",__FUNCTION__, self.searchBar.text);
     [self.searchBar resignFirstResponder];
     NSString *locale = [NSString stringWithFormat:@"&locale=%@",[[NSLocale autoupdatingCurrentLocale] localeIdentifier]];
     NSString *urlString=[NSString stringWithFormat:@"%@%@%@",@"http://where.yahooapis.com/geocode?appid=V1YpaJ7k&flags=j&q=",[self.searchBar.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],locale];
@@ -467,7 +483,7 @@
         [self errorAlert:[error localizedDescription]];
     }else{  
         NSString* aStr = [[NSString alloc] initWithData:retrievedData encoding:NSUTF8StringEncoding];  
-//                NSLog(@"%@  %d",aStr, [resultsArray count]);
+//                CLog(@"%@  %d",aStr, [resultsArray count]);
         SBJsonParser *parse = [[[SBJsonParser alloc] init] autorelease];
         NSDictionary *result = [parse objectWithString:aStr];
         NSDictionary *resultSet   = [result valueForKey:@"ResultSet"];
@@ -527,7 +543,7 @@
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = [NSString stringWithFormat:@"%f, %f",coordinate.latitude,coordinate.longitude];
     [self errorAlert:NSLocalizedString(@"addtopasteboard", @"add to pasteboard")];
-    //    NSLog(@"%f %f",coordinate.latitude,coordinate.longitude);
+    //    CLog(@"%f %f",coordinate.latitude,coordinate.longitude);
     
 }
 
@@ -590,9 +606,6 @@
                          [map layoutIfNeeded];
                          self.banner.frame = CGRectMake(bannerOrigin.x, bannerOrigin.y, self.banner.frame.size.width, self.banner.frame.size.height);
                      }];
-    
-    
-    
 }
 
 -(void)createADBannerView
@@ -606,33 +619,31 @@
     frame.origin = CGPointMake(0.0f, CGRectGetMaxY(self.view.bounds));
     
         // Now to create and configure the banner view
-    ADBannerView *bannerView = [[ADBannerView alloc] initWithFrame:frame];
+    banner = [[[ADBannerView alloc] initWithFrame:frame] autorelease];
         // Set the delegate to self, so that we are notified of ad responses.
-    bannerView.delegate = self;
+    banner.delegate = self;
         // Set the autoresizing mask so that the banner is pinned to the bottom
-    bannerView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
+    banner.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
         // Since we support all orientations in this view controller, support portrait and landscape content sizes.
         // If you only supported landscape or portrait, you could remove the other from this set.
     
-	bannerView.requiredContentSizeIdentifiers = (&ADBannerContentSizeIdentifierPortrait != nil) ?
+	banner.requiredContentSizeIdentifiers = (&ADBannerContentSizeIdentifierPortrait != nil) ?
     [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil] : 
     [NSSet setWithObjects:ADBannerContentSizeIdentifier320x50, ADBannerContentSizeIdentifier480x32, nil];
     
         // At this point the ad banner is now be visible and looking for an ad.
-    [self.view addSubview:bannerView];
-    self.banner = bannerView;
-    [bannerView release];
+    [self.view addSubview:banner];
 }
 
 -(void)bannerViewDidLoadAd:(ADBannerView *)banner
 {
-    NSLog(@"%s",__FUNCTION__);
+    CLog(@"%s",__FUNCTION__);
     [self layoutForCurrentOrientation:YES];
 }
 
 -(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
 {
-    NSLog(@"%s",__FUNCTION__);
+    CLog(@"%s",__FUNCTION__);
     [self layoutForCurrentOrientation:YES];
 }
 
@@ -645,4 +656,47 @@
 {
 }
 
+#pragma mark admob methods   
+-(void)createAdmobGADBannerView{
+        CLog(@"%s %@",__FUNCTION__,[[UIDevice currentDevice] model]);
+    
+    self.admobView = [[GADBannerView alloc]
+                                  initWithFrame:CGRectMake(0.0,
+                                                           self.view.frame.size.height -
+                                                           GAD_SIZE_320x50.height,
+                                                           GAD_SIZE_320x50.width,
+                                                           GAD_SIZE_320x50.height)];
+    admobView.adUnitID = @"a14e1a8af59a910";
+    admobView.rootViewController = self;
+    admobView.delegate = self;
+    admobView.center = CGPointMake(160, 50);
+    [self.view addSubview:admobView];
+    GADRequest *request = [GADRequest request];
+    
+    request.testDevices = [NSArray arrayWithObjects:
+                           GAD_SIMULATOR_ID,                               // Simulator
+                           @"28ab37c3902621dd572509110745071f0101b124",    // Test iPhone 3G 3.0.1
+                           @"8cf09e81ef3ec5418c3450f7954e0e95db8ab200",    // Test iPod 4.3.1
+                           nil];
+    [admobView loadRequest:request];
+    [admobView release];
+
+}
+
+- (void)adViewDidReceiveAd:(GADBannerView *)bannerView{
+    CLog(@"%s",__FUNCTION__);
+}
+- (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error{
+        CLog(@"%s %@",__FUNCTION__, [error localizedDescription]);
+}
+
+- (void)adViewWillPresentScreen:(GADBannerView *)bannerView{
+
+}
+- (void)adViewDidDismissScreen:(GADBannerView *)bannerView{
+
+}
+- (void)adViewWillLeaveApplication:(GADBannerView *)bannerView{
+
+}
 @end

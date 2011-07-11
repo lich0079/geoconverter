@@ -6,16 +6,14 @@
 //  Copyright 2011年 ibm. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import <CoreLocation/CoreLocation.h>
-#import <MapKit/MapKit.h> 
+
 #import "GTMHTTPFetcher.h"
 #import "SBJsonParser.h"
 #import "HelpVC.h"
-#import <iAd/iAd.h>
+#import "GADBannerView.h"
 
 
-@interface RootVC : UIViewController  <UITextFieldDelegate,MKReverseGeocoderDelegate,MKMapViewDelegate,UISearchBarDelegate,HelpVCDelegate,ADBannerViewDelegate> {
+@interface RootVC : UIViewController  <UITextFieldDelegate,MKReverseGeocoderDelegate,MKMapViewDelegate,UISearchBarDelegate,HelpVCDelegate,ADBannerViewDelegate,GADBannerViewDelegate> {
     
 }
 
@@ -29,7 +27,8 @@
 
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 
-@property(nonatomic, retain) IBOutlet ADBannerView *banner;
+@property(nonatomic, retain) ADBannerView *banner;
+@property(nonatomic, retain) GADBannerView *admobView;
 
 @property BOOL enableZoom;
 
@@ -73,4 +72,6 @@
 
 
 -(void)createADBannerView;
+
+-(void)createAdmobGADBannerView;
 @end

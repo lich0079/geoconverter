@@ -49,6 +49,10 @@
 		E3994E1A13BB41FA00BFC67A /* HelpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E3994E1813BB41FA00BFC67A /* HelpVC.m */; };
 		E3B3432C13B835B300364A56 /* RootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E3B3432A13B835B200364A56 /* RootVC.m */; };
 		E3CE67C513BC81E100435A44 /* HelpVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3CE67C713BC81E100435A44 /* HelpVC.xib */; };
+		E3CF57B713CAC5F90075C5F7 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CF57B013CAC5F90075C5F7 /* libGoogleAdMobAds.a */; };
+		E3CF57BA13CAC6270075C5F7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CF57B913CAC6270075C5F7 /* AudioToolbox.framework */; };
+		E3CF57BC13CAC62E0075C5F7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CF57BB13CAC62E0075C5F7 /* MessageUI.framework */; };
+		E3CF57BE13CAC6370075C5F7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CF57BD13CAC6370075C5F7 /* SystemConfiguration.framework */; };
 		E3FB5E5113BA3E970009BE8A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E3FB5E5013BA3E970009BE8A /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
@@ -57,6 +61,7 @@
 		E3425B8213BAC4FA00E6954E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "geoconverter/zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		E34CD2FB13BA31D7008B84B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = geoconverter/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E34CD2FD13BA3251008B84B6 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "geoconverter/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		E367CB8813CAF10F004BE68D /* CLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLog.h; sourceTree = "<group>"; };
 		E3706AE413BB53DB0078D50D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/help.html; sourceTree = "<group>"; };
 		E3706AE613BB53E50078D50D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = "zh-Hans.lproj/help.html"; sourceTree = "<group>"; };
 		E372181913B72C78000684BB /* geoconverter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = geoconverter.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -120,6 +125,16 @@
 		E3B3432A13B835B200364A56 /* RootVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootVC.m; sourceTree = "<group>"; };
 		E3CE67C613BC81E100435A44 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/HelpVC.xib; sourceTree = "<group>"; };
 		E3CE67CA13BC822800435A44 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/HelpVC.xib"; sourceTree = "<group>"; };
+		E3CF57B013CAC5F90075C5F7 /* libGoogleAdMobAds.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAdMobAds.a; sourceTree = "<group>"; };
+		E3CF57B113CAC5F90075C5F7 /* GADRequestError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequestError.h; sourceTree = "<group>"; };
+		E3CF57B213CAC5F90075C5F7 /* GADRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADRequest.h; sourceTree = "<group>"; };
+		E3CF57B313CAC5F90075C5F7 /* GADInterstitialDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitialDelegate.h; sourceTree = "<group>"; };
+		E3CF57B413CAC5F90075C5F7 /* GADInterstitial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADInterstitial.h; sourceTree = "<group>"; };
+		E3CF57B513CAC5F90075C5F7 /* GADBannerViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerViewDelegate.h; sourceTree = "<group>"; };
+		E3CF57B613CAC5F90075C5F7 /* GADBannerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GADBannerView.h; sourceTree = "<group>"; };
+		E3CF57B913CAC6270075C5F7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		E3CF57BB13CAC62E0075C5F7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		E3CF57BD13CAC6370075C5F7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E3FB5E5013BA3E970009BE8A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -128,12 +143,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E3CF57BE13CAC6370075C5F7 /* SystemConfiguration.framework in Frameworks */,
+				E3CF57BC13CAC62E0075C5F7 /* MessageUI.framework in Frameworks */,
+				E3CF57BA13CAC6270075C5F7 /* AudioToolbox.framework in Frameworks */,
 				E33567E013C9247F007F9D7C /* iAd.framework in Frameworks */,
 				E372184613B75223000684BB /* MapKit.framework in Frameworks */,
 				E372184413B74CA0000684BB /* CoreLocation.framework in Frameworks */,
 				E372181E13B72C78000684BB /* UIKit.framework in Frameworks */,
 				E372182013B72C78000684BB /* Foundation.framework in Frameworks */,
 				E372182213B72C78000684BB /* CoreGraphics.framework in Frameworks */,
+				E3CF57B713CAC5F90075C5F7 /* libGoogleAdMobAds.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,8 +162,10 @@
 		E372180E13B72C78000684BB = {
 			isa = PBXGroup;
 			children = (
-				E395995513C5BC3300D891B8 /* Default@2x.png */,
-				E395995313C5BBBF00D891B8 /* Default.png */,
+				E3CF57BD13CAC6370075C5F7 /* SystemConfiguration.framework */,
+				E3CF57BB13CAC62E0075C5F7 /* MessageUI.framework */,
+				E3CF57B913CAC6270075C5F7 /* AudioToolbox.framework */,
+				E3CF57B813CAC6010075C5F7 /* admob */,
 				E33567DF13C9247F007F9D7C /* iAd.framework */,
 				E395994713C5B17900D891B8 /* Icon-72.png */,
 				E372182313B72C78000684BB /* geoconverter */,
@@ -184,6 +205,7 @@
 				E3994E1713BB41FA00BFC67A /* HelpVC.h */,
 				E3994E1813BB41FA00BFC67A /* HelpVC.m */,
 				E372182413B72C78000684BB /* Supporting Files */,
+				E367CB8813CAF10F004BE68D /* CLog.h */,
 			);
 			path = geoconverter;
 			sourceTree = "<group>";
@@ -248,6 +270,22 @@
 				E3757FA813B9C8840095BB33 /* GTMHTTPFetcher.m */,
 			);
 			name = lib;
+			sourceTree = "<group>";
+		};
+		E3CF57B813CAC6010075C5F7 /* admob */ = {
+			isa = PBXGroup;
+			children = (
+				E3CF57B013CAC5F90075C5F7 /* libGoogleAdMobAds.a */,
+				E3CF57B113CAC5F90075C5F7 /* GADRequestError.h */,
+				E3CF57B213CAC5F90075C5F7 /* GADRequest.h */,
+				E3CF57B313CAC5F90075C5F7 /* GADInterstitialDelegate.h */,
+				E3CF57B413CAC5F90075C5F7 /* GADInterstitial.h */,
+				E3CF57B513CAC5F90075C5F7 /* GADBannerViewDelegate.h */,
+				E3CF57B613CAC5F90075C5F7 /* GADBannerView.h */,
+				E395995513C5BC3300D891B8 /* Default@2x.png */,
+				E395995313C5BBBF00D891B8 /* Default.png */,
+			);
+			name = admob;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -463,6 +501,10 @@
 				GCC_PREFIX_HEADER = "geoconverter/geoconverter-Prefix.pch";
 				INFOPLIST_FILE = "geoconverter/geoconverter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -479,6 +521,10 @@
 				GCC_PREFIX_HEADER = "geoconverter/geoconverter-Prefix.pch";
 				INFOPLIST_FILE = "geoconverter/geoconverter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -513,6 +559,10 @@
 				GCC_PREFIX_HEADER = "geoconverter/geoconverter-Prefix.pch";
 				INFOPLIST_FILE = "geoconverter/geoconverter-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "38B57233-06EA-457C-82AC-17606959FDD5";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "38B57233-06EA-457C-82AC-17606959FDD5";
