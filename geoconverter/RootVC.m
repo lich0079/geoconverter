@@ -79,7 +79,7 @@
     [self.map addGestureRecognizer:tap];
     [tap release];
     
-//    [self createAd];
+    [self createAd];
 }
 
 -(void) resignFirstResp:(UIGestureRecognizer*)gestureRecognizer{
@@ -324,16 +324,14 @@
 }
 
 - (void) removeMapAnnotation:(CLLocationCoordinate2D )tobeAdd{
-    
     CLLocationCoordinate2D user = map.userLocation.coordinate;
     NSArray *anns = map.annotations;
  
     for (int j=0; j<[anns count]; j++) {
         
         id <MKAnnotation> an = [anns objectAtIndex:j];
-        
         CLLocationCoordinate2D i = [an coordinate];
-        
+
         if(user.latitude == i.latitude && user.longitude == i.longitude){
             
         }else if (tobeAdd.latitude == i.latitude && tobeAdd.longitude == i.longitude){

@@ -162,11 +162,7 @@
 		E372180E13B72C78000684BB = {
 			isa = PBXGroup;
 			children = (
-				E3CF57BD13CAC6370075C5F7 /* SystemConfiguration.framework */,
-				E3CF57BB13CAC62E0075C5F7 /* MessageUI.framework */,
-				E3CF57B913CAC6270075C5F7 /* AudioToolbox.framework */,
 				E3CF57B813CAC6010075C5F7 /* admob */,
-				E33567DF13C9247F007F9D7C /* iAd.framework */,
 				E395994713C5B17900D891B8 /* Icon-72.png */,
 				E372182313B72C78000684BB /* geoconverter */,
 				E372181C13B72C78000684BB /* Frameworks */,
@@ -185,6 +181,10 @@
 		E372181C13B72C78000684BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E33567DF13C9247F007F9D7C /* iAd.framework */,
+				E3CF57BD13CAC6370075C5F7 /* SystemConfiguration.framework */,
+				E3CF57BB13CAC62E0075C5F7 /* MessageUI.framework */,
+				E3CF57B913CAC6270075C5F7 /* AudioToolbox.framework */,
 				E372184513B75223000684BB /* MapKit.framework */,
 				E372184313B74CA0000684BB /* CoreLocation.framework */,
 				E372181D13B72C78000684BB /* UIKit.framework */,
