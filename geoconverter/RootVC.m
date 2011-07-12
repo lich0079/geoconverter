@@ -32,6 +32,8 @@
 
 #pragma mark - View lifecycle
 - (void)viewDidLoad{
+    CLog(@"%s start", __FUNCTION__);
+    
     [super viewDidLoad];
     self.latitude.delegate = self;
     self.longitude.delegate = self;
@@ -80,10 +82,22 @@
     [tap release];
     
     [self createAd];
+    
+        CLog(@"%s end", __FUNCTION__);
 }
 
 -(void) resignFirstResp:(UIGestureRecognizer*)gestureRecognizer{
-    [searchBar resignFirstResponder];
+    if([searchBar isFirstResponder]){
+        [searchBar resignFirstResponder];
+    }else if([latitude isFirstResponder]){
+        [self releaseRoomForKeyboard];
+        [latitude resignFirstResponder];
+    }else if([longitude isFirstResponder]){
+        [self releaseRoomForKeyboard];
+        [longitude resignFirstResponder];
+    }
+
+    
 }
 
 - (void)viewDidUnload
@@ -247,9 +261,10 @@
         latiInput = -89;
     }
     CLLocationCoordinate2D coordinate ={latiInput,longiInput};
+
+    [self resignFirstResp:nil];
     [self setMapRegion:coordinate];
     
-
     if(![self isAnnotationExist:coordinate]){
         MKReverseGeocoder* theGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
         
@@ -265,13 +280,9 @@
 
 
 #pragma mark -  MKReverseGeocoderDelegate
-
-
-
 - (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFindPlacemark:(MKPlacemark*)place
 {
 //    CLog(@"-----%@   %@",geocoder,place);
-
     NSString *subtitle = [self generateSubtitleForLocation:place.administrativeArea city:place.locality street:place.thoroughfare];
     [self removeMapAnnotation:geocoder.coordinate];
     [self addAnnotation:geocoder.coordinate title:place.country subtitle:subtitle];
@@ -279,8 +290,6 @@
     [self modifyText:geocoder.coordinate];
     [geocoder release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;  
- 
-
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFailWithError:(NSError*)error
@@ -291,11 +300,7 @@
     [self modifyText:geocoder.coordinate];
     [geocoder release];
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;  
-
 }
-
-
-
 
 
 #pragma mark -  MKMapViewDelegate annotation
@@ -333,17 +338,13 @@
         CLLocationCoordinate2D i = [an coordinate];
 
         if(user.latitude == i.latitude && user.longitude == i.longitude){
-            
         }else if (tobeAdd.latitude == i.latitude && tobeAdd.longitude == i.longitude){
-            
         }else{
             MKPointAnnotation *ann = (MKPointAnnotation *)an;
             ann.title = nil;
             ann.subtitle = nil;
             [map removeAnnotation:an];
-
         }
-        
     }
     
     [map setNeedsDisplay];
@@ -413,8 +414,7 @@
 {
     // CLog(@"%s",__FUNCTION__);
 //    CLog(@"%d", gestureRecognizer.state);
-    
-    [searchBar resignFirstResponder];
+    [self resignFirstResp:nil];
 
     CGPoint touchPoint = [gestureRecognizer locationInView:map];
     CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
@@ -523,7 +523,7 @@
     }
     
 }
-#pragma mark -  UIControl
+#pragma mark -  UIControl button click
 
 - (void) addButtonClick:(id)sender{
     UIButton *button = sender;
@@ -532,8 +532,6 @@
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
     pasteboard.string = [NSString stringWithFormat:@"%f, %f",coordinate.latitude,coordinate.longitude];
     [self errorAlert:NSLocalizedString(@"addtopasteboard", @"add to pasteboard")];
-    //    CLog(@"%f %f",coordinate.latitude,coordinate.longitude);
-    
 }
 
 - (IBAction) segmentedButtonClick:(id)sender{
@@ -561,6 +559,7 @@
 }
 
 #pragma mark ADBannerViewDelegate methods
+// make room for show iAd or admob
 -(void)layoutForCurrentOrientation:(BOOL)animated isLoadSuccess:(BOOL)isLoadSuccess
 {
     CGFloat animationDuration = animated ? 0.2f : 0.0f;
@@ -586,7 +585,6 @@
                          }else{
                              tmp.admobView.frame = CGRectMake(bannerOrigin.x, bannerOrigin.y, tmp.admobView.frame.size.width, tmp.admobView.frame.size.height);
                          }
-                         
                      }];
 }
 
@@ -681,16 +679,42 @@
 
 - (void) createAd{
     NSString *timezone = [[NSTimeZone localTimeZone]name];
-    
 //    timezone = @"America/xxx";
-    if([timezone rangeOfString:@"America/"].location== 0
+    if([timezone rangeOfString:@"America/Los_Angeles"].location== 0
        || [timezone rangeOfString:@"Europe/Rome"].location== 0
        || [timezone rangeOfString:@"Europe/San_Marino"].location== 0
        || [timezone rangeOfString:@"Europe/Berlin"].location== 0
        || [timezone rangeOfString:@"Europe/London"].location== 0
        || [timezone rangeOfString:@"Europe/Madrid"].location== 0
        || [timezone rangeOfString:@"Europe/Paris"].location== 0
-       || [timezone rangeOfString:@"Asia/Tokyo"].location== 0){
+       || [timezone rangeOfString:@"Asia/Tokyo"].location== 0
+       || [timezone rangeOfString:@"America/New_York"].location== 0
+       || [timezone rangeOfString:@"America/Chicago"].location== 0  
+       || [timezone rangeOfString:@"America/Phoenix"].location== 0
+       || [timezone rangeOfString:@"America/Boise"].location== 0
+       || [timezone rangeOfString:@"America/Denver"].location== 0
+       || [timezone rangeOfString:@"America/Detroit"].location== 0
+       || [timezone rangeOfString:@"America/Grand_Turk"].location== 0    
+       || [timezone rangeOfString:@"America/Indiana/Indianapolis"].location== 0
+       || [timezone rangeOfString:@"America/Indiana/Knox"].location== 0
+       || [timezone rangeOfString:@"America/Indiana/Marengo"].location== 0
+       || [timezone rangeOfString:@"America/Indiana/Petersburg"].location== 0
+       || [timezone rangeOfString:@"America/Indiana/Tell_City"].location== 0
+       || [timezone rangeOfString:@"America/Indiana/Vevay"].location== 0
+       || [timezone rangeOfString:@"America/Indiana/Vincennes"].location== 0
+       || [timezone rangeOfString:@"America/Indiana/Winamac"].location== 0
+       || [timezone rangeOfString:@"America/Kentucky/Louisville"].location== 0
+       || [timezone rangeOfString:@"America/Kentucky/Monticello"].location== 0
+       || [timezone rangeOfString:@"America/Menominee"].location== 0    
+       || [timezone rangeOfString:@"America/Nome"].location== 0
+       || [timezone rangeOfString:@"America/North_Dakota/Center"].location== 0
+       || [timezone rangeOfString:@"America/North_Dakota/New_Salem"].location== 0
+       || [timezone rangeOfString:@"America/Rainy_River"].location== 0
+       || [timezone rangeOfString:@"America/Shiprock"].location== 0
+       || [timezone rangeOfString:@"America/St_Johns"].location== 0
+       || [timezone rangeOfString:@"America/Yakutat"].location== 0
+       
+       ){
         if (banner == nil) {
             [self createADBannerView];
         }
@@ -698,12 +722,7 @@
         if(admobView == nil) {
             [self createAdmobGADBannerView];
         }
-
     }
 }
     
 @end
-
-
-
-
