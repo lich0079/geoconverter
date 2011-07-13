@@ -13,7 +13,7 @@
 
 @synthesize geo,map,latitude,longitude,searchBar,banner,admobView;//retain
 
-@synthesize enableZoom,enableTap,onetapGR;
+@synthesize enableZoom,enableTap,onetapGR,isGeocoderUseNetwork;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -42,6 +42,7 @@
 
     self.enableTap = NO;
     self.enableZoom =NO;
+    self.isGeocoderUseNetwork = NO;
 
     //remove searchbar background
     for (UIView *subview in self.searchBar.subviews){  
@@ -54,7 +55,7 @@
     map.showsUserLocation = YES;
     map.mapType = MKMapTypeStandard;
 
-    
+    //set textfield value
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
     [userDefault synchronize];
     NSString *latitudeText =[userDefault valueForKey:@"latitude"];
@@ -62,20 +63,19 @@
 
     if(latitudeText){
         latitude.text = latitudeText;
-//        CLog(@"kvc %@",[latitude valueForKey:@"text"]);
     }
     if(longitudeText){
         longitude.text = longitudeText;
     }
 
-    
+    //long press to get latitude longitude
     UILongPressGestureRecognizer *lpress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     lpress.minimumPressDuration = 0.5;//按0.5秒响应longPress方法
     lpress.allowableMovement = 10.0;
     [map addGestureRecognizer:lpress];//m_mapView是MKMapView的实例
     [lpress release];
     
-    
+    // one tap to dismiss keyboard 
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resignFirstResp:)];
     tap.numberOfTapsRequired=1;
     [self.map addGestureRecognizer:tap];
@@ -86,6 +86,7 @@
         CLog(@"%s end", __FUNCTION__);
 }
 
+//dismiss keyboard
 -(void) resignFirstResp:(UIGestureRecognizer*)gestureRecognizer{
     if([searchBar isFirstResponder]){
         [searchBar resignFirstResponder];
@@ -126,17 +127,14 @@
 
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 
 #pragma mark - textfield input
-
+//raise the view's frame so the keyboard won't block the textfield
 - (void)textFieldDidBeginEditing:(UITextField *)textField{
-
 	if (self.latitude == textField || self.longitude == textField) {
         [self makeRoomForKeyboard];
 	}
@@ -158,13 +156,9 @@
                          self.view.center = CGPointMake(160,250);
                      }];
 }
-
+//for latitude longitude textfield click "done" button
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
-
-    
-    
     if(! [self isLatitudeLongitudeInputValid]){
-    
     }else{
         [self releaseRoomForKeyboard];
         [textField resignFirstResponder];
@@ -183,7 +177,6 @@
         [self errorAlert:NSLocalizedString(@"longitudelimit",@"longitude must between [-180,180]")];
         return NO;
     }
-    
     return YES;
 }
 
@@ -192,6 +185,7 @@
 -(void) modifyText:(CLLocationCoordinate2D )coordinate{
     latitude.text = [NSString stringWithFormat:@"%f",coordinate.latitude];
     longitude.text = [NSString stringWithFormat:@"%f",coordinate.longitude];
+    //when convert float to string, there will be little missing value
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
 	[userDefault setObject:latitude.text forKey:@"latitude"];
    	[userDefault setObject:longitude.text forKey:@"longitude"];
@@ -199,7 +193,6 @@
 }
 
 - (void) setMapRegion:(CLLocationCoordinate2D )coordinate{
-
     MKCoordinateRegion theRegion = map.region;
     theRegion.center.latitude = coordinate.latitude;
     theRegion.center.longitude = coordinate.longitude;
@@ -212,15 +205,12 @@
     }
     @catch (NSException *exception) {
         [self errorAlert:[exception description]];
-        
     }
     @finally {
-        
     }
 }
 
 - (void)errorAlert:(NSString *) message {
-    //NSLocalizedString(@"error",@"Error") 
     UIAlertView *alertView = [[UIAlertView alloc]
                               initWithTitle:nil message:message delegate:nil
                               cancelButtonTitle:NSLocalizedString(@"ok",@"OK") otherButtonTitles:nil];
@@ -234,72 +224,50 @@
     if(state ){
         [placeDesc appendFormat:@"%@",state];    
     }
-    
     if(city){
         [placeDesc appendFormat:@" %@",city];
     }
-    
     if(street){
         [placeDesc appendFormat:@" %@",street];
     }
     return [placeDesc description];
 }
-- (IBAction)geoButtonClick {
-    
-    if(![self isLatitudeLongitudeInputValid]){
-        return;
+
+- (void) startFindPlaceMark:(CLLocationCoordinate2D )coordinate{
+    MKReverseGeocoder* theGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
+    theGeocoder.delegate = self;
+    [theGeocoder start];
+    BOOL isOtherUseNeiwork = [UIApplication sharedApplication].networkActivityIndicatorVisible ;
+    if(!isOtherUseNeiwork){
+        CLog(@"use network");
+        [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
+        self.isGeocoderUseNetwork = YES;
     }
-    
-    float latiInput=  [latitude.text floatValue];
-    float longiInput=  [longitude.text floatValue];
-
-
-    //if = 90 there will be a calayer bond error
-    if(latiInput > 89){
-        latiInput = 89;
-    }else if(latiInput < -89){
-        latiInput = -89;
-    }
-    CLLocationCoordinate2D coordinate ={latiInput,longiInput};
-
-    [self resignFirstResp:nil];
-    [self setMapRegion:coordinate];
-    
-    if(![self isAnnotationExist:coordinate]){
-        MKReverseGeocoder* theGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
-        
-        theGeocoder.delegate = self;
-        [theGeocoder start];
-        [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;  
-
-    }
- 
-        
 }
 
+-(void) addPlaceMark:(MKReverseGeocoder*)geocoder title:(NSString *)title subtitle:(NSString *)subtitle{
+    [self removeMapAnnotation:geocoder.coordinate];
+    [self addAnnotation:geocoder.coordinate title:title subtitle:subtitle];
+    [self modifyText:geocoder.coordinate];
+    [geocoder release];
+    if(self.isGeocoderUseNetwork){
+        CLog(@"stop use network");
+        [UIApplication sharedApplication].networkActivityIndicatorVisible=NO; 
+        self.isGeocoderUseNetwork = NO;
+    }
+}
 
 
 #pragma mark -  MKReverseGeocoderDelegate
-- (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFindPlacemark:(MKPlacemark*)place
-{
+- (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFindPlacemark:(MKPlacemark*)place {
 //    CLog(@"-----%@   %@",geocoder,place);
     NSString *subtitle = [self generateSubtitleForLocation:place.administrativeArea city:place.locality street:place.thoroughfare];
-    [self removeMapAnnotation:geocoder.coordinate];
-    [self addAnnotation:geocoder.coordinate title:place.country subtitle:subtitle];
-    
-    [self modifyText:geocoder.coordinate];
-    [geocoder release];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;  
+    [self addPlaceMark:geocoder title:place.country subtitle:subtitle];
 }
 
-- (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFailWithError:(NSError*)error
-{
+- (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFailWithError:(NSError*)error {
 //    CLog(@"%s",__FUNCTION__);
-    [self removeMapAnnotation:geocoder.coordinate];
-    [self addAnnotation:geocoder.coordinate title:NSLocalizedString(@"reverseGeocodererror", @"Could not retrieve the specified place information.") subtitle:nil];
-    [self modifyText:geocoder.coordinate];
-    [geocoder release];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;  
+    [self addPlaceMark:geocoder title:NSLocalizedString(@"reverseGeocodererror", @"Could not retrieve the specified place information.") subtitle:nil];
 }
 
 
@@ -307,7 +275,7 @@
 -(BOOL)isAnnotationExist:(CLLocationCoordinate2D )coordinate{
     NSArray *anns = map.annotations;
     for (MKPointAnnotation *ann in anns) {
-// during string to float, there will be a little miss
+        // during string to float, there will be a little miss
         if((ann.coordinate.latitude + 0.00001 >= coordinate.latitude && ann.coordinate.latitude - 0.00001 <= coordinate.latitude)
            && (ann.coordinate.longitude + 0.00001 >= coordinate.longitude && ann.coordinate.longitude - 0.00001 <= coordinate.longitude)){
             return YES;
@@ -317,26 +285,22 @@
 }
 
 -(void) addAnnotation:(CLLocationCoordinate2D )coordinate title:(NSString *)title subtitle:(NSString *)subtitle {
-//    CLog(@"%@ %@",title,subtitle);
     if(![self isAnnotationExist:coordinate]){
         MKPointAnnotation *ann = [[[MKPointAnnotation alloc] init] autorelease];
         ann.title = title;
         ann.subtitle = subtitle;
         ann.coordinate = coordinate;
-
         [map addAnnotation:ann];
     }
 }
-
+//remove other annotation so there will be only two annotation, the tobeAdd and the userlocation
 - (void) removeMapAnnotation:(CLLocationCoordinate2D )tobeAdd{
     CLLocationCoordinate2D user = map.userLocation.coordinate;
     NSArray *anns = map.annotations;
  
     for (int j=0; j<[anns count]; j++) {
-        
         id <MKAnnotation> an = [anns objectAtIndex:j];
         CLLocationCoordinate2D i = [an coordinate];
-
         if(user.latitude == i.latitude && user.longitude == i.longitude){
         }else if (tobeAdd.latitude == i.latitude && tobeAdd.longitude == i.longitude){
         }else{
@@ -346,13 +310,11 @@
             [map removeAnnotation:an];
         }
     }
-    
     [map setNeedsDisplay];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation{
     MKPinAnnotationView* pin = (MKPinAnnotationView *)[theMapView dequeueReusableAnnotationViewWithIdentifier:@"pin"];
-
     
     //don't let user location pin setup by this method 
     CLLocationCoordinate2D user = map.userLocation.coordinate;
@@ -363,7 +325,6 @@
     //////////////////////////////////////////
     
     if(!pin){
-
         pin = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"pin"] autorelease];
         pin.pinColor = MKPinAnnotationColorRed;//设置大头针的颜色
         pin.animatesDrop = YES;
@@ -376,51 +337,34 @@
     }else{
         pin.annotation = annotation;
     }
-//    [annotation autorelease];
     return pin;
 }
-
-
-
+//use click the pin
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
-        
     CLLocationCoordinate2D coordinate =[view.annotation coordinate];
     [self modifyText:coordinate];
 }
 
-- (void)longPress:(UIGestureRecognizer*)gestureRecognizer
-{
+- (void)longPress:(UIGestureRecognizer*)gestureRecognizer {
 //    CLog(@"%s %d",__FUNCTION__,gestureRecognizer.state);
-
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded){
-        //            //transfer coordinate
+        //transfer coordinate
         CGPoint touchPoint = [gestureRecognizer locationInView:map];
         CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
-        
-        //  CLog(@"%f %f",touchMapCoordinate.latitude,touchMapCoordinate.longitude);
-        
         if(![self isAnnotationExist:touchMapCoordinate]){
             [self setMapRegion:touchMapCoordinate];
-            MKReverseGeocoder* theGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:touchMapCoordinate];
-            
-            theGeocoder.delegate = self;
-            [theGeocoder start];
+            [self startFindPlaceMark:touchMapCoordinate];
         }
     }
-
 }
-
-- (void)tap:(UIGestureRecognizer*)gestureRecognizer
-{
+//one tap to dismiss keyboard and convert point
+- (void)tap:(UIGestureRecognizer*)gestureRecognizer {
     // CLog(@"%s",__FUNCTION__);
 //    CLog(@"%d", gestureRecognizer.state);
     [self resignFirstResp:nil];
-
     CGPoint touchPoint = [gestureRecognizer locationInView:map];
     CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
-    
     [self modifyText:touchMapCoordinate];
-    
 }
 
 
@@ -434,33 +378,22 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
     [self errorAlert:[error localizedDescription]];
 }
-#pragma mark -  UISearchBarDelegate  
+#pragma mark -  UISearchBarDelegate 
+//query yahoo api to get the geo info
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    
 //        CLog(@"%s  %@",__FUNCTION__, self.searchBar.text);
     [self.searchBar resignFirstResponder];
     NSString *locale = [NSString stringWithFormat:@"&locale=%@",[[NSLocale autoupdatingCurrentLocale] localeIdentifier]];
     NSString *urlString=[NSString stringWithFormat:@"%@%@%@",@"http://where.yahooapis.com/geocode?appid=V1YpaJ7k&flags=j&q=",[self.searchBar.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],locale];
-
-
-    
     NSURL *requestURL = [NSURL URLWithString:urlString];
-    
     NSURLRequest *request = [NSURLRequest requestWithURL:requestURL];
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];  
-    
     [fetcher beginFetchWithDelegate:self didFinishSelector:@selector(fetchDone:finishedWithData:error:)];  
-    
-    
     [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
-    
-
-
 }
 
-
+//parse geo info data and add pin
 - (void)fetchDone:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)retrievedData error:(NSError *)error{
-    
     if(error){  
         [self errorAlert:[error localizedDescription]];
     }else{  
@@ -477,8 +410,8 @@
             dispatch_async(dispatch_get_main_queue(),^{
                 int count = [resultsArray count];
                 if(count > 0 ){
+                    //remove other pin
                     CLLocationCoordinate2D coordinate = {0,0};
-                    
                     [self removeMapAnnotation:coordinate];
                     for (int i = 0; i < count; i++) {
                         NSDictionary *location = [resultsArray objectAtIndex:i];
@@ -487,16 +420,12 @@
                         }else{
                             [self handleSearchResult:location isLast:NO];
                         }
-                        
                     }
                 }else{
                     [self errorAlert:NSLocalizedString(@"noresult",@"no result")];
                 } 
-
             });
         });
-
-
     }
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
 }
@@ -512,10 +441,7 @@
         street = [result valueForKey:@"line2"];
     }
     NSString *subtitle = [self generateSubtitleForLocation:state city:city street:street];
-    
-    
     CLLocationCoordinate2D coordinate = {[la floatValue],[lo floatValue]};
-
     [self addAnnotation:coordinate title:country subtitle:subtitle];
     if(isLast){
         [self setMapRegion:coordinate];
@@ -524,7 +450,28 @@
     
 }
 #pragma mark -  UIControl button click
-
+- (IBAction)geoButtonClick {
+    
+    if(![self isLatitudeLongitudeInputValid]){
+        return;
+    }
+    float latiInput=  [latitude.text floatValue];
+    float longiInput=  [longitude.text floatValue];
+    //if == 90 there will be a calayer bond error
+    if(latiInput > 89){
+        latiInput = 89;
+    }else if(latiInput < -89){
+        latiInput = -89;
+    }
+    CLLocationCoordinate2D coordinate ={latiInput,longiInput};
+    
+    [self resignFirstResp:nil];
+    [self setMapRegion:coordinate];
+    //if the pin don't exist, we put the pin    
+    if(![self isAnnotationExist:coordinate]){
+        [self startFindPlaceMark:coordinate];
+    }
+}
 - (void) addButtonClick:(id)sender{
     UIButton *button = sender;
     MKPinAnnotationView *pin = (MKPinAnnotationView *)button.superview.superview;
@@ -588,12 +535,8 @@
                      }];
 }
 
--(void)createADBannerView
-{
-    
+-(void)createADBannerView {
 	NSString *contentSize = (&ADBannerContentSizeIdentifierPortrait != nil) ?ADBannerContentSizeIdentifierPortrait:ADBannerContentSizeIdentifier320x50;
-
-
     CGRect frame;
     frame.size = [ADBannerView sizeFromBannerContentSizeIdentifier:contentSize];
     frame.origin = CGPointMake(0.0f, CGRectGetMaxY(self.view.bounds));
@@ -601,41 +544,32 @@
     banner = [[[ADBannerView alloc] initWithFrame:frame] autorelease];
     banner.delegate = self;
     banner.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
-
-    
 	banner.requiredContentSizeIdentifiers = (&ADBannerContentSizeIdentifierPortrait != nil) ?
     [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil] : 
     [NSSet setWithObjects:ADBannerContentSizeIdentifier320x50, ADBannerContentSizeIdentifier480x32, nil];
-    
-        // At this point the ad banner is now be visible and looking for an ad.
     [self.view addSubview:banner];
 }
 
--(void)bannerViewDidLoadAd:(ADBannerView *)banner
-{
+-(void)bannerViewDidLoadAd:(ADBannerView *)banner {
     CLog(@"%s",__FUNCTION__);
     [self layoutForCurrentOrientation:YES isLoadSuccess:YES];
 }
 
--(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error
-{
+-(void)bannerView:(ADBannerView *)banner didFailToReceiveAdWithError:(NSError *)error{
     CLog(@"%s",__FUNCTION__);
     [self layoutForCurrentOrientation:YES isLoadSuccess:NO];
 }
 
--(BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave
-{
+-(BOOL)bannerViewActionShouldBegin:(ADBannerView *)banner willLeaveApplication:(BOOL)willLeave {
     return YES;
 }
 
--(void)bannerViewActionDidFinish:(ADBannerView *)banner
-{
+-(void)bannerViewActionDidFinish:(ADBannerView *)banner {
 }
 
 #pragma mark admob methods   
 -(void)createAdmobGADBannerView{
-        CLog(@"%s",__FUNCTION__);
-    
+    CLog(@"%s",__FUNCTION__);
     self.admobView = [[GADBannerView alloc]
                                   initWithFrame:CGRectMake(0.0,
                                                            self.view.frame.size.height,
@@ -676,7 +610,6 @@
 
 
 #pragma mark decide which ad to use
-
 - (void) createAd{
     NSString *timezone = [[NSTimeZone localTimeZone]name];
 //    timezone = @"America/xxx";

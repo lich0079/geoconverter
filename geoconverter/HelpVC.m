@@ -50,6 +50,7 @@
 {
     [super viewDidUnload];
     [web release];
+    self.delegate = nil;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

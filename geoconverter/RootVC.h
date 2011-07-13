@@ -34,6 +34,8 @@
 
 @property BOOL enableTap;
 
+@property BOOL isGeocoderUseNetwork;
+
 @property (nonatomic, assign) UITapGestureRecognizer *onetapGR;
 
 - (IBAction)geoButtonClick;
@@ -76,4 +78,8 @@
 -(void)createAdmobGADBannerView;
 
 - (void) createAd;
+
+- (void) startFindPlaceMark:(CLLocationCoordinate2D )coordinate;
+
+-(void) addPlaceMark:(MKReverseGeocoder*)geocoder title:(NSString *)title subtitle:(NSString *)subtitle;
 @end
