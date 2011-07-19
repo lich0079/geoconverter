@@ -10,8 +10,9 @@
 
 
 @implementation RootVC
+@synthesize loadIndicator;
 
-@synthesize geo,map,latitude,longitude,searchBar,banner,admobView;//retain
+@synthesize geo,help,map,latitude,longitude,searchBar,banner,admobView;//retain
 
 @synthesize enableZoom,enableTap,onetapGR,isGeocoderUseNetwork;
 
@@ -23,6 +24,7 @@
 }
 
 - (void)dealloc{
+    [loadIndicator release];
     [super dealloc];
 }
 
@@ -32,7 +34,7 @@
 
 #pragma mark - View lifecycle
 - (void)viewDidLoad{
-    CLog(@"%s start", __FUNCTION__);
+//    CLog(@"%s start", __FUNCTION__);
     
     [super viewDidLoad];
     self.latitude.delegate = self;
@@ -83,7 +85,7 @@
     
     [self createAd];
     
-        CLog(@"%s end", __FUNCTION__);
+//    CLog(@"%s end", __FUNCTION__);
 }
 
 //dismiss keyboard
@@ -101,9 +103,8 @@
     
 }
 
-- (void)viewDidUnload
-{
-
+- (void)viewDidUnload {
+    [self setLoadIndicator:nil];
     [super viewDidUnload];
     self.latitude.delegate = nil;
     self.longitude.delegate = nil;
@@ -122,6 +123,7 @@
     [self.latitude release];
     [self.longitude release];
     [self.searchBar release];
+    [self.loadIndicator release];
 
     
 
@@ -239,10 +241,11 @@
     [theGeocoder start];
     BOOL isOtherUseNeiwork = [UIApplication sharedApplication].networkActivityIndicatorVisible ;
     if(!isOtherUseNeiwork){
-        CLog(@"use network");
+//        CLog(@"use network");
         [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
         self.isGeocoderUseNetwork = YES;
     }
+    [self startLoading];
 }
 
 -(void) addPlaceMark:(MKReverseGeocoder*)geocoder title:(NSString *)title subtitle:(NSString *)subtitle{
@@ -251,7 +254,7 @@
     [self modifyText:geocoder.coordinate];
     [geocoder release];
     if(self.isGeocoderUseNetwork){
-        CLog(@"stop use network");
+//        CLog(@"stop use network");
         [UIApplication sharedApplication].networkActivityIndicatorVisible=NO; 
         self.isGeocoderUseNetwork = NO;
     }
@@ -263,11 +266,13 @@
 //    CLog(@"-----%@   %@",geocoder,place);
     NSString *subtitle = [self generateSubtitleForLocation:place.administrativeArea city:place.locality street:place.thoroughfare];
     [self addPlaceMark:geocoder title:place.country subtitle:subtitle];
+    [self stopLoading];
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFailWithError:(NSError*)error {
 //    CLog(@"%s",__FUNCTION__);
     [self addPlaceMark:geocoder title:NSLocalizedString(@"reverseGeocodererror", @"Could not retrieve the specified place information.") subtitle:nil];
+    [self stopLoading];
 }
 
 
@@ -390,12 +395,14 @@
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];  
     [fetcher beginFetchWithDelegate:self didFinishSelector:@selector(fetchDone:finishedWithData:error:)];  
     [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
+    [self startLoading];
 }
 
 //parse geo info data and add pin
 - (void)fetchDone:(GTMHTTPFetcher *)fetcher finishedWithData:(NSData *)retrievedData error:(NSError *)error{
     if(error){  
         [self errorAlert:[error localizedDescription]];
+        [self stopLoading];
     }else{  
         dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         dispatch_async(aQueue, ^{
@@ -423,7 +430,8 @@
                     }
                 }else{
                     [self errorAlert:NSLocalizedString(@"noresult",@"no result")];
-                } 
+                }
+                [self stopLoading];
             });
         });
     }
@@ -451,7 +459,7 @@
 }
 #pragma mark -  UIControl button click
 - (IBAction)geoButtonClick {
-    
+    CLog(@"%s", __FUNCTION__);
     if(![self isLatitudeLongitudeInputValid]){
         return;
     }
@@ -495,10 +503,10 @@
 }
 
 - (IBAction) helpButtonClick:(id)sender{
-    HelpVC *help= [[[HelpVC alloc]init] autorelease];
-    help.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    help.delegate = self;
-    [self presentModalViewController:help animated:YES];
+    HelpVC *helpVC= [[[HelpVC alloc]init] autorelease];
+    helpVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    helpVC.delegate = self;
+    [self presentModalViewController:helpVC animated:YES];
 }
 
 - (void)dismissModal:(HelpVC *)helpVC{
@@ -657,5 +665,36 @@
         }
     }
 }
-    
+
+#pragma mark loadIndicator
+-(void) startLoading{
+//    [loadIndicator setHidden:NO];
+    [loadIndicator startAnimating];
+    [latitude setEnabled:NO];
+    [longitude setEnabled:NO];
+//    [searchBar 
+    [geo setEnabled:NO];
+    [help setEnabled:NO];
+    for (UIView *subview in self.searchBar.subviews){  
+        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]){  
+            [subview setEnabled:NO];  
+            break;  
+        } 
+    }
+}
+
+-(void) stopLoading{
+    [loadIndicator stopAnimating];
+    [latitude setEnabled:YES];
+    [longitude setEnabled:YES];
+    //    [searchBar 
+    [geo setEnabled:YES];
+    [help setEnabled:YES];
+    for (UIView *subview in self.searchBar.subviews){  
+        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]){  
+            [subview setEnabled:YES];  
+            break;  
+        } 
+    }
+}
 @end

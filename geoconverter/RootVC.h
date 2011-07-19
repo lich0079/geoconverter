@@ -14,10 +14,12 @@
 
 
 @interface RootVC : UIViewController  <UITextFieldDelegate,MKReverseGeocoderDelegate,MKMapViewDelegate,UISearchBarDelegate,HelpVCDelegate,ADBannerViewDelegate,GADBannerViewDelegate> {
-    
 }
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *loadIndicator;
 
 @property (nonatomic, retain) IBOutlet UIButton *geo;
+
+@property (nonatomic, retain) IBOutlet UIButton *help;
 
 @property (nonatomic, retain) IBOutlet UITextField *latitude;
 
@@ -82,4 +84,9 @@
 - (void) startFindPlaceMark:(CLLocationCoordinate2D )coordinate;
 
 -(void) addPlaceMark:(MKReverseGeocoder*)geocoder title:(NSString *)title subtitle:(NSString *)subtitle;
+
+-(void) startLoading;
+
+-(void) stopLoading;
+
 @end

@@ -79,6 +79,8 @@
     if(![userDefault valueForKey:@"version1.0helpchecked"]){
         [rootVC helpButtonClick:nil];
     }
+    
+    [rootVC stopLoading];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
