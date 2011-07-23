@@ -29,8 +29,8 @@
 
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 
-@property(nonatomic, retain) ADBannerView *banner;
-@property(nonatomic, retain) GADBannerView *admobView;
+@property (nonatomic, retain) ADBannerView *banner;
+@property (nonatomic, retain) GADBannerView *admobView;
 
 @property BOOL enableZoom;
 

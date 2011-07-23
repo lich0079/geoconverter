@@ -24,7 +24,6 @@
 }
 
 - (void)dealloc{
-    [loadIndicator release];
     [super dealloc];
 }
 
@@ -35,7 +34,6 @@
 #pragma mark - View lifecycle
 - (void)viewDidLoad{
 //    CLog(@"%s start", __FUNCTION__);
-    
     [super viewDidLoad];
     self.latitude.delegate = self;
     self.longitude.delegate = self;
@@ -53,9 +51,8 @@
             break;  
         } 
     }
-
-    map.showsUserLocation = YES;
-    map.mapType = MKMapTypeStandard;
+//    map.showsUserLocation = YES;
+//    map.mapType = MKMapTypeStandard;
 
     //set textfield value
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
@@ -99,12 +96,9 @@
         [self releaseRoomForKeyboard];
         [longitude resignFirstResponder];
     }
-
-    
 }
 
 - (void)viewDidUnload {
-    [self setLoadIndicator:nil];
     [super viewDidUnload];
     self.latitude.delegate = nil;
     self.longitude.delegate = nil;
@@ -112,18 +106,18 @@
     self.map.delegate = nil;
     if(self.banner){
         self.banner.delegate=nil;
-        [self.banner release];
+        self.banner = nil;
     }
     if(self.admobView){
         self.admobView.delegate=nil;
-        [self.admobView release];
+        self.admobView = nil;
     }
-    [self.geo release];
-    [self.map release];
-    [self.latitude release];
-    [self.longitude release];
-    [self.searchBar release];
-    [self.loadIndicator release];
+    self.geo = nil;
+    self.map = nil;
+    self.latitude = nil;
+    self.longitude = nil;
+    self.searchBar = nil;
+    self.loadIndicator = nil;
 
     
 
@@ -549,10 +543,11 @@
     frame.size = [ADBannerView sizeFromBannerContentSizeIdentifier:contentSize];
     frame.origin = CGPointMake(0.0f, CGRectGetMaxY(self.view.bounds));
     
-    banner = [[[ADBannerView alloc] initWithFrame:frame] autorelease];
-    banner.delegate = self;
-    banner.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
-	banner.requiredContentSizeIdentifiers = (&ADBannerContentSizeIdentifierPortrait != nil) ?
+    self.banner = [[ADBannerView alloc] initWithFrame:frame];
+    [self.banner release];
+    self.banner.delegate = self;
+    self.banner.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin;
+	self.banner.requiredContentSizeIdentifiers = (&ADBannerContentSizeIdentifierPortrait != nil) ?
     [NSSet setWithObjects:ADBannerContentSizeIdentifierPortrait, ADBannerContentSizeIdentifierLandscape, nil] : 
     [NSSet setWithObjects:ADBannerContentSizeIdentifier320x50, ADBannerContentSizeIdentifier480x32, nil];
     [self.view addSubview:banner];
@@ -583,10 +578,10 @@
                                                            self.view.frame.size.height,
                                                            GAD_SIZE_320x50.width,
                                                            GAD_SIZE_320x50.height)];
+    [self.admobView release];
     admobView.adUnitID = @"a14e1a8af59a910";
     admobView.rootViewController = self;
     admobView.delegate = self;
-    admobView.center = CGPointMake(160, 250);
     [self.view addSubview:admobView];
     GADRequest *request = [GADRequest request];
     
@@ -620,7 +615,7 @@
 #pragma mark decide which ad to use
 - (void) createAd{
     NSString *timezone = [[NSTimeZone localTimeZone]name];
-//    timezone = @"America/xxx";
+//    timezone = @"America/Los_Angeles";
     if([timezone rangeOfString:@"America/Los_Angeles"].location== 0
        || [timezone rangeOfString:@"Europe/Rome"].location== 0
        || [timezone rangeOfString:@"Europe/San_Marino"].location== 0
@@ -687,7 +682,6 @@
     [loadIndicator stopAnimating];
     [latitude setEnabled:YES];
     [longitude setEnabled:YES];
-    //    [searchBar 
     [geo setEnabled:YES];
     [help setEnabled:YES];
     for (UIView *subview in self.searchBar.subviews){  
@@ -697,4 +691,5 @@
         } 
     }
 }
+
 @end

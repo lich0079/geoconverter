@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		E33567E013C9247F007F9D7C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E33567DF13C9247F007F9D7C /* iAd.framework */; };
 		E3425B8313BAC4FA00E6954E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E3425B8113BAC4FA00E6954E /* InfoPlist.strings */; };
+		E344982813DA9C02009B86AD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = E395995313C5BBBF00D891B8 /* Default.png */; };
+		E344982913DA9CCD009B86AD /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E395995513C5BC3300D891B8 /* Default@2x.png */; };
 		E34CD2FC13BA31D7008B84B6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E34CD2FA13BA31D7008B84B6 /* Localizable.strings */; };
 		E3706AE513BB53DB0078D50D /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = E3706AE313BB53DB0078D50D /* help.html */; };
 		E372181E13B72C78000684BB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372181D13B72C78000684BB /* UIKit.framework */; };
@@ -32,8 +34,6 @@
 		E395994413C5B0B000D891B8 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E395994313C5B0B000D891B8 /* Icon.png */; };
 		E395994613C5B0C000D891B8 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E395994513C5B0C000D891B8 /* Icon@2x.png */; };
 		E395994813C5B17900D891B8 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E395994713C5B17900D891B8 /* Icon-72.png */; };
-		E395995413C5BBBF00D891B8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = E395995313C5BBBF00D891B8 /* Default.png */; };
-		E395995613C5BC3300D891B8 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E395995513C5BC3300D891B8 /* Default@2x.png */; };
 		E396845D13B9D45500BC5D5E /* NSObject+SBJson.m in Sources */ = {isa = PBXBuildFile; fileRef = E396844513B9D45500BC5D5E /* NSObject+SBJson.m */; };
 		E396845E13B9D45500BC5D5E /* SBJsonParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E396844813B9D45500BC5D5E /* SBJsonParser.m */; };
 		E396845F13B9D45500BC5D5E /* SBJsonStreamParser.m in Sources */ = {isa = PBXBuildFile; fileRef = E396844A13B9D45500BC5D5E /* SBJsonStreamParser.m */; };
@@ -359,8 +359,8 @@
 				E395994413C5B0B000D891B8 /* Icon.png in Resources */,
 				E395994613C5B0C000D891B8 /* Icon@2x.png in Resources */,
 				E395994813C5B17900D891B8 /* Icon-72.png in Resources */,
-				E395995413C5BBBF00D891B8 /* Default.png in Resources */,
-				E395995613C5BC3300D891B8 /* Default@2x.png in Resources */,
+				E344982813DA9C02009B86AD /* Default.png in Resources */,
+				E344982913DA9CCD009B86AD /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -468,10 +468,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -482,10 +482,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 			};
@@ -539,10 +539,10 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
-				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 			};
