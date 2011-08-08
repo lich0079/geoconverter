@@ -375,7 +375,7 @@
 }
 - (void)mapViewDidFailLoadingMap:(MKMapView *)mapView withError:(NSError *)error{
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
-    [self errorAlert:[error localizedDescription]];
+//    [self errorAlert:[error localizedDescription]];
 }
 #pragma mark -  UISearchBarDelegate 
 //query yahoo api to get the geo info
