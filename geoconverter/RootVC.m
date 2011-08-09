@@ -25,6 +25,24 @@
 
 - (void)dealloc{
     [super dealloc];
+    self.latitude.delegate = nil;
+    self.longitude.delegate = nil;
+    self.searchBar.delegate = nil;
+    self.map.delegate = nil;
+    if(self.banner){
+        self.banner.delegate=nil;
+        [self.banner release];
+    }
+    if(self.admobView){
+        self.admobView.delegate=nil;
+        [self.admobView release];
+    }
+    [self.geo release];
+    [self.map release];
+    [self.latitude release];
+    [self.longitude release];
+    [self.searchBar release];
+    [self.loadIndicator release];
 }
 
 - (void)didReceiveMemoryWarning{

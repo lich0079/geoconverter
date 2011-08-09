@@ -24,6 +24,7 @@
 
 - (void)dealloc
 {
+    [self.web release];
     [super dealloc];
 }
 
