@@ -24,6 +24,9 @@
 		E372184613B75223000684BB /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372184513B75223000684BB /* MapKit.framework */; };
 		E3757FA913B9C8840095BB33 /* GTMHTTPFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = E3757FA813B9C8840095BB33 /* GTMHTTPFetcher.m */; };
 		E3757FAB13B9CD8C0095BB33 /* RootVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3757FAD13B9CD8C0095BB33 /* RootVC.xib */; };
+		E38010EE13F3EAE10015067B /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E395994513C5B0C000D891B8 /* Icon@2x.png */; };
+		E38010EF13F3EAE10015067B /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E395994313C5B0B000D891B8 /* Icon.png */; };
+		E38010F013F3EAE10015067B /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E395993413C5B06800D891B8 /* Icon-72.png */; };
 		E395993B13C5B06900D891B8 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E395993413C5B06800D891B8 /* Icon-72.png */; };
 		E395993C13C5B06900D891B8 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = E395993513C5B06800D891B8 /* Icon-Small-50.png */; };
 		E395993D13C5B06900D891B8 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = E395993613C5B06800D891B8 /* Icon-Small.png */; };
@@ -81,6 +84,11 @@
 		E3757FA813B9C8840095BB33 /* GTMHTTPFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GTMHTTPFetcher.m; sourceTree = "<group>"; };
 		E3757FAC13B9CD8C0095BB33 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RootVC.xib; sourceTree = "<group>"; };
 		E3757FAE13B9CDFE0095BB33 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/RootVC.xib"; sourceTree = "<group>"; };
+		E38010E513F3EA800015067B /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/RootVC.xib; sourceTree = "<group>"; };
+		E38010E613F3EA880015067B /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/HelpVC.xib; sourceTree = "<group>"; };
+		E38010EB13F3EAE10015067B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = ja; path = ja.lproj/help.html; sourceTree = "<group>"; };
+		E38010EC13F3EAE10015067B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		E38010ED13F3EAE10015067B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = geoconverter/ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E395993413C5B06800D891B8 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		E395993513C5B06800D891B8 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
 		E395993613C5B06800D891B8 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
@@ -326,6 +334,7 @@
 				"zh-Hans",
 				zh_Hans,
 				"zh-Hans-CN",
+				ja,
 			);
 			mainGroup = E372180E13B72C78000684BB;
 			productRefGroup = E372181A13B72C78000684BB /* Products */;
@@ -362,6 +371,9 @@
 				E395994813C5B17900D891B8 /* Icon-72.png in Resources */,
 				E344982813DA9C02009B86AD /* Default.png in Resources */,
 				E344982913DA9CCD009B86AD /* Default@2x.png in Resources */,
+				E38010EE13F3EAE10015067B /* Icon@2x.png in Resources */,
+				E38010EF13F3EAE10015067B /* Icon.png in Resources */,
+				E38010F013F3EAE10015067B /* Icon-72.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -409,6 +421,7 @@
 			children = (
 				E34CD2FB13BA31D7008B84B6 /* en */,
 				E34CD2FD13BA3251008B84B6 /* zh-Hans */,
+				E38010ED13F3EAE10015067B /* ja */,
 			);
 			name = Localizable.strings;
 			path = ..;
@@ -419,6 +432,7 @@
 			children = (
 				E3706AE413BB53DB0078D50D /* en */,
 				E3706AE613BB53E50078D50D /* zh-Hans */,
+				E38010EB13F3EAE10015067B /* ja */,
 			);
 			name = help.html;
 			sourceTree = "<group>";
@@ -427,6 +441,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				E372182713B72C78000684BB /* en */,
+				E38010EC13F3EAE10015067B /* ja */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -444,6 +459,7 @@
 			children = (
 				E3757FAC13B9CD8C0095BB33 /* en */,
 				E3757FAE13B9CDFE0095BB33 /* zh-Hans */,
+				E38010E513F3EA800015067B /* ja */,
 			);
 			name = RootVC.xib;
 			sourceTree = "<group>";
@@ -453,6 +469,7 @@
 			children = (
 				E3CE67C613BC81E100435A44 /* en */,
 				E3CE67CA13BC822800435A44 /* zh-Hans */,
+				E38010E613F3EA880015067B /* ja */,
 			);
 			name = HelpVC.xib;
 			sourceTree = "<group>";

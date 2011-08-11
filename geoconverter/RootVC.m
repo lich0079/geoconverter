@@ -51,7 +51,6 @@
 
 #pragma mark - View lifecycle
 - (void)viewDidLoad{
-//    CLog(@"%s start", __FUNCTION__);
     [super viewDidLoad];
     self.latitude.delegate = self;
     self.longitude.delegate = self;
@@ -99,8 +98,6 @@
     [tap release];
     
     [self createAd];
-    
-//    CLog(@"%s end", __FUNCTION__);
 }
 
 //dismiss keyboard
