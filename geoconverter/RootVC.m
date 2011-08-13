@@ -258,10 +258,11 @@
 }
 
 -(void) addPlaceMark:(MKReverseGeocoder*)geocoder title:(NSString *)title subtitle:(NSString *)subtitle{
+//    CLog(@"%f %f", geocoder.coordinate.latitude, geocoder.coordinate.longitude);
     [self removeMapAnnotation:geocoder.coordinate];
     [self addAnnotation:geocoder.coordinate title:title subtitle:subtitle];
     [self modifyText:geocoder.coordinate];
-    [geocoder release];
+    [geocoder autorelease];
     if(self.isGeocoderUseNetwork){
 //        CLog(@"stop use network");
         [UIApplication sharedApplication].networkActivityIndicatorVisible=NO; 
@@ -279,7 +280,7 @@
 }
 
 - (void)reverseGeocoder:(MKReverseGeocoder*)geocoder didFailWithError:(NSError*)error {
-//    CLog(@"%s",__FUNCTION__);
+//    CLog(@"%s %@",__FUNCTION__, [error localizedDescription]);
     [self addPlaceMark:geocoder title:NSLocalizedString(@"reverseGeocodererror", @"Could not retrieve the specified place information.") subtitle:nil];
     [self stopLoading];
 }
@@ -468,7 +469,7 @@
 }
 #pragma mark -  UIControl button click
 - (IBAction)geoButtonClick {
-    CLog(@"%s", __FUNCTION__);
+//    CLog(@"%s", __FUNCTION__);
     if(![self isLatitudeLongitudeInputValid]){
         return;
     }
@@ -481,7 +482,6 @@
         latiInput = -89;
     }
     CLLocationCoordinate2D coordinate ={latiInput,longiInput};
-    
     [self resignFirstResp:nil];
     [self setMapRegion:coordinate];
     //if the pin don't exist, we put the pin    
