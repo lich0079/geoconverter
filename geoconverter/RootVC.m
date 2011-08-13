@@ -204,20 +204,29 @@
 }
 
 - (void) setMapRegion:(CLLocationCoordinate2D )coordinate{
-    MKCoordinateRegion theRegion = map.region;
-    theRegion.center.latitude = coordinate.latitude;
-    theRegion.center.longitude = coordinate.longitude;
     if(self.enableZoom){
+        MKCoordinateRegion theRegion = map.region;
+        theRegion.center.latitude = coordinate.latitude;
+        theRegion.center.longitude = coordinate.longitude;
         theRegion.span.longitudeDelta = 1;
         theRegion.span.latitudeDelta = 1;
-    }
-    @try {
-        [map setRegion:theRegion animated:YES];
-    }
-    @catch (NSException *exception) {
-        [self errorAlert:[exception description]];
-    }
-    @finally {
+        @try {
+            [map setRegion:theRegion animated:YES];
+        }
+        @catch (NSException *exception) {
+            [self errorAlert:[exception description]];
+        }
+        @finally {
+        }
+    }else{
+        @try {
+            [map setCenterCoordinate:coordinate animated:YES];
+        }
+        @catch (NSException *exception) {
+            [self errorAlert:[exception description]];
+        }
+        @finally {
+        }
     }
 }
 
