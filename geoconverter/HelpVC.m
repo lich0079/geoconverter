@@ -64,7 +64,7 @@
 
 - (IBAction) closeClick:(id)sender{
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    [userDefault setValue:@"YES" forKey:@"version1.0helpchecked"];
+    [userDefault setValue:@"YES" forKey:@"version1.21helpchecked"];
     [userDefault synchronize];
     
     [delegate dismissModal:self];

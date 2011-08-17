@@ -53,11 +53,24 @@
         [tap release];
     }
     
-    if(![userDefault valueForKey:@"version1.0helpchecked"]){
+    if(![userDefault valueForKey:@"version1.21helpchecked"]){
         [rootVC helpButtonClick:nil];
     }
     
     [rootVC stopLoading];
+    
+    if([userDefault objectForKey:@"drawlines"]){
+        BOOL drawlines = [userDefault boolForKey:@"drawlines"];
+        if (drawlines) {
+            if (!rootVC.hasDrawLines) {
+                [rootVC addLatitudeAndLongitudeOverLayView];
+                rootVC.hasDrawLines = YES;
+            }
+        }else{
+            [rootVC.map removeOverlays:rootVC.map.overlays];
+            rootVC.hasDrawLines = NO;
+        }
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

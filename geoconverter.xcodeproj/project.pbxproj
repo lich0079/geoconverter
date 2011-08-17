@@ -50,12 +50,17 @@
 		E396846713B9D45500BC5D5E /* SBJsonUTF8Stream.m in Sources */ = {isa = PBXBuildFile; fileRef = E396845A13B9D45500BC5D5E /* SBJsonUTF8Stream.m */; };
 		E396846813B9D45500BC5D5E /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = E396845C13B9D45500BC5D5E /* SBJsonWriter.m */; };
 		E3994E1A13BB41FA00BFC67A /* HelpVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E3994E1813BB41FA00BFC67A /* HelpVC.m */; };
+		E3A6432B13FB64B900BE2F25 /* LaLoOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A6432A13FB64B900BE2F25 /* LaLoOverlayView.m */; };
+		E3A6432E13FB64C400BE2F25 /* LaLoOverlay.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A6432D13FB64C400BE2F25 /* LaLoOverlay.m */; };
+		E3A6433113FB64FC00BE2F25 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A6433013FB64FC00BE2F25 /* MBProgressHUD.m */; };
+		E3A6433413FB682C00BE2F25 /* ConverterVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E3A6433313FB682C00BE2F25 /* ConverterVC.m */; };
 		E3B3432C13B835B300364A56 /* RootVC.m in Sources */ = {isa = PBXBuildFile; fileRef = E3B3432A13B835B200364A56 /* RootVC.m */; };
 		E3CE67C513BC81E100435A44 /* HelpVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3CE67C713BC81E100435A44 /* HelpVC.xib */; };
 		E3CF57B713CAC5F90075C5F7 /* libGoogleAdMobAds.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CF57B013CAC5F90075C5F7 /* libGoogleAdMobAds.a */; };
 		E3CF57BA13CAC6270075C5F7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CF57B913CAC6270075C5F7 /* AudioToolbox.framework */; };
 		E3CF57BC13CAC62E0075C5F7 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CF57BB13CAC62E0075C5F7 /* MessageUI.framework */; };
 		E3CF57BE13CAC6370075C5F7 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3CF57BD13CAC6370075C5F7 /* SystemConfiguration.framework */; };
+		E3D9FBE213FB7E5B00A58C29 /* ConverterVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = E3D9FBE413FB7E5B00A58C29 /* ConverterVC.xib */; };
 		E3FB5E5113BA3E970009BE8A /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = E3FB5E5013BA3E970009BE8A /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
@@ -129,6 +134,14 @@
 		E396845C13B9D45500BC5D5E /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		E3994E1713BB41FA00BFC67A /* HelpVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpVC.h; sourceTree = "<group>"; };
 		E3994E1813BB41FA00BFC67A /* HelpVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpVC.m; sourceTree = "<group>"; };
+		E3A6432913FB64B900BE2F25 /* LaLoOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaLoOverlayView.h; sourceTree = "<group>"; };
+		E3A6432A13FB64B900BE2F25 /* LaLoOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaLoOverlayView.m; sourceTree = "<group>"; };
+		E3A6432C13FB64C400BE2F25 /* LaLoOverlay.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LaLoOverlay.h; sourceTree = "<group>"; };
+		E3A6432D13FB64C400BE2F25 /* LaLoOverlay.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LaLoOverlay.m; sourceTree = "<group>"; };
+		E3A6432F13FB64FC00BE2F25 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		E3A6433013FB64FC00BE2F25 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		E3A6433213FB682C00BE2F25 /* ConverterVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConverterVC.h; sourceTree = "<group>"; };
+		E3A6433313FB682C00BE2F25 /* ConverterVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConverterVC.m; sourceTree = "<group>"; };
 		E3B3432913B835B200364A56 /* RootVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootVC.h; sourceTree = "<group>"; };
 		E3B3432A13B835B200364A56 /* RootVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootVC.m; sourceTree = "<group>"; };
 		E3CE67C613BC81E100435A44 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/HelpVC.xib; sourceTree = "<group>"; };
@@ -143,6 +156,9 @@
 		E3CF57B913CAC6270075C5F7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		E3CF57BB13CAC62E0075C5F7 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		E3CF57BD13CAC6370075C5F7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		E3D9FBE313FB7E5B00A58C29 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ConverterVC.xib; sourceTree = "<group>"; };
+		E3D9FBE513FB7E6300A58C29 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hans"; path = "zh-Hans.lproj/ConverterVC.xib"; sourceTree = "<group>"; };
+		E3D9FBE613FB7E6500A58C29 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/ConverterVC.xib; sourceTree = "<group>"; };
 		E3FB5E5013BA3E970009BE8A /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Settings.bundle; path = ../Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -212,6 +228,14 @@
 				E3B3432A13B835B200364A56 /* RootVC.m */,
 				E3994E1713BB41FA00BFC67A /* HelpVC.h */,
 				E3994E1813BB41FA00BFC67A /* HelpVC.m */,
+				E3A6432913FB64B900BE2F25 /* LaLoOverlayView.h */,
+				E3A6432A13FB64B900BE2F25 /* LaLoOverlayView.m */,
+				E3A6432C13FB64C400BE2F25 /* LaLoOverlay.h */,
+				E3A6432D13FB64C400BE2F25 /* LaLoOverlay.m */,
+				E3A6432F13FB64FC00BE2F25 /* MBProgressHUD.h */,
+				E3A6433013FB64FC00BE2F25 /* MBProgressHUD.m */,
+				E3A6433213FB682C00BE2F25 /* ConverterVC.h */,
+				E3A6433313FB682C00BE2F25 /* ConverterVC.m */,
 				E372182413B72C78000684BB /* Supporting Files */,
 				E367CB8813CAF10F004BE68D /* CLog.h */,
 			);
@@ -231,6 +255,7 @@
 				E395993913C5B06800D891B8 /* Icon@2x.png */,
 				E395993A13C5B06900D891B8 /* iTunesArtWork.png */,
 				E3706AE313BB53DB0078D50D /* help.html */,
+				E3D9FBE413FB7E5B00A58C29 /* ConverterVC.xib */,
 				E3CE67C713BC81E100435A44 /* HelpVC.xib */,
 				E3757FAD13B9CD8C0095BB33 /* RootVC.xib */,
 				E372182F13B72C78000684BB /* MainWindow.xib */,
@@ -374,6 +399,7 @@
 				E38010EE13F3EAE10015067B /* Icon@2x.png in Resources */,
 				E38010EF13F3EAE10015067B /* Icon.png in Resources */,
 				E38010F013F3EAE10015067B /* Icon-72.png in Resources */,
+				E3D9FBE213FB7E5B00A58C29 /* ConverterVC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,6 +427,10 @@
 				E396846713B9D45500BC5D5E /* SBJsonUTF8Stream.m in Sources */,
 				E396846813B9D45500BC5D5E /* SBJsonWriter.m in Sources */,
 				E3994E1A13BB41FA00BFC67A /* HelpVC.m in Sources */,
+				E3A6432B13FB64B900BE2F25 /* LaLoOverlayView.m in Sources */,
+				E3A6432E13FB64C400BE2F25 /* LaLoOverlay.m in Sources */,
+				E3A6433113FB64FC00BE2F25 /* MBProgressHUD.m in Sources */,
+				E3A6433413FB682C00BE2F25 /* ConverterVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -472,6 +502,16 @@
 				E38010E613F3EA880015067B /* ja */,
 			);
 			name = HelpVC.xib;
+			sourceTree = "<group>";
+		};
+		E3D9FBE413FB7E5B00A58C29 /* ConverterVC.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E3D9FBE313FB7E5B00A58C29 /* en */,
+				E3D9FBE513FB7E6300A58C29 /* zh-Hans */,
+				E3D9FBE613FB7E6500A58C29 /* ja */,
+			);
+			name = ConverterVC.xib;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

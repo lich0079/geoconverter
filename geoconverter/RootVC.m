@@ -14,7 +14,7 @@
 
 @synthesize geo,help,map,latitude,longitude,searchBar,banner,admobView;//retain
 
-@synthesize enableZoom,enableTap,onetapGR,isGeocoderUseNetwork;
+@synthesize enableZoom,enableTap,onetapGR,isGeocoderUseNetwork,hasDrawLines;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -402,6 +402,59 @@
     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
 //    [self errorAlert:[error localizedDescription]];
 }
+
+#pragma mark -  add OverLayView
+-(void) addLatitudeAndLongitudeOverLayView {
+    for (int i=0; i<=18; i++) {
+        CLLocationCoordinate2D lats[2];
+        float lat = 90-i*10;
+        lats[0] = CLLocationCoordinate2DMake(lat,179);
+        lats[1] = CLLocationCoordinate2DMake(lat,-179);
+        MKPolyline *overlay = [MKPolyline polylineWithCoordinates:lats count:2];
+        [self.map addOverlay:overlay];
+    }
+    
+    for (int i=0; i<=36; i++) {
+        CLLocationCoordinate2D longs[2];
+        float longi = 180-i*10;
+        longs[0] = CLLocationCoordinate2DMake(89,longi);
+        longs[1] = CLLocationCoordinate2DMake(-89,longi);
+        [self.map addOverlay:[MKPolyline polylineWithCoordinates:longs count:2]];
+    }
+    for (int i=0; i<=18; i++) {
+        float lat = 90-i*10;
+        for (int i=0; i<=36; i++) {
+            float longi = 180-i*10;
+            LaLoOverlay *test = [[LaLoOverlay alloc]init];
+            test.coordinate = CLLocationCoordinate2DMake(lat, longi);
+            [self.map addOverlay:test];
+            [test autorelease];
+        }
+    }
+}
+
+- (MKOverlayView *)mapView:(MKMapView *)mapView viewForOverlay:(id <MKOverlay>)overlay {
+    if ([overlay isKindOfClass:NSClassFromString(@"LaLoOverlay")]) {
+        LaLoOverlayView *view = [[[LaLoOverlayView alloc] initWithOverlay:overlay]autorelease];
+        return view;
+    }
+    
+    
+    MKPolylineView *polyLineView = [[[MKPolylineView alloc] initWithOverlay:overlay] autorelease];
+    CLLocationCoordinate2D coordinate = [overlay coordinate];
+    if (coordinate.latitude == 0) {
+        polyLineView.strokeColor = [UIColor greenColor];
+    }else{
+        polyLineView.strokeColor = [UIColor blueColor];
+    }
+    
+    if (coordinate.latitude == 0 && coordinate.longitude == 0) {
+        polyLineView.strokeColor = [UIColor redColor];
+    }
+    polyLineView.lineWidth = 1.0;
+    return polyLineView;
+}
+
 #pragma mark -  UISearchBarDelegate 
 //query yahoo api to get the geo info
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
@@ -497,6 +550,13 @@
     if(![self isAnnotationExist:coordinate]){
         [self startFindPlaceMark:coordinate];
     }
+}
+
+- (IBAction)converterClick:(id)sender {
+    ConverterVC *controller= [[[ConverterVC alloc]init] autorelease];
+    controller.rootVC = self;
+    controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    [self presentModalViewController:controller animated:YES];
 }
 - (void) addButtonClick:(id)sender{
     UIButton *button = sender;
@@ -687,33 +747,36 @@
 
 #pragma mark loadIndicator
 -(void) startLoading{
-//    [loadIndicator setHidden:NO];
-    [loadIndicator startAnimating];
-    [latitude setEnabled:NO];
-    [longitude setEnabled:NO];
-//    [searchBar 
-    [geo setEnabled:NO];
-    [help setEnabled:NO];
-    for (UIView *subview in self.searchBar.subviews){  
-        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]){  
-            [subview setEnabled:NO];  
-            break;  
-        } 
-    }
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.dimBackground = YES;
+////    [loadIndicator setHidden:NO];
+//    [loadIndicator startAnimating];
+//    [latitude setEnabled:NO];
+//    [longitude setEnabled:NO];
+////    [searchBar 
+//    [geo setEnabled:NO];
+//    [help setEnabled:NO];
+//    for (UIView *subview in self.searchBar.subviews){  
+//        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]){  
+//            [subview setEnabled:NO];  
+//            break;  
+//        } 
+//    }
 }
 
 -(void) stopLoading{
-    [loadIndicator stopAnimating];
-    [latitude setEnabled:YES];
-    [longitude setEnabled:YES];
-    [geo setEnabled:YES];
-    [help setEnabled:YES];
-    for (UIView *subview in self.searchBar.subviews){  
-        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]){  
-            [subview setEnabled:YES];  
-            break;  
-        } 
-    }
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+//    [loadIndicator stopAnimating];
+//    [latitude setEnabled:YES];
+//    [longitude setEnabled:YES];
+//    [geo setEnabled:YES];
+//    [help setEnabled:YES];
+//    for (UIView *subview in self.searchBar.subviews){  
+//        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]){  
+//            [subview setEnabled:YES];  
+//            break;  
+//        } 
+//    }
 }
 
 @end

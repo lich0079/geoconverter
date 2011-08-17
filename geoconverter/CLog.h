@@ -7,6 +7,10 @@
 //
 #ifdef DEBUG
 #define CLog(format, ...) NSLog(format, ## __VA_ARGS__)
+#define CLogc  CLog(@"%s", __FUNCTION__)
 #else
 #define CLog(format, ...)
+#define CLogc
 #endif
+
+#define isIPad  UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad

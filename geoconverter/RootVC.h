@@ -11,6 +11,10 @@
 #import "SBJsonParser.h"
 #import "HelpVC.h"
 #import "GADBannerView.h"
+#import "LaLoOverlay.h"
+#import "LaLoOverlayView.h"
+#import "MBProgressHUD.h"
+#import "ConverterVC.h"
 
 
 @interface RootVC : UIViewController  <UITextFieldDelegate,MKReverseGeocoderDelegate,MKMapViewDelegate,UISearchBarDelegate,HelpVCDelegate,ADBannerViewDelegate,GADBannerViewDelegate> {
@@ -38,9 +42,12 @@
 
 @property BOOL isGeocoderUseNetwork;
 
+@property BOOL hasDrawLines;
+
 @property (nonatomic, assign) UITapGestureRecognizer *onetapGR;
 
 - (IBAction)geoButtonClick;
+- (IBAction)converterClick:(id)sender;
 
 - (void) makeRoomForKeyboard;
 
@@ -89,4 +96,5 @@
 
 -(void) stopLoading;
 
+-(void) addLatitudeAndLongitudeOverLayView;
 @end

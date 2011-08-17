@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.11</string>
+			<string>1.21</string>
 			<key>Key</key>
 			<string>version</string>
 			<key>Title</key>
@@ -39,6 +39,16 @@
 			<string>onetap</string>
 			<key>Type</key>
 			<string>PSToggleSwitchSpecifier</string>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSToggleSwitchSpecifier</string>
+			<key>Title</key>
+			<string>drawlines</string>
+			<key>Key</key>
+			<string>drawlines</string>
+			<key>DefaultValue</key>
+			<false/>
 		</dict>
 	</array>
 	<key>StringsTable</key>
