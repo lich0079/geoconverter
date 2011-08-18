@@ -479,7 +479,6 @@
         dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         dispatch_async(aQueue, ^{
             NSString* aStr = [[NSString alloc] initWithData:retrievedData encoding:NSUTF8StringEncoding] ;  
-            //                CLog(@"%@  %d",aStr, [resultsArray count]);
             SBJsonParser *parse = [[SBJsonParser alloc] init];
             NSDictionary *result = [parse objectWithString:aStr];
             [parse release];
