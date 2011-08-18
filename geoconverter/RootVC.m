@@ -361,6 +361,13 @@
     }else{
         pin.annotation = annotation;
     }
+//    dispatch_queue_t aQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
+//    dispatch_async(aQueue, ^{
+//        sleep(1);
+//        dispatch_async(dispatch_get_main_queue(),^{
+//    [self.map selectAnnotation:annotation animated:YES];
+//        });
+//    });
     return pin;
 }
 //use click the pin
@@ -554,7 +561,7 @@
 - (IBAction)converterClick:(id)sender {
     ConverterVC *controller= [[[ConverterVC alloc]init] autorelease];
     controller.rootVC = self;
-    controller.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+    controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:controller animated:YES];
 }
 - (void) addButtonClick:(id)sender{
