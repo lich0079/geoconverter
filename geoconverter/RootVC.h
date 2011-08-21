@@ -17,9 +17,9 @@
 #import "ConverterVC.h"
 
 
-@interface RootVC : UIViewController  <UITextFieldDelegate,MKReverseGeocoderDelegate,MKMapViewDelegate,UISearchBarDelegate,HelpVCDelegate,ADBannerViewDelegate,GADBannerViewDelegate> {
+@interface RootVC : UIViewController  <UITextFieldDelegate,MKReverseGeocoderDelegate,MKMapViewDelegate,UISearchBarDelegate,HelpVCDelegate,ADBannerViewDelegate,GADBannerViewDelegate,CLLocationManagerDelegate> {
+    CLLocationCoordinate2D userLocation;
 }
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *loadIndicator;
 
 @property (nonatomic, retain) IBOutlet UIButton *geo;
 
@@ -35,6 +35,10 @@
 
 @property (nonatomic, retain) ADBannerView *banner;
 @property (nonatomic, retain) GADBannerView *admobView;
+
+@property (nonatomic, retain) CLLocationManager *locationManager;
+
+
 
 @property BOOL enableZoom;
 
@@ -97,4 +101,8 @@
 -(void) stopLoading;
 
 -(void) addLatitudeAndLongitudeOverLayView;
+
+- (void)startStandardUpdates;
+
+- (BOOL) isUserLocation:(CLLocationCoordinate2D ) coordinate;
 @end

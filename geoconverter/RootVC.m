@@ -10,9 +10,8 @@
 
 
 @implementation RootVC
-@synthesize loadIndicator;
 
-@synthesize geo,help,map,latitude,longitude,searchBar,banner,admobView;//retain
+@synthesize geo,help,map,latitude,longitude,searchBar,banner,admobView,locationManager;//retain
 
 @synthesize enableZoom,enableTap,onetapGR,isGeocoderUseNetwork,hasDrawLines;
 
@@ -42,7 +41,9 @@
     [self.latitude release];
     [self.longitude release];
     [self.searchBar release];
-    [self.loadIndicator release];
+    if (self.locationManager) {
+        [self.locationManager release];
+    }
 }
 
 - (void)didReceiveMemoryWarning{
@@ -68,8 +69,6 @@
             break;  
         } 
     }
-//    map.showsUserLocation = YES;
-//    map.mapType = MKMapTypeStandard;
 
     //set textfield value
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
@@ -98,6 +97,10 @@
     [tap release];
     
     [self createAd];
+    
+    //user location
+    userLocation = CLLocationCoordinate2DMake(300.0f, 300.0f);
+    [self startStandardUpdates];
 }
 
 //dismiss keyboard
@@ -132,16 +135,45 @@
     self.latitude = nil;
     self.longitude = nil;
     self.searchBar = nil;
-    self.loadIndicator = nil;
-
-    
-
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
+#pragma mark - CLLocationManagerDelegate
+- (void)startStandardUpdates {
+    self.locationManager = [[CLLocationManager alloc] init];
+    locationManager.delegate = self;
+    locationManager.desiredAccuracy = kCLLocationAccuracyKilometer;
+    locationManager.distanceFilter = 500;
+    [locationManager startUpdatingLocation];
+    [self.locationManager release];
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+    didUpdateToLocation:(CLLocation *)newLocation
+           fromLocation:(CLLocation *)oldLocation {
+//    CLogc;
+    // If it's a relatively recent event, turn off updates to save power
+    NSDate* eventDate = newLocation.timestamp;
+    NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+    if (abs(howRecent) < 15.0) {
+        userLocation = newLocation.coordinate;
+        [self startFindPlaceMark:newLocation.coordinate];
+    }
+}
+
+- (BOOL) isUserLocation:(CLLocationCoordinate2D ) coordinate{
+    if (userLocation.latitude == 300.0f && userLocation.longitude == 300.0f) {
+        return NO;
+    }else if (userLocation.latitude == coordinate.latitude && userLocation.longitude == coordinate.longitude) {
+        return  YES;
+    }else {
+        return NO;
+    }
+    
+}
 
 #pragma mark - textfield input
 //raise the view's frame so the keyboard won't block the textfield
@@ -263,17 +295,21 @@
         [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
         self.isGeocoderUseNetwork = YES;
     }
-    [self startLoading];
+    if ([self isUserLocation:coordinate]) {
+    }else{
+        [self startLoading];
+    }
 }
 
 -(void) addPlaceMark:(MKReverseGeocoder*)geocoder title:(NSString *)title subtitle:(NSString *)subtitle{
 //    CLog(@"%f %f", geocoder.coordinate.latitude, geocoder.coordinate.longitude);
     [self removeMapAnnotation:geocoder.coordinate];
     [self addAnnotation:geocoder.coordinate title:title subtitle:subtitle];
-    [self modifyText:geocoder.coordinate];
+    if (![self isUserLocation:geocoder.coordinate]) {
+        [self modifyText:geocoder.coordinate];
+    }
     [geocoder autorelease];
     if(self.isGeocoderUseNetwork){
-//        CLog(@"stop use network");
         [UIApplication sharedApplication].networkActivityIndicatorVisible=NO; 
         self.isGeocoderUseNetwork = NO;
     }
@@ -319,13 +355,12 @@
 }
 //remove other annotation so there will be only two annotation, the tobeAdd and the userlocation
 - (void) removeMapAnnotation:(CLLocationCoordinate2D )tobeAdd{
-    CLLocationCoordinate2D user = map.userLocation.coordinate;
     NSArray *anns = map.annotations;
  
     for (int j=0; j<[anns count]; j++) {
         id <MKAnnotation> an = [anns objectAtIndex:j];
         CLLocationCoordinate2D i = [an coordinate];
-        if(user.latitude == i.latitude && user.longitude == i.longitude){
+        if([self isUserLocation:i]){
         }else if (tobeAdd.latitude == i.latitude && tobeAdd.longitude == i.longitude){
         }else{
             MKPointAnnotation *ann = (MKPointAnnotation *)an;
@@ -339,14 +374,6 @@
 
 - (MKAnnotationView *)mapView:(MKMapView *)theMapView viewForAnnotation:(id <MKAnnotation>)annotation{
     MKPinAnnotationView* pin = (MKPinAnnotationView *)[theMapView dequeueReusableAnnotationViewWithIdentifier:@"pin"];
-    
-    //don't let user location pin setup by this method 
-    CLLocationCoordinate2D user = map.userLocation.coordinate;
-    CLLocationCoordinate2D tobeAdd = [annotation coordinate];
-    if(user.latitude == tobeAdd.latitude && user.longitude == tobeAdd.longitude){
-        return nil;
-    }
-    //////////////////////////////////////////
     
     if(!pin){
         pin = [[[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"pin"] autorelease];
@@ -368,6 +395,14 @@
 //    [self.map selectAnnotation:annotation animated:YES];
 //        });
 //    });
+    
+    //set user location pin color 
+    CLLocationCoordinate2D tobeAdd = [annotation coordinate];
+    if([self isUserLocation:tobeAdd]){
+        pin.pinColor = MKPinAnnotationColorPurple;
+    }
+    //////////////////////////////////////////
+    
     return pin;
 }
 //use click the pin
@@ -686,11 +721,11 @@
 }
 
 - (void)adViewDidReceiveAd:(GADBannerView *)bannerView{
-    CLog(@"%s",__FUNCTION__);
+//    CLog(@"%s",__FUNCTION__);
     [self layoutForCurrentOrientation:YES isLoadSuccess:YES];
 }
 - (void)adView:(GADBannerView *)bannerView didFailToReceiveAdWithError:(GADRequestError *)error{
-        CLog(@"%s %@",__FUNCTION__, [error localizedDescription]);
+//        CLog(@"%s %@",__FUNCTION__, [error localizedDescription]);
     [self layoutForCurrentOrientation:YES isLoadSuccess:NO];
 }
 
