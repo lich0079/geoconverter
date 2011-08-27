@@ -96,7 +96,10 @@
     [self.map addGestureRecognizer:tap];
     [tap release];
     
-    [self createAd];
+    
+    if([userDefault objectForKey:@"version1.21helpchecked"] || [userDefault objectForKey:@"version1.0helpchecked"]){
+        [self createAd];
+    }
     
     //user location
     userLocation = CLLocationCoordinate2DMake(300.0f, 300.0f);

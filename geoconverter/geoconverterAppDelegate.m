@@ -53,7 +53,9 @@
         [tap release];
     }
     
-    if(![userDefault valueForKey:@"version1.21helpchecked"]){
+    if(![userDefault valueForKey:@"version1.30helpchecked"]){
+        [userDefault setValue:@"YES" forKey:@"version1.30helpchecked"];
+        [userDefault synchronize];
         [rootVC helpButtonClick:nil];
     }
     
