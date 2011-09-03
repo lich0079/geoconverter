@@ -71,20 +71,19 @@
     [rootVC dismissModal:nil];
 }
 
-
 -(void) degreeToNum{
-    float latDeInput = [latDe.text floatValue];
-    float latMinInput = [latMin.text floatValue];
-    float latSecInput = [latSec.text floatValue];
-    float longDeInput = [longDe.text floatValue];
-    float longMinInput = [longMin.text floatValue];
-    float longSecInput = [longSec.text floatValue];
+    float latDeInput = fabsf(roundf([latDe.text floatValue]* 1000000.));
+    float latMinInput = fabsf(roundf([latMin.text floatValue]* 1000000.));
+    float latSecInput = fabsf(roundf([latSec.text floatValue]* 1000000.));
+    float longDeInput = fabsf(roundf([longDe.text floatValue]* 1000000.));
+    float longMinInput = fabsf(roundf([longMin.text floatValue]* 1000000.));
+    float longSecInput = fabsf(roundf([longSec.text floatValue]* 1000000.));
     
-    float latiInput = latDeInput + latMinInput/60 + latSecInput/3600;
+    float latiInput = roundf(latDeInput + (latMinInput/60.) + (latSecInput/3600.) )/1000000;
     if (LatitudeSW.selectedSegmentIndex == 1) {
         latiInput = latiInput *-1;
     }
-    float longiInput = longDeInput + longMinInput/60 + longSecInput/3600;
+    float longiInput = roundf(longDeInput + (longMinInput/60.) + (longSecInput/3600.) )/1000000;
     if (LongitudeSW.selectedSegmentIndex == 1) {
         longiInput = longiInput *-1;
     }
@@ -100,14 +99,11 @@
         LatitudeSW.selectedSegmentIndex = 1;
         latiInput = latiInput*-1;
     }
-    int latDeint = (int)latiInput;
-    float temp =  (latiInput - latDeint) *60;
-    int latMinint = (int) temp;
-    temp =  (temp - latMinint) *60;
-    int latSecint = (int) temp;
-    latDe.text = [ NSString stringWithFormat:@"%d", latDeint ];
-    latMin.text = [ NSString stringWithFormat:@"%d", latMinint ];
-    latSec.text = [ NSString stringWithFormat:@"%d", latSecint ];
+    float latAbs = roundf(latiInput * 1000000.);
+    
+    latDe.text = [ NSString stringWithFormat:@"%d", (int)floorf(latAbs / 1000000)];
+    latMin.text = [ NSString stringWithFormat:@"%d", (int)roundf((floorf(( (latAbs/1000000) - floorf(latAbs/1000000) ) * 60)) )];
+    latSec.text = [ NSString stringWithFormat:@"%d", (int)roundf((( floorf(((((latAbs/1000000) - floorf(latAbs/1000000)) * 60) - floorf(((latAbs/1000000) - floorf(latAbs/1000000)) * 60)) * 100000) *60/100000 ) ))];
     
     float longiInput = [rootVC.longitude.text floatValue];
     if (longiInput >= 0) {
@@ -116,15 +112,14 @@
         LongitudeSW.selectedSegmentIndex = 1;
         longiInput = longiInput*-1;
     }
-    int longiDeint = (int)longiInput;
-    temp =  (longiInput - longiDeint) *60;
-    int longiMinint = (int) temp;
-    temp =  (temp - longiMinint) *60;
-    int longiSecint = (int) temp;
-    longDe.text = [ NSString stringWithFormat:@"%d", longiDeint ];
-    longMin.text = [ NSString stringWithFormat:@"%d", longiMinint ];
-    longSec.text = [ NSString stringWithFormat:@"%d", longiSecint ];
+    
+    float lonAbs = roundf(longiInput * 1000000.);
+    
+    longDe.text = [ NSString stringWithFormat:@"%d", (int)floorf(lonAbs / 1000000) ];
+    longMin.text = [ NSString stringWithFormat:@"%d", (int)(floorf(((lonAbs/1000000) - floorf(lonAbs/1000000)) * 60)) ];
+    longSec.text = [ NSString stringWithFormat:@"%d", (int)(( floorf(((((lonAbs/1000000) - floorf(lonAbs/1000000)) * 60) - floorf(((lonAbs/1000000) - floorf(lonAbs/1000000)) * 60)) * 100000) *60/100000 )) ];
 }
+
 
 - (void)viewDidUnload
 {
