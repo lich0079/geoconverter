@@ -793,34 +793,10 @@
 -(void) startLoading{
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     hud.dimBackground = YES;
-////    [loadIndicator setHidden:NO];
-//    [loadIndicator startAnimating];
-//    [latitude setEnabled:NO];
-//    [longitude setEnabled:NO];
-////    [searchBar 
-//    [geo setEnabled:NO];
-//    [help setEnabled:NO];
-//    for (UIView *subview in self.searchBar.subviews){  
-//        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]){  
-//            [subview setEnabled:NO];  
-//            break;  
-//        } 
-//    }
 }
 
 -(void) stopLoading{
     [MBProgressHUD hideHUDForView:self.view animated:YES];
-//    [loadIndicator stopAnimating];
-//    [latitude setEnabled:YES];
-//    [longitude setEnabled:YES];
-//    [geo setEnabled:YES];
-//    [help setEnabled:YES];
-//    for (UIView *subview in self.searchBar.subviews){  
-//        if ([subview isKindOfClass:NSClassFromString(@"UISearchBarTextField")]){  
-//            [subview setEnabled:YES];  
-//            break;  
-//        } 
-//    }
 }
 
 @end

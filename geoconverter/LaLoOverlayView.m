@@ -10,8 +10,7 @@
 
 @implementation LaLoOverlayView
 
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self) {
     }

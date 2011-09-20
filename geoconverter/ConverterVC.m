@@ -37,11 +37,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self numToDegree];
-//    // one tap to dismiss keyboard 
-//    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(resignFirstResp:)];
-//    tap.numberOfTapsRequired=1;
-//    [self.view addGestureRecognizer:tap];
-//    [tap release];
 }
 
 
@@ -71,7 +66,7 @@
     [rootVC dismissModal:nil];
 }
 
--(void) degreeToNum{
+- (void) degreeToNum {
     float latDeInput = fabsf(roundf([latDe.text floatValue]* 1000000.));
     float latMinInput = fabsf(roundf([latMin.text floatValue]* 1000000.));
     float latSecInput = fabsf(roundf([latSec.text floatValue]* 1000000.));
@@ -91,7 +86,7 @@
     rootVC.longitude.text = [NSString stringWithFormat:@"%f",longiInput];
 }
 
--(void) numToDegree{
+- (void) numToDegree {
     float latiInput = [rootVC.latitude.text floatValue];
     if (latiInput >= 0) {
         LatitudeSW.selectedSegmentIndex = 0;
@@ -121,8 +116,7 @@
 }
 
 
-- (void)viewDidUnload
-{
+- (void)viewDidUnload {
     [self setLatitudeSW:nil];
     [self setLongitudeSW:nil];
     [self setLatDe:nil];
@@ -135,13 +129,12 @@
     [super viewDidUnload];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 - (void)dealloc {
-//    CLogc;
+    CLogc;
     [LatitudeSW release];
     [LongitudeSW release];
     [latDe release];
