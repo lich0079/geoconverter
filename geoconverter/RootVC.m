@@ -501,10 +501,39 @@
 }
 
 #pragma mark -  UISearchBarDelegate 
-//query yahoo api to get the geo info
+//query yahoo api to get the geo info  or use corelocation in ios5
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-//        CLog(@"%s  %@",__FUNCTION__, self.searchBar.text);
     [self.searchBar resignFirstResponder];
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 50000
+    CLog(@"ios5");
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
+    [self startLoading];
+    [geocoder geocodeAddressString:self.searchBar.text
+                 completionHandler:^(NSArray* placemarks, NSError* error){
+                     int count = [placemarks count];
+                     if(count > 0 ){
+                         //remove other pin
+                         CLLocationCoordinate2D coordinate = {0,0};
+                         [self removeMapAnnotation:coordinate];
+                         for (int i = 0; i < count; i++) {
+                             CLPlacemark *location = [placemarks objectAtIndex:i];
+                             if(i == count - 1 ){
+                                 [self handleSearchCLPlacemark:location isLast:YES];
+                             }else{
+                                 [self handleSearchCLPlacemark:location isLast:NO];
+                             }
+                         }
+                     }else{
+                         [self errorAlert:NSLocalizedString(@"noresult",@"no result")];
+                     }
+                     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
+                     [self stopLoading];
+                 }];
+    [geocoder autorelease];
+#else
+    CLog(@"ios4");
+    
     NSString *locale = [NSString stringWithFormat:@"&locale=%@",[[NSLocale autoupdatingCurrentLocale] localeIdentifier]];
     NSString *urlString=[NSString stringWithFormat:@"%@%@%@",@"http://where.yahooapis.com/geocode?appid=V1YpaJ7k&flags=j&q=",[self.searchBar.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],locale];
     NSURL *requestURL = [NSURL URLWithString:urlString];
@@ -512,7 +541,8 @@
     GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];  
     [fetcher beginFetchWithDelegate:self didFinishSelector:@selector(fetchDone:finishedWithData:error:)];  
     [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
-    [self startLoading];
+    [self startLoading];  
+#endif
 }
 
 //parse geo info data and add pin
@@ -573,6 +603,51 @@
     }
     
 }
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 50000
+-(void) handleSearchCLPlacemark:(CLPlacemark *)result isLast:(BOOL)isLast{
+//    CLog(@"%@", result);
+//    CLog(@"%@", result.name);
+//    CLog(@"%@", result.ISOcountryCode);
+//    CLog(@"%@", result.country);
+//    CLog(@"%@", result.postalCode);
+//    CLog(@"%@", result.administrativeArea);
+//    CLog(@"%@", result.subAdministrativeArea);
+//    CLog(@"%@", result.locality);
+//    CLog(@"%@", result.subLocality);
+//    CLog(@"%@", result.thoroughfare);
+//    CLog(@"%@", result.subThoroughfare);
+//    CLog(@"%@", result.region);
+//    CLog(@"%@", result.inlandWater);
+//    CLog(@"%@", result.ocean);
+    NSString *country = result.country;
+    NSString *state = result.administrativeArea;
+    if (!result.administrativeArea && result.subAdministrativeArea) {
+        state = result.subAdministrativeArea;
+    }
+    NSString *city = result.locality;
+    if (!result.locality && result.subLocality) {
+        city = result.subLocality;
+    }
+    NSString *street = result.thoroughfare;
+    if (result.thoroughfare && result.subThoroughfare) {
+        street = [street stringByAppendingFormat:@" %@",result.subThoroughfare];
+    }else if (result.subThoroughfare){
+        street = result.subThoroughfare;
+    }
+    if([street length] == 0){
+        street = result.name;
+    }
+    NSString *subtitle = [self generateSubtitleForLocation:state city:city street:street];
+    CLLocationCoordinate2D coordinate = result.location.coordinate;
+    [self addAnnotation:coordinate title:country subtitle:subtitle];
+    if(isLast){
+        [self setMapRegion:coordinate];
+        [self modifyText:coordinate];
+    }
+    
+}
+#endif
+
 #pragma mark -  UIControl button click
 - (IBAction)geoButtonClick {
 //    CLog(@"%s", __FUNCTION__);
