@@ -15,4 +15,5 @@
     #import <CoreLocation/CoreLocation.h>
     #import <MapKit/MapKit.h> 
     #import "CLog.h"
+    #import "MobClick.h"
 #endif

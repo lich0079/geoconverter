@@ -51,12 +51,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "geoconverter/RootVC.m"
-         timestampString = "340124484.945455"
+         timestampString = "340479829.263652"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "608"
-         endingLineNumber = "608"
-         landmarkName = "-handleSearchResult:isLast:"
+         startingLineNumber = "616"
+         endingLineNumber = "616"
+         landmarkName = "-handleSearchCLPlacemark:isLast:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -79,11 +79,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "geoconverter/RootVC.m"
-         timestampString = "340125464.144745"
+         timestampString = "340479829.263652"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "627"
-         endingLineNumber = "627"
+         startingLineNumber = "635"
+         endingLineNumber = "635"
          landmarkName = "-handleSearchCLPlacemark:isLast:"
          landmarkType = "5">
       </FileBreakpoint>

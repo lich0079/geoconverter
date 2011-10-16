@@ -99,6 +99,9 @@
     
     if([userDefault objectForKey:@"version1.21helpchecked"] || [userDefault objectForKey:@"version1.0helpchecked"]){
         [self createAd];
+        [MobClick event:a_hasad];
+    }else{
+        [MobClick event:a_noad];
     }
     
     //user location
@@ -408,8 +411,9 @@
     
     return pin;
 }
-//use click the pin
+//user click the pin
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
+    [MobClick event:a_locationinfo];
     CLLocationCoordinate2D coordinate =[view.annotation coordinate];
     [self modifyText:coordinate];
 }
@@ -417,6 +421,7 @@
 - (void)longPress:(UIGestureRecognizer*)gestureRecognizer {
 //    CLog(@"%s %d",__FUNCTION__,gestureRecognizer.state);
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded){
+        [MobClick event:a_longpress];
         //transfer coordinate
         CGPoint touchPoint = [gestureRecognizer locationInView:map];
         CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
@@ -431,6 +436,7 @@
     // CLog(@"%s",__FUNCTION__);
 //    CLog(@"%d", gestureRecognizer.state);
     [self resignFirstResp:nil];
+    [MobClick event:a_tap];
     CGPoint touchPoint = [gestureRecognizer locationInView:map];
     CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
     [self modifyText:touchMapCoordinate];
@@ -450,6 +456,7 @@
 
 #pragma mark -  add OverLayView
 -(void) addLatitudeAndLongitudeOverLayView {
+    [MobClick event:a_drawline];
     for (int i=0; i<=18; i++) {
         CLLocationCoordinate2D lats[2];
         float lat = 90-i*10;
@@ -506,6 +513,7 @@
     [self.searchBar resignFirstResponder];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 50000
     CLog(@"ios5");
+    [MobClick event:a_searchios5];
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
     [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
     [self startLoading];
@@ -533,7 +541,7 @@
     [geocoder autorelease];
 #else
     CLog(@"ios4");
-    
+    [MobClick event:a_searchyahoo];
     NSString *locale = [NSString stringWithFormat:@"&locale=%@",[[NSLocale autoupdatingCurrentLocale] localeIdentifier]];
     NSString *urlString=[NSString stringWithFormat:@"%@%@%@",@"http://where.yahooapis.com/geocode?appid=V1YpaJ7k&flags=j&q=",[self.searchBar.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],locale];
     NSURL *requestURL = [NSURL URLWithString:urlString];
@@ -654,6 +662,7 @@
     if(![self isLatitudeLongitudeInputValid]){
         return;
     }
+    [MobClick event:a_convert]; 
     float latiInput=  [latitude.text floatValue];
     float longiInput=  [longitude.text floatValue];
     //if == 90 there will be a calayer bond error
@@ -678,6 +687,7 @@
     [self presentModalViewController:controller animated:YES];
 }
 - (void) addButtonClick:(id)sender{
+    [MobClick event:a_addbutton];
     UIButton *button = sender;
     MKPinAnnotationView *pin = (MKPinAnnotationView *)button.superview.superview;
     CLLocationCoordinate2D coordinate = [pin.annotation coordinate];
@@ -700,6 +710,7 @@
 }
 
 - (IBAction) helpButtonClick:(id)sender{
+    [MobClick event:a_help];
     HelpVC *helpVC= [[[HelpVC alloc]init] autorelease];
     helpVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     helpVC.delegate = self;
@@ -741,6 +752,7 @@
 }
 
 -(void)createADBannerView {
+    [MobClick event:a_iad];
 	NSString *contentSize = (&ADBannerContentSizeIdentifierPortrait != nil) ?ADBannerContentSizeIdentifierPortrait:ADBannerContentSizeIdentifier320x50;
     CGRect frame;
     frame.size = [ADBannerView sizeFromBannerContentSizeIdentifier:contentSize];
@@ -776,6 +788,7 @@
 #pragma mark admob methods   
 -(void)createAdmobGADBannerView{
     CLog(@"%s",__FUNCTION__);
+    [MobClick event:a_admob];
     self.admobView = [[GADBannerView alloc]
                                   initWithFrame:CGRectMake(0.0,
                                                            self.view.frame.size.height,

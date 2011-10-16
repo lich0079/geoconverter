@@ -18,16 +18,21 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window.rootViewController = rootVC;
     [self.window makeKeyAndVisible];
+    
+    [MobClick setDelegate:self];
+    [MobClick appLaunched];
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
+    [MobClick appTerminated];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+    [MobClick appLaunched];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -76,6 +81,7 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
+    [MobClick appTerminated];
 }
 
 - (void)dealloc {
@@ -83,5 +89,10 @@
     [_window release];
     [super dealloc];
 }
+
+- (NSString *)appKey{
+    return @"4e9b14995270155b0800009f";
+}
+
 
 @end
