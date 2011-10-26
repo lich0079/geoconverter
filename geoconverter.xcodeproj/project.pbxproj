@@ -254,8 +254,8 @@
 				E3A6433213FB682C00BE2F25 /* ConverterVC.h */,
 				E3A6433313FB682C00BE2F25 /* ConverterVC.m */,
 				E35B961A144B4C4A00F0BE91 /* MobClick.h */,
-				E372182413B72C78000684BB /* Supporting Files */,
 				E367CB8813CAF10F004BE68D /* CLog.h */,
+				E372182413B72C78000684BB /* Supporting Files */,
 			);
 			path = geoconverter;
 			sourceTree = "<group>";

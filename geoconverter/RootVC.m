@@ -7,6 +7,7 @@
 //
 
 #import "RootVC.h"
+#import "sys/utsname.h"
 
 
 @implementation RootVC
@@ -292,19 +293,41 @@
 }
 
 - (void) startFindPlaceMark:(CLLocationCoordinate2D )coordinate{
-    MKReverseGeocoder* theGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
-    theGeocoder.delegate = self;
-    [theGeocoder start];
     BOOL isOtherUseNeiwork = [UIApplication sharedApplication].networkActivityIndicatorVisible ;
     if(!isOtherUseNeiwork){
-//        CLog(@"use network");
+        //        CLog(@"use network");
         [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
         self.isGeocoderUseNetwork = YES;
     }
-    if ([self isUserLocation:coordinate]) {
-    }else{
-        [self startLoading];
-    }
+    
+//    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
+//        CLog(@"ios5");
+//        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+//        CLLocation *location = [[[CLLocation alloc ] initWithLatitude:coordinate.latitude longitude:coordinate.longitude] autorelease];
+//        [geocoder reverseGeocodeLocation:location completionHandler:
+//         ^(NSArray* placemarks, NSError* error){
+//             CLog(@"%@ %d", [error localizedDescription], [placemarks count]);
+//             if ([placemarks count] > 0) {
+//                 CLPlacemark *placemark = [placemarks objectAtIndex:0];
+//                 NSString *subtitle = [self generateSubtitleForLocation:placemark.administrativeArea city:placemark.locality street:placemark.thoroughfare];
+//                 [self addPlaceMarkForcoordinate:coordinate title:placemark.country subtitle:subtitle];
+//                 
+//             }else{
+//                 [self addPlaceMarkForcoordinate:coordinate title:NSLocalizedString(@"reverseGeocodererror", @"Could not retrieve the specified place information.") subtitle:nil];
+//             }
+//             [self stopLoading];
+//         }];
+//        [geocoder autorelease];
+//    } else {
+//        CLog(@"ios4");
+        MKReverseGeocoder* theGeocoder = [[MKReverseGeocoder alloc] initWithCoordinate:coordinate];
+        theGeocoder.delegate = self;
+        [theGeocoder start];
+        if ([self isUserLocation:coordinate]) {
+        }else{
+            [self startLoading];
+        }
+//    }
 }
 
 -(void) addPlaceMark:(MKReverseGeocoder*)geocoder title:(NSString *)title subtitle:(NSString *)subtitle{
@@ -315,6 +338,19 @@
         [self modifyText:geocoder.coordinate];
     }
     [geocoder autorelease];
+    if(self.isGeocoderUseNetwork){
+        [UIApplication sharedApplication].networkActivityIndicatorVisible=NO; 
+        self.isGeocoderUseNetwork = NO;
+    }
+}
+
+-(void) addPlaceMarkForcoordinate:(CLLocationCoordinate2D )coordinate title:(NSString *)title subtitle:(NSString *)subtitle{
+    //    CLog(@"%f %f", geocoder.coordinate.latitude, geocoder.coordinate.longitude);
+    [self removeMapAnnotation:coordinate];
+    [self addAnnotation:coordinate title:title subtitle:subtitle];
+    if (![self isUserLocation:coordinate]) {
+        [self modifyText:coordinate];
+    }
     if(self.isGeocoderUseNetwork){
         [UIApplication sharedApplication].networkActivityIndicatorVisible=NO; 
         self.isGeocoderUseNetwork = NO;
@@ -413,6 +449,7 @@
 }
 //user click the pin
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
+//    CLogc;
     [MobClick event:a_locationinfo];
     CLLocationCoordinate2D coordinate =[view.annotation coordinate];
     [self modifyText:coordinate];
@@ -511,46 +548,47 @@
 //query yahoo api to get the geo info  or use corelocation in ios5
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
     [self.searchBar resignFirstResponder];
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 50000
-    CLog(@"ios5");
-    [MobClick event:a_searchios5];
-    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
-    [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
-    [self startLoading];
-    [geocoder geocodeAddressString:self.searchBar.text
-                 completionHandler:^(NSArray* placemarks, NSError* error){
-                     int count = [placemarks count];
-                     if(count > 0 ){
-                         //remove other pin
-                         CLLocationCoordinate2D coordinate = {0,0};
-                         [self removeMapAnnotation:coordinate];
-                         for (int i = 0; i < count; i++) {
-                             CLPlacemark *location = [placemarks objectAtIndex:i];
-                             if(i == count - 1 ){
-                                 [self handleSearchCLPlacemark:location isLast:YES];
-                             }else{
-                                 [self handleSearchCLPlacemark:location isLast:NO];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
+        CLog(@"ios5");
+        [MobClick event:a_searchios5];
+        CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+        [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
+        [self startLoading];
+        [geocoder geocodeAddressString:self.searchBar.text
+                     completionHandler:^(NSArray* placemarks, NSError* error){
+                         int count = [placemarks count];
+                         if(count > 0 ){
+                             //remove other pin
+                             CLLocationCoordinate2D coordinate = {0,0};
+                             [self removeMapAnnotation:coordinate];
+                             for (int i = 0; i < count; i++) {
+                                 CLPlacemark *location = [placemarks objectAtIndex:i];
+                                 if(i == count - 1 ){
+                                     [self handleSearchCLPlacemark:location isLast:YES];
+                                 }else{
+                                     [self handleSearchCLPlacemark:location isLast:NO];
+                                 }
                              }
+                         }else{
+                             [self errorAlert:NSLocalizedString(@"noresult",@"no result")];
                          }
-                     }else{
-                         [self errorAlert:NSLocalizedString(@"noresult",@"no result")];
-                     }
-                     [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
-                     [self stopLoading];
-                 }];
-    [geocoder autorelease];
-#else
-    CLog(@"ios4");
-    [MobClick event:a_searchyahoo];
-    NSString *locale = [NSString stringWithFormat:@"&locale=%@",[[NSLocale autoupdatingCurrentLocale] localeIdentifier]];
-    NSString *urlString=[NSString stringWithFormat:@"%@%@%@",@"http://where.yahooapis.com/geocode?appid=V1YpaJ7k&flags=j&q=",[self.searchBar.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],locale];
-    NSURL *requestURL = [NSURL URLWithString:urlString];
-    NSURLRequest *request = [NSURLRequest requestWithURL:requestURL];
-    GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];  
-    [fetcher beginFetchWithDelegate:self didFinishSelector:@selector(fetchDone:finishedWithData:error:)];  
-    [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
-    [self startLoading];  
-#endif
+                         [UIApplication sharedApplication].networkActivityIndicatorVisible=NO;
+                         [self stopLoading];
+                     }];
+        [geocoder autorelease];
+    }
+    else {
+        CLog(@"ios4");
+        [MobClick event:a_searchyahoo];
+        NSString *locale = [NSString stringWithFormat:@"&locale=%@",[[NSLocale autoupdatingCurrentLocale] localeIdentifier]];
+        NSString *urlString=[NSString stringWithFormat:@"%@%@%@",@"http://where.yahooapis.com/geocode?appid=V1YpaJ7k&flags=j&q=",[self.searchBar.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],locale];
+        NSURL *requestURL = [NSURL URLWithString:urlString];
+        NSURLRequest *request = [NSURLRequest requestWithURL:requestURL];
+        GTMHTTPFetcher *fetcher = [GTMHTTPFetcher fetcherWithRequest:request];  
+        [fetcher beginFetchWithDelegate:self didFinishSelector:@selector(fetchDone:finishedWithData:error:)];  
+        [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
+        [self startLoading];  
+    }
 }
 
 //parse geo info data and add pin
@@ -677,6 +715,7 @@
     //if the pin don't exist, we put the pin    
     if(![self isAnnotationExist:coordinate]){
         [self startFindPlaceMark:coordinate];
+        CLogc;
     }
 }
 

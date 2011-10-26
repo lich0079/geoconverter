@@ -105,7 +105,9 @@
 - (void)startStandardUpdates;
 
 - (BOOL) isUserLocation:(CLLocationCoordinate2D ) coordinate;
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 50000
+
+- (void) addPlaceMarkForcoordinate:(CLLocationCoordinate2D )coordinate title:(NSString *)title subtitle:(NSString *)subtitle;
+
 - (void) handleSearchCLPlacemark:(CLPlacemark *)result isLast:(BOOL)isLast;
-#endif
+
 @end
