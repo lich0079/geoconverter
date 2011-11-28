@@ -110,4 +110,5 @@
 
 - (void) handleSearchCLPlacemark:(CLPlacemark *)result isLast:(BOOL)isLast;
 
+- (NSString *) getCopyStringWithLatitude:(CLLocationDegrees ) latitude longitude:(CLLocationDegrees )longitude;
 @end

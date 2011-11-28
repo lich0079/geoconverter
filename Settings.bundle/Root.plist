@@ -6,7 +6,7 @@
 	<array>
 		<dict>
 			<key>DefaultValue</key>
-			<string>1.56</string>
+			<string>1.60</string>
 			<key>Key</key>
 			<string>version</string>
 			<key>Title</key>
@@ -49,6 +49,28 @@
 			<string>drawlines</string>
 			<key>DefaultValue</key>
 			<false/>
+		</dict>
+		<dict>
+			<key>Type</key>
+			<string>PSMultiValueSpecifier</string>
+			<key>Titles</key>
+			<array>
+				<string>decimal</string>
+				<string>degrees</string>
+				<string>allformat</string>
+			</array>
+			<key>Title</key>
+			<string>copycontent</string>
+			<key>Values</key>
+			<array>
+				<string>1</string>
+				<string>2</string>
+				<string>3</string>
+			</array>
+			<key>Key</key>
+			<string>copycontent</string>
+			<key>DefaultValue</key>
+			<string>1</string>
 		</dict>
 	</array>
 	<key>StringsTable</key>

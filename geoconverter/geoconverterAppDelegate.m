@@ -8,6 +8,12 @@
 
 #import "geoconverterAppDelegate.h"
 
+void uncaughtExceptionHandler(NSException *exception) {
+    [FlurryAnalytics logError:@"Uncaught" message:@"Crash!" exception:exception];
+}
+
+
+
 @implementation geoconverterAppDelegate
 
 @synthesize window=_window;
@@ -19,20 +25,19 @@
     self.window.rootViewController = rootVC;
     [self.window makeKeyAndVisible];
     
-    [MobClick setDelegate:self];
-    [MobClick appLaunched];
+    NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
+    [FlurryAnalytics setAppVersion:@"1.60"];
+    [FlurryAnalytics startSession:@"GRXY6JSMUXWJIP711RAV"];
     return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    [MobClick appTerminated];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [MobClick appLaunched];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -81,7 +86,6 @@
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    [MobClick appTerminated];
 }
 
 - (void)dealloc {
@@ -89,10 +93,5 @@
     [_window release];
     [super dealloc];
 }
-
-- (NSString *)appKey{
-    return @"4e9b14995270155b0800009f";
-}
-
 
 @end

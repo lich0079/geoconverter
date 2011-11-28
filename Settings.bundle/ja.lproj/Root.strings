@@ -1,11 +1,11 @@
-
-
-"version"="バージョン";
-
-"settings"="オプション";
-
-"mapautozoom"="マップオートズーム";
-
-"onetap"="指でクリック";
-
-drawlines = "\U7d4c\U7def\U5ea6\U7dda\U3092\U8868\U793a";
+{
+	version = "\U30d0\U30fc\U30b8\U30e7\U30f3";
+	settings = "\U30aa\U30d7\U30b7\U30e7\U30f3";
+	mapautozoom = "\U30de\U30c3\U30d7\U30aa\U30fc\U30c8\U30ba\U30fc\U30e0";
+	onetap = "\U6307\U3067\U30af\U30ea\U30c3\U30af";
+	drawlines = "\U7d4c\U7def\U5ea6\U7dda\U3092\U8868\U793a";
+	copycontent = "\U30b3\U30d4\U30fc";
+	decimal = "\U5c0f\U6570";
+	degrees = "\U5ea6";
+	allformat = "\U5c0f\U6570 || \U5ea6";
+}

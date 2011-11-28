@@ -728,7 +728,7 @@ CannotBeginFetch:
       NSArray *cookies = [NSHTTPCookie cookiesWithResponseHeaderFields:responseHeaderFields
                                                                 forURL:[response URL]];
       if ([cookies count] > 0) {
-        [cookieStorage_ setCookies:cookies];
+        [cookieStorage_ setCookies2:cookies];
       }
     }
   }

@@ -15,6 +15,13 @@
 
 #define isIPad  UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad
 
+#define copy_decimal @"1"
+
+#define copy_degrees @"2"
+
+#define copy_allformat @"3" 
+
+
 #define  a_convert  @"convert"
 #define  a_searchyahoo  @"s_yahoo"
 #define  a_searchios5  @"s_ios5"

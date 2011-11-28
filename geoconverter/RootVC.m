@@ -100,9 +100,9 @@
     
     if([userDefault objectForKey:@"version1.21helpchecked"] || [userDefault objectForKey:@"version1.0helpchecked"]){
         [self createAd];
-        [MobClick event:a_hasad];
+        [FlurryAnalytics logEvent:a_hasad];
     }else{
-        [MobClick event:a_noad];
+        [FlurryAnalytics logEvent:a_noad];
     }
     
     //user location
@@ -450,7 +450,7 @@
 //user click the pin
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
 //    CLogc;
-    [MobClick event:a_locationinfo];
+    [FlurryAnalytics logEvent:a_locationinfo];
     CLLocationCoordinate2D coordinate =[view.annotation coordinate];
     [self modifyText:coordinate];
 }
@@ -458,7 +458,7 @@
 - (void)longPress:(UIGestureRecognizer*)gestureRecognizer {
 //    CLog(@"%s %d",__FUNCTION__,gestureRecognizer.state);
     if (gestureRecognizer.state == UIGestureRecognizerStateEnded){
-        [MobClick event:a_longpress];
+        [FlurryAnalytics logEvent:a_longpress];
         //transfer coordinate
         CGPoint touchPoint = [gestureRecognizer locationInView:map];
         CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
@@ -473,7 +473,7 @@
     // CLog(@"%s",__FUNCTION__);
 //    CLog(@"%d", gestureRecognizer.state);
     [self resignFirstResp:nil];
-    [MobClick event:a_tap];
+    [FlurryAnalytics logEvent:a_tap];
     CGPoint touchPoint = [gestureRecognizer locationInView:map];
     CLLocationCoordinate2D touchMapCoordinate = [map convertPoint:touchPoint toCoordinateFromView:map];
     [self modifyText:touchMapCoordinate];
@@ -493,7 +493,7 @@
 
 #pragma mark -  add OverLayView
 -(void) addLatitudeAndLongitudeOverLayView {
-    [MobClick event:a_drawline];
+    [FlurryAnalytics logEvent:a_drawline];
     for (int i=0; i<=18; i++) {
         CLLocationCoordinate2D lats[2];
         float lat = 90-i*10;
@@ -550,7 +550,7 @@
     [self.searchBar resignFirstResponder];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 5.0) {
         CLog(@"ios5");
-        [MobClick event:a_searchios5];
+        [FlurryAnalytics logEvent:a_searchios5];
         CLGeocoder *geocoder = [[CLGeocoder alloc] init];
         [UIApplication sharedApplication].networkActivityIndicatorVisible=YES;
         [self startLoading];
@@ -576,10 +576,9 @@
                          [self stopLoading];
                      }];
         [geocoder autorelease];
-    }
-    else {
+    }else {
         CLog(@"ios4");
-        [MobClick event:a_searchyahoo];
+        [FlurryAnalytics logEvent:a_searchyahoo];
         NSString *locale = [NSString stringWithFormat:@"&locale=%@",[[NSLocale autoupdatingCurrentLocale] localeIdentifier]];
         NSString *urlString=[NSString stringWithFormat:@"%@%@%@",@"http://where.yahooapis.com/geocode?appid=V1YpaJ7k&flags=j&q=",[self.searchBar.text stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding],locale];
         NSURL *requestURL = [NSURL URLWithString:urlString];
@@ -700,7 +699,7 @@
     if(![self isLatitudeLongitudeInputValid]){
         return;
     }
-    [MobClick event:a_convert]; 
+    [FlurryAnalytics logEvent:a_convert]; 
     float latiInput=  [latitude.text floatValue];
     float longiInput=  [longitude.text floatValue];
     //if == 90 there will be a calayer bond error
@@ -725,14 +724,67 @@
     controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentModalViewController:controller animated:YES];
 }
+
 - (void) addButtonClick:(id)sender{
-    [MobClick event:a_addbutton];
+    [FlurryAnalytics logEvent:a_addbutton];
     UIButton *button = sender;
     MKPinAnnotationView *pin = (MKPinAnnotationView *)button.superview.superview;
     CLLocationCoordinate2D coordinate = [pin.annotation coordinate];
     UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-    pasteboard.string = [NSString stringWithFormat:@"%f, %f",coordinate.latitude,coordinate.longitude];
+    pasteboard.string = [self getCopyStringWithLatitude:coordinate.latitude longitude:coordinate.longitude];
     [self errorAlert:NSLocalizedString(@"addtopasteboard", @"add to pasteboard")];
+}
+
+- (NSString *) getCopyStringWithLatitude:(CLLocationDegrees ) _latitude longitude:(CLLocationDegrees )_longitude{
+    NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
+    [userDefault synchronize];
+    NSString *copy_format = [userDefault valueForKey:@"copycontent"];
+    
+    NSString *decimalStr = [NSString stringWithFormat:@"%f, %f",_latitude,_longitude];
+    NSString *result;
+    if ([copy_format isEqualToString:copy_decimal]) {
+        result = decimalStr;
+    } else {
+        double latiInput = _latitude;
+        NSString *lat;
+        if (latiInput >= 0) {
+            lat = @"N";
+        }else{
+            lat = @"S";
+            latiInput = latiInput*-1;
+        }
+        double latAbs = round(latiInput * 1000000.);
+        
+        NSString *latDe = [ NSString stringWithFormat:@"%d", (int)floor(latAbs / 1000000)];
+        NSString *latMin = [ NSString stringWithFormat:@"%d", (int)round((floorf(( (latAbs/1000000) - floor(latAbs/1000000) ) * 60)) )];
+        NSString *latSec = [ NSString stringWithFormat:@"%d", (int)round((( floorf(((((latAbs/1000000) - floor(latAbs/1000000)) * 60) - floor(((latAbs/1000000) - floor(latAbs/1000000)) * 60)) * 100000) *60/100000 ) ))];
+        
+        double longiInput = _longitude;
+        NSString *longi;
+        if (longiInput >= 0) {
+            longi =@"E";
+        }else{
+            longi =@"W";
+            longiInput = longiInput*-1;
+        }
+        
+        double lonAbs = round(longiInput * 1000000.);
+        
+        NSString *longDe = [ NSString stringWithFormat:@"%d", (int)floor(lonAbs / 1000000) ];
+        NSString *longMin = [ NSString stringWithFormat:@"%d", (int)(floor(((lonAbs/1000000) - floor(lonAbs/1000000)) * 60)) ];
+        NSString *longSec = [ NSString stringWithFormat:@"%d", (int)(( floor(((((lonAbs/1000000) - floor(lonAbs/1000000)) * 60) - floor(((lonAbs/1000000) - floor(lonAbs/1000000)) * 60)) * 100000) *60/100000 )) ];
+        
+        NSString *degreesStr = [NSString stringWithFormat:@"%@ %@°%@'%@\", %@ %@°%@'%@\"",lat,latDe,latMin,latSec,longi,longDe,longMin,longSec];
+        
+        if([copy_format isEqualToString:copy_degrees]){
+            result = degreesStr;
+        }else if([copy_format isEqualToString:copy_allformat]){
+            result =  [NSString stringWithFormat:@"%@ || %@",decimalStr,degreesStr];
+        }else{
+            result = decimalStr;
+        }
+    }
+    return result;
 }
 
 - (IBAction) segmentedButtonClick:(id)sender{
@@ -749,7 +801,7 @@
 }
 
 - (IBAction) helpButtonClick:(id)sender{
-    [MobClick event:a_help];
+    [FlurryAnalytics logEvent:a_help];
     HelpVC *helpVC= [[[HelpVC alloc]init] autorelease];
     helpVC.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     helpVC.delegate = self;
@@ -791,7 +843,7 @@
 }
 
 -(void)createADBannerView {
-    [MobClick event:a_iad];
+    [FlurryAnalytics logEvent:a_iad];
 	NSString *contentSize = (&ADBannerContentSizeIdentifierPortrait != nil) ?ADBannerContentSizeIdentifierPortrait:ADBannerContentSizeIdentifier320x50;
     CGRect frame;
     frame.size = [ADBannerView sizeFromBannerContentSizeIdentifier:contentSize];
@@ -827,7 +879,7 @@
 #pragma mark admob methods   
 -(void)createAdmobGADBannerView{
     CLog(@"%s",__FUNCTION__);
-    [MobClick event:a_admob];
+    [FlurryAnalytics logEvent:a_admob];
     self.admobView = [[GADBannerView alloc]
                                   initWithFrame:CGRectMake(0.0,
                                                            self.view.frame.size.height,

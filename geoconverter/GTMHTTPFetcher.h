@@ -295,7 +295,7 @@ void GTMAssertSelectorNilOrImplementedWithArgs(id obj, SEL sel, ...);
 // accessible from a fetcher service object's fetchHistory or from the fetcher's
 // +staticCookieStorage method.
 - (NSArray *)cookiesForURL:(NSURL *)theURL;
-- (void)setCookies:(NSArray *)newCookies;
+- (void)setCookies2:(NSArray *)newCookies;
 @end
 
 @protocol GTMHTTPFetchHistoryProtocol <NSObject>

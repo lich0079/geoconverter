@@ -1,11 +1,11 @@
-
-
-"version"="版本";
-
-"settings"="设置";
-
-"mapautozoom"="地图自动缩放";
-
-"onetap"="单指点击";
-
-"drawlines"="显示经纬线";
+{
+	version = "\U7248\U672c";
+	settings = "\U8bbe\U7f6e";
+	mapautozoom = "\U5730\U56fe\U81ea\U52a8\U7f29\U653e";
+	onetap = "\U5355\U6307\U70b9\U51fb";
+	drawlines = "\U663e\U793a\U7ecf\U7eac\U7ebf";
+	copycontent = "\U590d\U5236";
+	decimal = "\U5341\U8fdb\U5236";
+	degrees = "\U5206\U79d2\U5236";
+	allformat = "\U5341\U8fdb\U5236 ||  \U5206\U79d2\U5236";
+}

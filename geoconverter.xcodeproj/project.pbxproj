@@ -7,15 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E326F1EA14695A6900751126 /* setting2.png in Resources */ = {isa = PBXBuildFile; fileRef = E326F1E914695A6900751126 /* setting2.png */; };
 		E33567E013C9247F007F9D7C /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E33567DF13C9247F007F9D7C /* iAd.framework */; };
 		E3425B8313BAC4FA00E6954E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = E3425B8113BAC4FA00E6954E /* InfoPlist.strings */; };
 		E344982813DA9C02009B86AD /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = E395995313C5BBBF00D891B8 /* Default.png */; };
 		E344982913DA9CCD009B86AD /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E395995513C5BC3300D891B8 /* Default@2x.png */; };
 		E34CD2FC13BA31D7008B84B6 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E34CD2FA13BA31D7008B84B6 /* Localizable.strings */; };
-		E35B961B144B4C4A00F0BE91 /* libMobClickLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E35B9619144B4C4A00F0BE91 /* libMobClickLibrary.a */; };
-		E35B961D144B4C7300F0BE91 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E35B961C144B4C7300F0BE91 /* CoreTelephony.framework */; };
 		E35B961F144B4C7B00F0BE91 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E35B961E144B4C7B00F0BE91 /* QuartzCore.framework */; };
-		E35B9621144B4C9C00F0BE91 /* libz.1.2.5.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E35B9620144B4C9C00F0BE91 /* libz.1.2.5.dylib */; };
 		E3706AE513BB53DB0078D50D /* help.html in Resources */ = {isa = PBXBuildFile; fileRef = E3706AE313BB53DB0078D50D /* help.html */; };
 		E372181E13B72C78000684BB /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372181D13B72C78000684BB /* UIKit.framework */; };
 		E372182013B72C78000684BB /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E372181F13B72C78000684BB /* Foundation.framework */; };
@@ -31,6 +29,7 @@
 		E38010EE13F3EAE10015067B /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E395994513C5B0C000D891B8 /* Icon@2x.png */; };
 		E38010EF13F3EAE10015067B /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = E395994313C5B0B000D891B8 /* Icon.png */; };
 		E38010F013F3EAE10015067B /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E395993413C5B06800D891B8 /* Icon-72.png */; };
+		E386B9A01483A56D00A2AEA2 /* libFlurryAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E386B99F1483A56D00A2AEA2 /* libFlurryAnalytics.a */; };
 		E395993B13C5B06900D891B8 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = E395993413C5B06800D891B8 /* Icon-72.png */; };
 		E395993C13C5B06900D891B8 /* Icon-Small-50.png in Resources */ = {isa = PBXBuildFile; fileRef = E395993513C5B06800D891B8 /* Icon-Small-50.png */; };
 		E395993D13C5B06900D891B8 /* Icon-Small.png in Resources */ = {isa = PBXBuildFile; fileRef = E395993613C5B06800D891B8 /* Icon-Small.png */; };
@@ -69,15 +68,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E326F1E914695A6900751126 /* setting2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = setting2.png; sourceTree = "<group>"; };
 		E33567DF13C9247F007F9D7C /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		E3425B8213BAC4FA00E6954E /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "geoconverter/zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		E34CD2FB13BA31D7008B84B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = geoconverter/en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E34CD2FD13BA3251008B84B6 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "geoconverter/zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
-		E35B9619144B4C4A00F0BE91 /* libMobClickLibrary.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libMobClickLibrary.a; path = geoconverter/libMobClickLibrary.a; sourceTree = "<group>"; };
-		E35B961A144B4C4A00F0BE91 /* MobClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MobClick.h; sourceTree = "<group>"; };
-		E35B961C144B4C7300F0BE91 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		E35B961E144B4C7B00F0BE91 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		E35B9620144B4C9C00F0BE91 /* libz.1.2.5.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.5.dylib; path = usr/lib/libz.1.2.5.dylib; sourceTree = SDKROOT; };
 		E367CB8813CAF10F004BE68D /* CLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLog.h; sourceTree = "<group>"; };
 		E3706AE413BB53DB0078D50D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = en; path = en.lproj/help.html; sourceTree = "<group>"; };
 		E3706AE613BB53E50078D50D /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "zh-Hans"; path = "zh-Hans.lproj/help.html"; sourceTree = "<group>"; };
@@ -103,6 +99,8 @@
 		E38010EB13F3EAE10015067B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = ja; path = ja.lproj/help.html; sourceTree = "<group>"; };
 		E38010EC13F3EAE10015067B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E38010ED13F3EAE10015067B /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = geoconverter/ja.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E386B99E1483A56D00A2AEA2 /* FlurryAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlurryAnalytics.h; sourceTree = "<group>"; };
+		E386B99F1483A56D00A2AEA2 /* libFlurryAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libFlurryAnalytics.a; path = geoconverter/libFlurryAnalytics.a; sourceTree = "<group>"; };
 		E395993413C5B06800D891B8 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = "<group>"; };
 		E395993513C5B06800D891B8 /* Icon-Small-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small-50.png"; sourceTree = "<group>"; };
 		E395993613C5B06800D891B8 /* Icon-Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-Small.png"; sourceTree = "<group>"; };
@@ -176,9 +174,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E35B9621144B4C9C00F0BE91 /* libz.1.2.5.dylib in Frameworks */,
 				E35B961F144B4C7B00F0BE91 /* QuartzCore.framework in Frameworks */,
-				E35B961D144B4C7300F0BE91 /* CoreTelephony.framework in Frameworks */,
 				E3CF57BE13CAC6370075C5F7 /* SystemConfiguration.framework in Frameworks */,
 				E3CF57BC13CAC62E0075C5F7 /* MessageUI.framework in Frameworks */,
 				E3CF57BA13CAC6270075C5F7 /* AudioToolbox.framework in Frameworks */,
@@ -189,7 +185,7 @@
 				E372182013B72C78000684BB /* Foundation.framework in Frameworks */,
 				E372182213B72C78000684BB /* CoreGraphics.framework in Frameworks */,
 				E3CF57B713CAC5F90075C5F7 /* libGoogleAdMobAds.a in Frameworks */,
-				E35B961B144B4C4A00F0BE91 /* libMobClickLibrary.a in Frameworks */,
+				E386B9A01483A56D00A2AEA2 /* libFlurryAnalytics.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,10 +214,8 @@
 		E372181C13B72C78000684BB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E35B9620144B4C9C00F0BE91 /* libz.1.2.5.dylib */,
+				E386B99F1483A56D00A2AEA2 /* libFlurryAnalytics.a */,
 				E35B961E144B4C7B00F0BE91 /* QuartzCore.framework */,
-				E35B961C144B4C7300F0BE91 /* CoreTelephony.framework */,
-				E35B9619144B4C4A00F0BE91 /* libMobClickLibrary.a */,
 				E33567DF13C9247F007F9D7C /* iAd.framework */,
 				E3CF57BD13CAC6370075C5F7 /* SystemConfiguration.framework */,
 				E3CF57BB13CAC62E0075C5F7 /* MessageUI.framework */,
@@ -238,6 +232,7 @@
 		E372182313B72C78000684BB /* geoconverter */ = {
 			isa = PBXGroup;
 			children = (
+				E386B99E1483A56D00A2AEA2 /* FlurryAnalytics.h */,
 				E396843913B9D42700BC5D5E /* lib */,
 				E372182C13B72C78000684BB /* geoconverterAppDelegate.h */,
 				E372182D13B72C78000684BB /* geoconverterAppDelegate.m */,
@@ -253,7 +248,6 @@
 				E3A6433013FB64FC00BE2F25 /* MBProgressHUD.m */,
 				E3A6433213FB682C00BE2F25 /* ConverterVC.h */,
 				E3A6433313FB682C00BE2F25 /* ConverterVC.m */,
-				E35B961A144B4C4A00F0BE91 /* MobClick.h */,
 				E367CB8813CAF10F004BE68D /* CLog.h */,
 				E372182413B72C78000684BB /* Supporting Files */,
 			);
@@ -263,6 +257,7 @@
 		E372182413B72C78000684BB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E326F1E914695A6900751126 /* setting2.png */,
 				E395994513C5B0C000D891B8 /* Icon@2x.png */,
 				E395994313C5B0B000D891B8 /* Icon.png */,
 				E395993413C5B06800D891B8 /* Icon-72.png */,
@@ -418,6 +413,7 @@
 				E38010EF13F3EAE10015067B /* Icon.png in Resources */,
 				E38010F013F3EAE10015067B /* Icon-72.png in Resources */,
 				E3D9FBE213FB7E5B00A58C29 /* ConverterVC.xib in Resources */,
+				E326F1EA14695A6900751126 /* setting2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,10 +582,7 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/geoconverter\"",
 				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -615,10 +608,7 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/geoconverter\"",
 				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -662,10 +652,7 @@
 					"\"$(SRCROOT)\"",
 					"\"$(SRCROOT)/geoconverter\"",
 				);
-				OTHER_LDFLAGS = (
-					"-all_load",
-					"-ObjC",
-				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "38B57233-06EA-457C-82AC-17606959FDD5";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "38B57233-06EA-457C-82AC-17606959FDD5";

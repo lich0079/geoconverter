@@ -57,7 +57,7 @@
 }
 
 - (IBAction)converter:(id)sender {
-    [MobClick event:a_degree];
+    [FlurryAnalytics logEvent:a_degree];
     [self degreeToNum];
     [rootVC geoButtonClick];
     [rootVC dismissModal:nil];

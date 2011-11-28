@@ -10,7 +10,7 @@
 #import "RootVC.h"
 
 
-@interface geoconverterAppDelegate : NSObject <UIApplicationDelegate,MobClickDelegate> {
+@interface geoconverterAppDelegate : NSObject <UIApplicationDelegate> {
 
 }
 
