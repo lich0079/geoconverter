@@ -8,6 +8,8 @@
 
 #import "geoconverterAppDelegate.h"
 
+void uncaughtExceptionHandler(NSException *exception);
+
 void uncaughtExceptionHandler(NSException *exception) {
     [FlurryAnalytics logError:@"Uncaught" message:@"Crash!" exception:exception];
 }
@@ -25,9 +27,11 @@ void uncaughtExceptionHandler(NSException *exception) {
     self.window.rootViewController = rootVC;
     [self.window makeKeyAndVisible];
     
+#ifndef DEBUG
     NSSetUncaughtExceptionHandler(&uncaughtExceptionHandler);
-    [FlurryAnalytics setAppVersion:@"1.60"];
+    [FlurryAnalytics setAppVersion:@"1.66"];
     [FlurryAnalytics startSession:@"GRXY6JSMUXWJIP711RAV"];
+#endif
     return YES;
 }
 

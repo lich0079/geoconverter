@@ -31,7 +31,6 @@
 }
 
 #pragma mark - View lifecycle
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     NSString *path = [[NSBundle mainBundle] pathForResource:@"help.html" ofType:nil];
